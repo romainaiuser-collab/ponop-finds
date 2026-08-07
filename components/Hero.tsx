@@ -4,7 +4,7 @@ export default function Hero() {
       <div className="ponop-hero-glow" aria-hidden="true" />
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-start justify-end gap-4 text-left">
         <img
-          src="/images/ponop-logo.svg"
+          src="/images/logo-p.png"
           alt="Ponop"
           className="h-12 w-auto object-contain sm:h-14"
         />
