@@ -6,7 +6,7 @@ export default function Hero() {
       <div className="ponop-hero-glow" aria-hidden="true" />
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-start justify-end text-left">
-        <div className="hero-wordmark">
+        <div className="hero-wordmark mt-6 mb-4">
           <Image
             src="/images/Ponop-Logo-white-transparent.png"
             alt="Ponop"
