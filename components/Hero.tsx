@@ -10,7 +10,7 @@
 </div>
 
 <h1 className="hero-headline">
-    Search less. Build more.
+    TEST HERO
 </h1>
 
 <p className="hero-subtext">
