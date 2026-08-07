@@ -19,7 +19,7 @@ export default function Hero() {
         </div>
 
         <h1 className="hero-headline">
-          TEST HERO
+          Search less. Build more.
         </h1>
 
         <p className="hero-subtext">
