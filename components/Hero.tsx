@@ -6,7 +6,6 @@ export default function Hero() {
       <div className="ponop-hero-glow" aria-hidden="true" />
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-start justify-end text-left">
-
         <div className="hero-wordmark">
           <Image
             src="/images/Ponop-Logo-white-transparent.png"
@@ -25,7 +24,6 @@ export default function Hero() {
         <p className="hero-subtext">
           Discover software, AI tools and exclusive deals that are actually worth your time.
         </p>
-
       </div>
     </section>
   );
