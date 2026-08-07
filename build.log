@@ -1,0 +1,106 @@
+
+> ponop-tools@0.1.0 cf:build
+> opennextjs-cloudflare build
+
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+App directory: /workspaces/ponop-tools
+Next.js version : 16.3.0
+@opennextjs/cloudflare version: 1.20.2
+@opennextjs/aws version: 4.1.0
+workerd compatibility_date: 2026-08-07
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+
+> ponop-tools@0.1.0 build
+> next build
+
+▲ Next.js 16.3.0 (Turbopack)
+✓ Running next.config.ts took 52ms
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 error:
+./app/globals.css
+Error: Error evaluating Node.js code
+Error: Cannot find native binding. npm has a bug related to optional dependencies (https://github.com/npm/cli/issues/4828). Please try `npm i` again after removing both package-lock.json and node_modules directory.
+    [at Object.<anonymous> (/workspaces/ponop-tools/node_modules/@tailwindcss/oxide/index.js:573:11)]
+    [at Module._compile (node:internal/modules/cjs/loader:1812:14)]
+    [at Object..js (node:internal/modules/cjs/loader:1943:10)]
+    [at Module.load (node:internal/modules/cjs/loader:1533:32)]
+    [at Module._load (node:internal/modules/cjs/loader:1335:12)]
+    [at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)]
+    [at Module.require (node:internal/modules/cjs/loader:1556:12)]
+    [at require (node:internal/modules/helpers:152:16)]
+    [at Object.<anonymous> (/workspaces/ponop-tools/node_modules/@tailwindcss/postcss/dist/index.js:1:1406)]
+    [at Module._compile (node:internal/modules/cjs/loader:1812:14)]
+Caused by: Error: Cannot find module '@tailwindcss/oxide-linux-x64-gnu'
+Require stack:
+- /workspaces/ponop-tools/node_modules/@tailwindcss/oxide/index.js
+- /workspaces/ponop-tools/node_modules/@tailwindcss/postcss/dist/index.js
+- /workspaces/ponop-tools/.next/build/chunks/[root-of-the-server]__1kki86f._.js
+- /workspaces/ponop-tools/.next/build/chunks/[turbopack]_runtime.js
+- /workspaces/ponop-tools/.next/build/chunks/pool_entry-[turbopack-node]_transforms_postcss_ts_0tp-k2v._.js
+    [at Module._resolveFilename (node:internal/modules/cjs/loader:1456:15)]
+    [at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)]
+    [at defaultResolve (node:internal/modules/cjs/loader:1101:31)]
+    [at nextStep (node:internal/modules/customization_hooks:189:26)]
+    [at He (/workspaces/ponop-tools/node_modules/@tailwindcss/node/dist/index.js:1:1283)]
+    [at nextStep (node:internal/modules/customization_hooks:189:26)]
+    [at resolveWithHooks (node:internal/modules/customization_hooks:417:10)]
+    [at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1110:25)]
+    [at Module._load (node:internal/modules/cjs/loader:1242:25)]
+    [at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)]
+Caused by: Error: Cannot find module './tailwindcss-oxide.linux-x64-gnu.node'
+Require stack:
+- /workspaces/ponop-tools/node_modules/@tailwindcss/oxide/index.js
+- /workspaces/ponop-tools/node_modules/@tailwindcss/postcss/dist/index.js
+- /workspaces/ponop-tools/.next/build/chunks/[root-of-the-server]__1kki86f._.js
+- /workspaces/ponop-tools/.next/build/chunks/[turbopack]_runtime.js
+- /workspaces/ponop-tools/.next/build/chunks/pool_entry-[turbopack-node]_transforms_postcss_ts_0tp-k2v._.js
+    [at Module._resolveFilename (node:internal/modules/cjs/loader:1456:15)]
+    [at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)]
+    [at defaultResolve (node:internal/modules/cjs/loader:1101:31)]
+    [at nextStep (node:internal/modules/customization_hooks:189:26)]
+    [at He (/workspaces/ponop-tools/node_modules/@tailwindcss/node/dist/index.js:1:1283)]
+    [at nextStep (node:internal/modules/customization_hooks:189:26)]
+    [at resolveWithHooks (node:internal/modules/customization_hooks:417:10)]
+    [at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1110:25)]
+    [at Module._load (node:internal/modules/cjs/loader:1242:25)]
+    [at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)]
+
+Import trace:
+  Client Component Browser:
+    ./app/globals.css [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+
+    at ignore-listed frames
+node:internal/errors:985
+  const err = new Error(message);
+              ^
+
+Error: Command failed: npm run build
+    at genericNodeError (node:internal/errors:985:15)
+    at wrappedFn (node:internal/errors:539:14)
+    at checkExecSyncError (node:child_process:925:11)
+    at Object.execSync (node:child_process:997:15)
+    at buildNextjsApp (file:///workspaces/ponop-tools/node_modules/@opennextjs/aws/dist/build/buildNextApp.js:15:8)
+    at build (file:///workspaces/ponop-tools/node_modules/@opennextjs/cloudflare/dist/cli/build/build.js:63:9)
+    at async buildCommand (file:///workspaces/ponop-tools/node_modules/@opennextjs/cloudflare/dist/cli/commands/build.js:40:5) {
+  status: 1,
+  signal: null,
+  output: [ null, null, null ],
+  pid: 10215,
+  stdout: null,
+  stderr: null
+}
+
+Node.js v24.14.0
