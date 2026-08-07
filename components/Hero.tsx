@@ -6,7 +6,7 @@ export default function Hero() {
         <img
           src="/images/logo-p.png"
           alt="Ponop"
-          className="h-12 w-auto object-contain sm:h-14"
+          className="h-16 w-auto object-contain sm:h-20"
         />
         <h1 className="text-balance text-5xl font-black uppercase tracking-[-0.05em] text-white sm:text-6xl">
           Search less. Build more.
