@@ -78,7 +78,8 @@ export default function ToolFeed() {
       updateRailArrowState(railId);
     });
   };
-
+  
+/*
   const handleRailWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     const rail = event.currentTarget;
 
@@ -90,7 +91,7 @@ export default function ToolFeed() {
         updateRailArrowState(railId);
       }
     }
-  };
+  };*/
 
   useEffect(() => {
     sections.forEach((section) => {
