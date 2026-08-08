@@ -36,7 +36,6 @@ return (data ?? []).map((publication) => ({
   idealFor: publication.ideal_for ?? null,
   notIdealFor: publication.not_ideal_for ?? null,
   affiliateLink: publication.affiliate_link ?? null,
-  imageUrl: publication.image_url ?? null,
   altText: publication.alt_text ?? null,
   publishedAt: publication.published_at ?? null,
   imageUrl: getPublicImageUrl(publication.image_url),
