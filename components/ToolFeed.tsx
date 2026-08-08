@@ -37,6 +37,7 @@ interface ToolFeedProps {
 export default function ToolFeed({ tools }: ToolFeedProps) {
   const railRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [arrowState, setArrowState] = useState<Record<string, { left: boolean; right: boolean }>>({});
+  const [expandedToolId, setExpandedToolId] = useState<string | null>(null);
 
   const updateRailArrowState = (railId: string) => {
     const rail = railRefs.current[railId];
@@ -136,9 +137,15 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                /* onWheel={handleRailWheel}*/
                 onScroll={() => updateRailArrowState(section.id)}
               >
-                {tools.map((tool) => (
-                  <ToolCard key={tool.id} tool={tool} />
-                ))}
+              {tools.map((tool) => (
+                <ToolCard
+                  key={tool.id}
+                  tool={tool}
+                  isExpanded={expandedToolId === tool.id}
+                  onOpen={() => setExpandedToolId(tool.id)}
+                  onClose={() => setExpandedToolId(null)}
+                />
+              ))}
               </div>
 
               <button
