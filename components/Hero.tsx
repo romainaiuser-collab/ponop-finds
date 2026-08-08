@@ -5,7 +5,8 @@ export default function Hero() {
     <section className="ponop-hero relative overflow-hidden px-6 py-8">
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-start text-left">
 
-        <div className="mb-4">
+      <div className="mb-4">
+        <a href="https://www.ponop.io" aria-label="Ponop home">
           <Image
             src="/images/Ponop-Logo-white-transparent.png"
             alt="Ponop"
@@ -14,7 +15,8 @@ export default function Hero() {
             priority
             className="block h-14 w-auto sm:h-16"
           />
-        </div>
+        </a>
+      </div>
 
         <h1 className="hero-headline">
           Search less. Build more.
