@@ -74,7 +74,6 @@ body {
   font-size: clamp(1rem, 2vw, 1.15rem);
   line-height: 1.65;
   color: #9AA1B2;
-  max-width: 620px;
 }
 
 .tool-section-heading {
