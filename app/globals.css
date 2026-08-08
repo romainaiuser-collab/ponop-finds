@@ -81,6 +81,13 @@ body {
   margin-right: var(--page-gutter);
 }
 
+@media (max-width: 639px) {
+  .tool-section-heading {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+
 .rail-viewport {
   overflow: visible;
 }
