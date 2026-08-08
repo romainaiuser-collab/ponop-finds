@@ -78,7 +78,7 @@ export default function ToolFeed() {
       updateRailArrowState(railId);
     });
   };
-  
+
 /*
   const handleRailWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     const rail = event.currentTarget;
@@ -129,7 +129,7 @@ export default function ToolFeed() {
                 }}
                 data-rail-id={section.id}
                 className="rail-track flex gap-6 overflow-x-auto overflow-y-visible pb-6 pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
-                onWheel={handleRailWheel}
+               /* onWheel={handleRailWheel}
                 onScroll={() => updateRailArrowState(section.id)}
               >
                 {featuredTools(section.toolIds).map((tool) => (
