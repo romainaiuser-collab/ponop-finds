@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import ToolCard from "./ToolCard";
-import { tools } from "../data/tools";
+import type { PublishedTool } from "../lib/types";
 
 const sections = [
   {
@@ -25,12 +25,16 @@ const sections = [
   },
 ];
 
-const featuredTools = (ids: string[]) =>
+/*const featuredTools = (ids: string[]) =>
   ids
     .map((id) => tools.find((tool) => tool.id === id))
-    .filter(Boolean) as typeof tools;
+    .filter(Boolean) as typeof tools;*/
 
-export default function ToolFeed() {
+interface ToolFeedProps {
+  tools: PublishedTool[];
+}
+
+export default function ToolFeed({ tools }: ToolFeedProps) {
   const railRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [arrowState, setArrowState] = useState<Record<string, { left: boolean; right: boolean }>>({});
 
@@ -132,7 +136,7 @@ export default function ToolFeed() {
                /* onWheel={handleRailWheel}*/
                 onScroll={() => updateRailArrowState(section.id)}
               >
-                {featuredTools(section.toolIds).map((tool) => (
+                {tools.map((tool) => (
                   <ToolCard key={tool.id} tool={tool} />
                 ))}
               </div>
