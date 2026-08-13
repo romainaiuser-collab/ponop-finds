@@ -45,7 +45,7 @@ export default function ToolCard({
     <button
       type="button"
       onClick={onOpen}
-      className="tool-card group flex-shrink-0 overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 text-left shadow-[0_18px_40px_-24px_rgba(0,0,0,0.45)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:border-[#3FC1C9]/30 hover:shadow-[0_30px_80px_-30px_rgba(63,193,201,0.35)]"
+      className="tool-card group flex-shrink-0 overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 text-left shadow-[0_18px_40px_-24px_rgba(0,0,0,0.45)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#3FC1C9]/30 hover:shadow-[0_30px_80px_-30px_rgba(63,193,201,0.35)]"
     >
       <div className="overflow-hidden rounded-t-[2rem]">
         {tool.imageUrl ? (

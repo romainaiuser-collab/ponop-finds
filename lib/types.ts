@@ -22,4 +22,5 @@ export interface PublishedTool {
   imageUrl: string | null;
   altText: string | null;
   publishedAt: string | null;
+  isMostWanted: boolean;
 }

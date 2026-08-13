@@ -40,6 +40,7 @@ return (data ?? []).map((publication) => ({
   categories: publication.categories ?? null,
   idealFor: publication.ideal_for ?? null,
   notIdealFor: publication.not_ideal_for ?? null,
+  isMostWanted: publication.is_most_wanted ?? false,
   affiliateLink: publication.affiliate_link ?? null,
   altText: publication.alt_text ?? null,
   publishedAt: publication.published_at ?? null,
