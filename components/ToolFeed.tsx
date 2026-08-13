@@ -111,25 +111,37 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
       {sections.map((section) => {
         let sectionTools: PublishedTool[];
 
-        if (section.id === "wanted") {
-          // Most Wanted = explicitly selected in the database
-          sectionTools = tools.filter((tool) => tool.isMostWanted);
-        } else if (section.id === "trending") {
-          // Trending Now = most recently updated publications
-          sectionTools = [...tools].sort((a, b) => {
-            if (!a.updatedAt && !b.updatedAt) return 0;
-            if (!a.updatedAt) return 1;
-            if (!b.updatedAt) return -1;
+if (section.id === "wanted") {
+  // Most Wanted = explicitly selected in the database
+  sectionTools = tools.filter((tool) => tool.isMostWanted);
+} else if (section.id === "trending") {
+  // Trending Now = most recently updated publications
+  sectionTools = [...tools].sort((a, b) => {
+    if (!a.updatedAt && !b.updatedAt) return 0;
+    if (!a.updatedAt) return 1;
+    if (!b.updatedAt) return -1;
 
-            return (
-              new Date(b.updatedAt).getTime() -
-              new Date(a.updatedAt).getTime()
-            );
-          });
-        } else {
-          // AI Tools will be database-driven later
-          sectionTools = tools;
-        }
+    return (
+      new Date(b.updatedAt).getTime() -
+      new Date(a.updatedAt).getTime()
+    );
+  });
+} else if (section.id === "ai") {
+  // AI Tools = products with at least one category starting with "AI"
+  sectionTools = tools.filter((tool) =>
+    Array.isArray(tool.categories)
+      ? tool.categories.some((category) =>
+          String(category).trim().toLowerCase().startsWith("ai")
+        )
+      : typeof tool.categories === "string"
+        ? tool.categories.split(",").some((category) =>
+            category.trim().toLowerCase().startsWith("ai")
+          )
+        : false
+  );
+} else {
+  sectionTools = tools;
+}
 
         return (
           <div key={section.id} className="tool-section w-full">
