@@ -183,19 +183,6 @@ export default function ToolCard({
             </section>
           )}
 
-          {/* Editorial story */}
-          {tool.editorialStory && (
-            <section className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#3FC1C9]">
-                Why we picked it
-              </p>
-
-              <p className="text-base leading-7 text-slate-300">
-                {tool.editorialStory}
-              </p>
-            </section>
-          )}
-
           {/* Key benefits */}
           {keyBenefits.length > 0 && (
             <section className="space-y-3">
@@ -214,6 +201,19 @@ export default function ToolCard({
                   </li>
                 ))}
               </ul>
+            </section>
+          )}
+          
+          {/* Editorial story */}
+          {tool.editorialStory && (
+            <section className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#3FC1C9]">
+                Why we picked it
+              </p>
+
+              <p className="text-base leading-7 text-slate-300">
+                {tool.editorialStory}
+              </p>
             </section>
           )}
 
