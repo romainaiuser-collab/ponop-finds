@@ -3,6 +3,8 @@ import Hero from "../components/Hero";
 import ToolFeed from "../components/ToolFeed";
 import { getPublishedTools } from "../lib/tools";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const tools = await getPublishedTools();
 
