@@ -104,15 +104,32 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
     sections.forEach((section) => {
       updateRailArrowState(section.id);
     });
-  }, []);
+  }, [tools]);
 
   return (
-    <section className="space-y-16 border-t border-white/10 px-4 pb-24 pt-6 backdrop-blur-sm sm:px-6">
+    <section className="space-y-10 border-t border-white/10 px-4 pb-24 pt-6 backdrop-blur-sm sm:px-6">
       {sections.map((section) => {
-        const sectionTools =
-          section.id === "wanted"
-            ? tools.filter((tool) => tool.isMostWanted)
-            : tools;
+        let sectionTools: PublishedTool[];
+
+        if (section.id === "wanted") {
+          // Most Wanted = explicitly selected in the database
+          sectionTools = tools.filter((tool) => tool.isMostWanted);
+        } else if (section.id === "trending") {
+          // Trending Now = most recently updated publications
+          sectionTools = [...tools].sort((a, b) => {
+            if (!a.updatedAt && !b.updatedAt) return 0;
+            if (!a.updatedAt) return 1;
+            if (!b.updatedAt) return -1;
+
+            return (
+              new Date(b.updatedAt).getTime() -
+              new Date(a.updatedAt).getTime()
+            );
+          });
+        } else {
+          // AI Tools will be database-driven later
+          sectionTools = tools;
+        }
 
         return (
           <div key={section.id} className="tool-section w-full">
