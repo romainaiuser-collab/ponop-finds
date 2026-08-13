@@ -11,6 +11,11 @@ export async function getPublishedTools(): Promise<PublishedTool[]> {
     throw new Error(`Supabase error: ${error.message}`);
   }
 
+  console.log(
+  "PONOP - publications returned from Supabase:",
+  data?.length ?? 0
+);
+
 function getPublicImageUrl(imageUrl: string | null): string | null {
   if (!imageUrl) return null;
 
