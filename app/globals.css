@@ -99,8 +99,8 @@ body {
   margin-right: -16px;
   overflow: visible;
   padding-top: 1rem;
-  padding-bottom: 2rem;
-  min-height: calc(var(--card-height) + 7rem);
+  padding-bottom: 1rem;
+  min-height: calc(var(--card-height) + 3rem);
   display: flex;
   align-items: center;
 }
