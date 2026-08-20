@@ -31,6 +31,7 @@ return (data ?? []).map((publication) => ({
   id: publication.id,
   contentId: publication.content_id,
   title: publication.title ?? null,
+  creativePunchline: publication.creative_punchline ?? null,
   hook: publication.hook ?? null,
   description: publication.description ?? null,
   summary: publication.summary ?? null,
