@@ -146,9 +146,9 @@ body {
   margin-left: -16px;
   margin-right: -16px;
   overflow: visible;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  min-height: calc(var(--card-height) + 3rem);
+  padding-top: 0;
+  padding-bottom: 0.5rem;
+  min-height: calc(var(--card-height));
   display: flex;
   align-items: center;
 }
@@ -165,8 +165,8 @@ body {
   min-height: calc(var(--card-height) + 3rem);
   align-items: center;
   padding-inline: var(--page-gutter);
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 0;
+  padding-bottom: 0.5rem;
   overflow-x: auto;
   overflow-y: visible;
   overscroll-behavior-x: contain;
