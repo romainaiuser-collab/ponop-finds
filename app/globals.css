@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  /* ---------- Ponop Finds palette ---------- */
-
-  --background: #FAF9F7;
+  --background: #faf8f7;
   --foreground: #171717;
 
-  --brand-blue: #364F6B;
-  --brand-pink: #EFA7A7;
-  --brand-teal: #3FC1C9;
-  --brand-lime: #BEED6E;
+  /* Ponop Finds palette */
+  --brand-pink: #f2b5b8;
+  --brand-pink-dark: #d98f94;
+  --brand-pink-light: #fdf3f3;
+
+  --brand-text: #171717;
+  --brand-muted: #68615f;
 
   --page-gutter: clamp(40px, 10vw, 160px);
-
   --card-width: 22rem;
   --card-height: 27rem;
 }
@@ -23,8 +23,6 @@
   --font-sans: var(--font-inter);
 }
 
-/* ---------- Global ---------- */
-
 html {
   min-height: 100%;
   scroll-behavior: smooth;
@@ -33,21 +31,19 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-
   background:
     radial-gradient(
       circle at 50% 0%,
-      rgba(239, 167, 167, 0.16),
+      rgba(242, 181, 184, 0.12),
       transparent 28%
     ),
     linear-gradient(
       180deg,
-      #FFFFFF 0%,
-      #FAF9F7 100%
+      #ffffff 0%,
+      #faf8f7 45%,
+      #f7f4f2 100%
     );
-
   color: var(--foreground);
-
   font-family:
     var(--font-inter),
     -apple-system,
@@ -60,40 +56,34 @@ body {
   box-sizing: border-box;
 }
 
-
-/* =========================================================
-   HERO
-   ========================================================= */
+/* ---------- Hero ---------- */
 
 .ponop-hero {
   background:
     radial-gradient(
-      circle at 52% 0%,
-      rgba(239, 167, 167, 0.18),
+      circle at 52% 5%,
+      rgba(242, 181, 184, 0.16),
       transparent 28%
     ),
     linear-gradient(
       180deg,
-      #FFFFFF 0%,
-      #FAF9F7 100%
+      rgba(255, 255, 255, 0.96),
+      rgba(250, 248, 247, 0.92)
     );
 }
 
 .ponop-hero-glow {
   position: absolute;
   inset: -26%;
-
   background:
     radial-gradient(
       circle,
-      rgba(239, 167, 167, 0.14),
+      rgba(242, 181, 184, 0.14),
       transparent 62%
     );
-
   filter: blur(58px);
   pointer-events: none;
 }
-
 
 /* ---------- Hero typography ---------- */
 
@@ -108,16 +98,12 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-
   font-weight: 800;
   font-size: clamp(2.4rem, 6vw, 4.1rem);
   line-height: 1.12;
   letter-spacing: -0.03em;
-
   color: #171717;
-
   margin: 0 0 1.5rem;
-
   text-wrap: balance;
 }
 
@@ -128,18 +114,13 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-
   font-weight: 400;
   font-size: clamp(1rem, 2vw, 1.15rem);
   line-height: 1.65;
-
-  color: #66615F;
+  color: #68615f;
 }
 
-
-/* =========================================================
-   SECTION HEADINGS
-   ========================================================= */
+/* ---------- Tool sections ---------- */
 
 .tool-section-heading {
   margin-left: var(--page-gutter);
@@ -153,10 +134,7 @@ body {
   }
 }
 
-
-/* =========================================================
-   CAROUSEL
-   ========================================================= */
+/* ---------- Carousel ---------- */
 
 .rail-viewport {
   overflow: visible;
@@ -164,19 +142,13 @@ body {
 
 .rail-carousel {
   position: relative;
-
   width: calc(100% + 32px);
-
   margin-left: -16px;
   margin-right: -16px;
-
   overflow: visible;
-
   padding-top: 1rem;
   padding-bottom: 1rem;
-
   min-height: calc(var(--card-height) + 3rem);
-
   display: flex;
   align-items: center;
 }
@@ -184,7 +156,6 @@ body {
 @media (min-width: 640px) {
   .rail-carousel {
     width: calc(100% + 48px);
-
     margin-left: -24px;
     margin-right: -24px;
   }
@@ -192,32 +163,28 @@ body {
 
 .rail-track {
   min-height: calc(var(--card-height) + 3rem);
-
   align-items: center;
-
   padding-inline: var(--page-gutter);
   padding-top: 1rem;
   padding-bottom: 1rem;
-
   overflow-x: auto;
   overflow-y: visible;
-
   overscroll-behavior-x: contain;
-
   -webkit-overflow-scrolling: touch;
-
   touch-action: pan-x pan-y;
-
   transform: translate3d(0, 0, 0);
 }
 
 @media (max-width: 639px) {
   .rail-track {
-    padding-left:
-      max(24px, calc((100% - var(--card-width)) / 2));
-
-    padding-right:
-      max(24px, calc((100% - var(--card-width)) / 2));
+    padding-left: max(
+      24px,
+      calc((100% - var(--card-width)) / 2)
+    );
+    padding-right: max(
+      24px,
+      calc((100% - var(--card-width)) / 2)
+    );
   }
 }
 
@@ -229,40 +196,30 @@ body {
   scrollbar-width: none;
 }
 
-
-/* =========================================================
-   CAROUSEL BUTTONS
-   ========================================================= */
+/* ---------- Carousel navigation buttons ---------- */
 
 .rail-button {
   position: absolute;
-
   top: 50%;
   z-index: 3;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 2.8rem;
   height: 2.8rem;
-
   border-radius: 9999px;
 
-  border: 1px solid rgba(23, 23, 23, 0.12);
-
-  background: rgba(255, 255, 255, 0.88);
-
+  border: 1px solid #e8e2df;
+  background: rgba(255, 255, 255, 0.94);
   color: #171717;
 
   box-shadow:
-    0 8px 24px rgba(23, 23, 23, 0.10);
+    0 10px 30px -12px rgba(30, 20, 20, 0.25);
 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
   transform: translateY(-50%) translateZ(0);
-
   opacity: 0;
   pointer-events: none;
 
@@ -270,7 +227,9 @@ body {
     opacity 280ms ease,
     transform 280ms ease,
     background-color 280ms ease,
-    border-color 280ms ease;
+    border-color 280ms ease,
+    box-shadow 280ms ease,
+    color 280ms ease;
 }
 
 .rail-button span {
@@ -300,12 +259,12 @@ body {
 }
 
 .rail-button:hover {
-  background: rgba(239, 167, 167, 0.22);
+  background: #fdf3f3;
+  border-color: #ebc1c3;
+  color: #b96f75;
 
-  border-color:
-    rgba(239, 167, 167, 0.65);
-
-  color: #171717;
+  box-shadow:
+    0 14px 35px -12px rgba(217, 143, 148, 0.35);
 }
 
 .rail-button:disabled {
@@ -313,19 +272,13 @@ body {
   pointer-events: none;
 }
 
-
-/* =========================================================
-   TOOL CARDS
-   ========================================================= */
+/* ---------- Tool cards ---------- */
 
 .tool-card {
   position: relative;
-
   width: var(--card-width);
   height: var(--card-height);
-
   flex: 0 0 var(--card-width);
-
   min-width: var(--card-width);
   max-width: var(--card-width);
 
@@ -336,7 +289,6 @@ body {
   justify-content: flex-start;
 
   will-change: transform;
-
   transform: translate3d(0, 0, 0);
 
   transition:
@@ -354,26 +306,21 @@ body {
   flex: 0 0 auto;
 }
 
-
-/* ---------- Card glow ---------- */
+/* Soft pink hover glow */
 
 .tool-card::before {
   content: "";
-
   position: absolute;
-
   inset: -12px;
-
   border-radius: 2rem;
 
   pointer-events: none;
-
   opacity: 0;
 
   background:
     radial-gradient(
       circle,
-      rgba(239, 167, 167, 0.28),
+      rgba(242, 181, 184, 0.28),
       transparent 78%
     );
 
@@ -381,9 +328,6 @@ body {
 
   transition: opacity 280ms ease;
 }
-
-
-/* ---------- Card hover ---------- */
 
 .tool-card:hover {
   transform:
@@ -394,9 +338,9 @@ body {
   z-index: 4;
 
   box-shadow:
-    inset 0 0 0 1px rgba(23, 23, 23, 0.08),
-    0 10px 30px rgba(239, 167, 167, 0.20),
-    0 20px 50px -14px rgba(23, 23, 23, 0.18);
+    0 0 0 1px rgba(242, 181, 184, 0.3),
+    0 0 28px rgba(217, 143, 148, 0.18),
+    0 20px 50px -14px rgba(30, 20, 20, 0.22);
 }
 
 .tool-card:hover::before {
@@ -407,10 +351,7 @@ body {
   z-index: 1;
 }
 
-
-/* =========================================================
-   UTILITIES
-   ========================================================= */
+/* ---------- Generic scrollbar helper ---------- */
 
 .scrollbar-none::-webkit-scrollbar {
   display: none;
