@@ -136,7 +136,7 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
         return (
           <div key={section.id} className="tool-section w-full">
             {/* Section heading */}
-            <div className="tool-section-heading mb-7">
+            <div className="tool-section-heading mb-3">
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
                 {section.label}
               </p>
