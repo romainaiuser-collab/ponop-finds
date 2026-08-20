@@ -26,6 +26,20 @@ interface ToolFeedProps {
   tools: PublishedTool[];
 }
 
+function hasCollection(
+  tool: PublishedTool,
+  collection: string
+): boolean {
+  if (!Array.isArray(tool.collections)) {
+    return false;
+  }
+
+  return tool.collections.some(
+    (item) =>
+      String(item).trim().toLowerCase() === collection.toLowerCase()
+  );
+}
+
 export default function ToolFeed({ tools }: ToolFeedProps) {
   const railRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [arrowState, setArrowState] = useState<
@@ -40,9 +54,14 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
       return;
     }
 
-    const maxScrollLeft = Math.max(rail.scrollWidth - rail.clientWidth, 0);
+    const maxScrollLeft = Math.max(
+      rail.scrollWidth - rail.clientWidth,
+      0
+    );
+
     const leftDisabled = rail.scrollLeft <= 4;
-    const rightDisabled = rail.scrollLeft >= maxScrollLeft - 4;
+    const rightDisabled =
+      rail.scrollLeft >= maxScrollLeft - 4;
 
     setArrowState((current) => ({
       ...current,
@@ -53,25 +72,35 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
     }));
   };
 
-  const scrollRail = (railId: string, direction: -1 | 1) => {
+  const scrollRail = (
+    railId: string,
+    direction: -1 | 1
+  ) => {
     const rail = railRefs.current[railId];
 
     if (!rail) {
       return;
     }
 
-    const firstCard = rail.querySelector(".tool-card") as HTMLElement | null;
+    const firstCard = rail.querySelector(
+      ".tool-card"
+    ) as HTMLElement | null;
 
     if (!firstCard) {
       return;
     }
 
-    const cardWidth = firstCard.getBoundingClientRect().width;
-    const computedStyle = window.getComputedStyle(rail);
+    const cardWidth =
+      firstCard.getBoundingClientRect().width;
+
+    const computedStyle =
+      window.getComputedStyle(rail);
 
     const gap =
       Number.parseFloat(
-        computedStyle.gap || computedStyle.columnGap || "0"
+        computedStyle.gap ||
+          computedStyle.columnGap ||
+          "0"
       ) || 0;
 
     rail.scrollBy({
@@ -95,46 +124,51 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
       {sections.map((section) => {
         let sectionTools: PublishedTool[];
 
+        /*
+         * ⭐ MOST WANTED
+         *
+         * Editorial selection controlled directly
+         * from the database.
+         */
         if (section.id === "wanted") {
-          // Most Wanted = explicitly selected in the database
-          sectionTools = tools.filter((tool) => tool.isMostWanted);
-        } else if (section.id === "trending") {
-          // Trending Now = most recently updated publications
-          sectionTools = [...tools].sort((a, b) => {
-            if (!a.updatedAt && !b.updatedAt) return 0;
-            if (!a.updatedAt) return 1;
-            if (!b.updatedAt) return -1;
-
-            return (
-              new Date(b.updatedAt).getTime() -
-              new Date(a.updatedAt).getTime()
-            );
-          });
-        } else if (section.id === "ai") {
-          // AI Tools = products with at least one category starting with "AI"
-          sectionTools = tools.filter((tool) =>
-            Array.isArray(tool.categories)
-              ? tool.categories.some((category) =>
-                  String(category)
-                    .trim()
-                    .toLowerCase()
-                    .startsWith("ai")
-                )
-              : typeof tool.categories === "string"
-                ? tool.categories.split(",").some((category) =>
-                    category
-                      .trim()
-                      .toLowerCase()
-                      .startsWith("ai")
-                  )
-                : false
+          sectionTools = tools.filter(
+            (tool) => tool.isMostWanted
           );
+
+        /*
+         * 🎒 BACK TO SCHOOL
+         *
+         * Products whose collections array contains:
+         * "back_to_school"
+         */
+        } else if (section.id === "school") {
+          sectionTools = tools.filter((tool) =>
+            hasCollection(tool, "back_to_school")
+          );
+
+        /*
+         * 💡 SMART HOME ESSENTIALS
+         *
+         * Products whose collections array contains:
+         * "smart_home"
+         */
+        } else if (section.id === "home") {
+          sectionTools = tools.filter((tool) =>
+            hasCollection(tool, "smart_home")
+          );
+
+        /*
+         * Fallback
+         */
         } else {
           sectionTools = tools;
         }
 
         return (
-          <div key={section.id} className="tool-section w-full">
+          <div
+            key={section.id}
+            className="tool-section w-full"
+          >
             {/* Section heading */}
             <div className="tool-section-heading mb-3">
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
@@ -149,32 +183,51 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
             {/* Tool rail */}
             <div className="relative w-full rail-viewport">
               <div className="rail-carousel group relative w-full">
+
                 {/* Left arrow */}
                 <button
                   type="button"
                   className="rail-button rail-button-left"
                   aria-label={`Scroll ${section.label} left`}
-                  disabled={arrowState[section.id]?.left ?? true}
-                  onClick={() => scrollRail(section.id, -1)}
+                  disabled={
+                    arrowState[section.id]?.left ?? true
+                  }
+                  onClick={() =>
+                    scrollRail(section.id, -1)
+                  }
                 >
-                  <span aria-hidden="true">‹</span>
+                  <span aria-hidden="true">
+                    ‹
+                  </span>
                 </button>
 
+                {/* Cards */}
                 <div
                   ref={(node) => {
-                    railRefs.current[section.id] = node;
+                    railRefs.current[section.id] =
+                      node;
                   }}
                   data-rail-id={section.id}
                   className="rail-track flex gap-6 overflow-x-auto overflow-y-visible pb-6 pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
-                  onScroll={() => updateRailArrowState(section.id)}
+                  onScroll={() =>
+                    updateRailArrowState(
+                      section.id
+                    )
+                  }
                 >
                   {sectionTools.map((tool) => (
                     <ToolCard
                       key={tool.id}
                       tool={tool}
-                      isExpanded={expandedToolId === tool.id}
-                      onOpen={() => setExpandedToolId(tool.id)}
-                      onClose={() => setExpandedToolId(null)}
+                      isExpanded={
+                        expandedToolId === tool.id
+                      }
+                      onOpen={() =>
+                        setExpandedToolId(tool.id)
+                      }
+                      onClose={() =>
+                        setExpandedToolId(null)
+                      }
                     />
                   ))}
                 </div>
@@ -184,10 +237,17 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                   type="button"
                   className="rail-button rail-button-right"
                   aria-label={`Scroll ${section.label} right`}
-                  disabled={arrowState[section.id]?.right ?? false}
-                  onClick={() => scrollRail(section.id, 1)}
+                  disabled={
+                    arrowState[section.id]?.right ??
+                    false
+                  }
+                  onClick={() =>
+                    scrollRail(section.id, 1)
+                  }
                 >
-                  <span aria-hidden="true">›</span>
+                  <span aria-hidden="true">
+                    ›
+                  </span>
                 </button>
               </div>
             </div>
