@@ -4,7 +4,7 @@ const CLOUDFRONT_DOMAIN = "https://d4m1kl32en8mq.cloudfront.net";
 
 export async function getPublishedTools(): Promise<PublishedTool[]> {
   const { data, error } = await supabase
-    .from("v_website_publications_ready")
+    .from("v_finds_ponop_publications_ready")
     .select("*");
 
   if (error) {
@@ -41,6 +41,7 @@ return (data ?? []).map((publication) => ({
   idealFor: publication.ideal_for ?? null,
   notIdealFor: publication.not_ideal_for ?? null,
   isMostWanted: publication.is_most_wanted ?? false,
+  collections: publication.collections ?? [],
   affiliateLink: publication.affiliate_link ?? null,
   altText: publication.alt_text ?? null,
   publishedAt: publication.published_at ?? null,
