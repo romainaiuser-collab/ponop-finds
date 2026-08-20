@@ -9,7 +9,7 @@ export interface PublishedTool {
   id: string;
   contentId: string | null;
   title: string | null;
-  creativePunchline: publication.creative_punchline ?? null,
+  creativePunchline: string | null;
   hook: string | null;
   description: string | null;
   summary: string | null;
