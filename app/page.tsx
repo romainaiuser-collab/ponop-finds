@@ -9,7 +9,7 @@ export default async function Home() {
   const tools = await getPublishedTools();
 
   return (
-    <div className="min-h-screen bg-[#101820] text-white">
+    <div className="min-h-screen bg-[#FAF8F7] text-[#171717]">
       <Hero />
       <ToolFeed tools={tools} />
       <Footer />
