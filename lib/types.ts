@@ -23,5 +23,6 @@ export interface PublishedTool {
   altText: string | null;
   publishedAt: string | null;
   isMostWanted: boolean;
+  collections: string[];
   updatedAt: string | null;
 }
