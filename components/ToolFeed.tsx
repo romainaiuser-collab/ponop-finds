@@ -68,6 +68,7 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
 
     const cardWidth = firstCard.getBoundingClientRect().width;
     const computedStyle = window.getComputedStyle(rail);
+
     const gap =
       Number.parseFloat(
         computedStyle.gap || computedStyle.columnGap || "0"
@@ -83,23 +84,6 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
     });
   };
 
-  /*
-  const handleRailWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    const rail = event.currentTarget;
-
-    if (Math.abs(event.deltaY) > 2) {
-      event.preventDefault();
-      rail.scrollLeft += event.deltaY;
-
-      const railId = event.currentTarget.dataset.railId;
-
-      if (railId) {
-        updateRailArrowState(railId);
-      }
-    }
-  };
-  */
-
   useEffect(() => {
     sections.forEach((section) => {
       updateRailArrowState(section.id);
@@ -107,56 +91,65 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
   }, [tools]);
 
   return (
-    <section className="space-y-10 border-t border-white/10 px-4 pb-24 pt-6 backdrop-blur-sm sm:px-6">
+    <section className="space-y-16 border-t border-[#E9E4E1] bg-transparent px-4 pb-24 pt-10 sm:px-6">
       {sections.map((section) => {
         let sectionTools: PublishedTool[];
 
-if (section.id === "wanted") {
-  // Most Wanted = explicitly selected in the database
-  sectionTools = tools.filter((tool) => tool.isMostWanted);
-} else if (section.id === "trending") {
-  // Trending Now = most recently updated publications
-  sectionTools = [...tools].sort((a, b) => {
-    if (!a.updatedAt && !b.updatedAt) return 0;
-    if (!a.updatedAt) return 1;
-    if (!b.updatedAt) return -1;
+        if (section.id === "wanted") {
+          // Most Wanted = explicitly selected in the database
+          sectionTools = tools.filter((tool) => tool.isMostWanted);
+        } else if (section.id === "trending") {
+          // Trending Now = most recently updated publications
+          sectionTools = [...tools].sort((a, b) => {
+            if (!a.updatedAt && !b.updatedAt) return 0;
+            if (!a.updatedAt) return 1;
+            if (!b.updatedAt) return -1;
 
-    return (
-      new Date(b.updatedAt).getTime() -
-      new Date(a.updatedAt).getTime()
-    );
-  });
-} else if (section.id === "ai") {
-  // AI Tools = products with at least one category starting with "AI"
-  sectionTools = tools.filter((tool) =>
-    Array.isArray(tool.categories)
-      ? tool.categories.some((category) =>
-          String(category).trim().toLowerCase().startsWith("ai")
-        )
-      : typeof tool.categories === "string"
-        ? tool.categories.split(",").some((category) =>
-            category.trim().toLowerCase().startsWith("ai")
-          )
-        : false
-  );
-} else {
-  sectionTools = tools;
-}
+            return (
+              new Date(b.updatedAt).getTime() -
+              new Date(a.updatedAt).getTime()
+            );
+          });
+        } else if (section.id === "ai") {
+          // AI Tools = products with at least one category starting with "AI"
+          sectionTools = tools.filter((tool) =>
+            Array.isArray(tool.categories)
+              ? tool.categories.some((category) =>
+                  String(category)
+                    .trim()
+                    .toLowerCase()
+                    .startsWith("ai")
+                )
+              : typeof tool.categories === "string"
+                ? tool.categories.split(",").some((category) =>
+                    category
+                      .trim()
+                      .toLowerCase()
+                      .startsWith("ai")
+                  )
+                : false
+          );
+        } else {
+          sectionTools = tools;
+        }
 
         return (
           <div key={section.id} className="tool-section w-full">
-            <div className="tool-section-heading mb-4">
-              <p className="text-sm uppercase tracking-[0.28em] text-[#3FC1C9] opacity-90">
+            {/* Section heading */}
+            <div className="tool-section-heading mb-7">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
                 {section.label}
               </p>
 
-              <p className="mt-2 max-w-2xl text-2xl font-semibold text-white sm:text-3xl">
+              <p className="mt-2 max-w-2xl text-2xl font-semibold tracking-tight text-[#171717] sm:text-3xl">
                 {section.subtitle}
               </p>
             </div>
 
+            {/* Tool rail */}
             <div className="relative w-full rail-viewport">
               <div className="rail-carousel group relative w-full">
+                {/* Left arrow */}
                 <button
                   type="button"
                   className="rail-button rail-button-left"
@@ -186,6 +179,7 @@ if (section.id === "wanted") {
                   ))}
                 </div>
 
+                {/* Right arrow */}
                 <button
                   type="button"
                   className="rail-button rail-button-right"
