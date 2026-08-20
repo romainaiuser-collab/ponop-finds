@@ -61,8 +61,8 @@ export default function ToolCard({
       {/* Content */}
       <div className="space-y-4 px-6 pb-6 pt-6">
         <div className="space-y-3">
-          <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#171717]">
-            {tool.title}
+          <h3 className="text-[1.65rem] font-semibold leading-[1.15] tracking-tight text-[#171717]">
+            {tool.creativePunchline ?? tool.hook ?? tool.title}
           </h3>
 
           <p className="text-sm leading-6 text-[#68615F]">
