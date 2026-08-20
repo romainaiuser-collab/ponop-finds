@@ -7,10 +7,10 @@ export default function Hero() {
         <div className="mb-4">
           <a href="https://www.ponop.io" aria-label="Ponop home">
             <Image
-              src="/images/Ponop-Logo-white-transparent.png"
+              src="/images/Ponop-finds-logo-black-transparent.png"
               alt="Ponop"
               width={320}
-              height={80}
+              height={164}
               priority
               className="block h-14 w-auto sm:h-16"
             />
