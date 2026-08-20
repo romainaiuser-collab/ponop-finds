@@ -8,17 +8,17 @@ const sections = [
   {
     id: "wanted",
     label: "⭐ Most Wanted",
-    subtitle: "The tools we recommend first.",
+    subtitle: "The things we’d buy ourselves.",
   },
   {
-    id: "trending",
-    label: "🔥 Trending Now",
-    subtitle: "The tools everyone is talking about.",
+    id: "school",
+    label: "🎒 Back To School",
+    subtitle: "Smart finds for a fresh start.",
   },
   {
-    id: "ai",
-    label: "🤖 AI Tools",
-    subtitle: "Our favorite AI-powered software.",
+    id: "home",
+    label: "💡 Smart Home Essentials",
+    subtitle: "Clever finds to make home life easier.",
   },
 ];
 
