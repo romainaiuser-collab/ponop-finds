@@ -351,16 +351,16 @@ body {
 
 .tool-card:hover {
   transform:
-    translateY(-6px)
-    scale(1.03)
+    translateY(-4px)
+    scale(1.015)
     translateZ(0);
 
   z-index: 4;
 
   box-shadow:
     0 0 0 1px rgba(242, 181, 184, 0.3),
-    0 0 28px rgba(217, 143, 148, 0.18),
-    0 20px 50px -14px rgba(30, 20, 20, 0.22);
+    0 0 24px rgba(217, 143, 148, 0.16),
+    0 16px 42px -14px rgba(30, 20, 20, 0.20);
 }
 
 .tool-card:hover::before {
