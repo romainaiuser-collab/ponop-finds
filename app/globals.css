@@ -381,3 +381,21 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ---------- Mobile vertical spacing ---------- */
+
+@media (max-width: 639px) {
+  .rail-carousel {
+    min-height: auto;
+  }
+
+  .rail-track {
+    min-height: auto;
+    padding-top: 0;
+    padding-bottom: 0.25rem;
+  }
+
+  .tool-section-heading {
+    margin-bottom: 0.5rem;
+  }
+}
