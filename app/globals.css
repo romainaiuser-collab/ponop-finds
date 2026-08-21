@@ -401,12 +401,3 @@ body {
     margin-bottom: 0.5rem;
   }
 }
-
-/* ---------- Mobile rail gesture ---------- */
-
-@media (max-width: 639px) {
-  .rail-track {
-    overflow-y: hidden;
-    touch-action: pan-x;
-  }
-}
