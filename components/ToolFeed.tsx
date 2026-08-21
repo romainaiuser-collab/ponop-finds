@@ -120,7 +120,7 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
   }, [tools]);
 
   return (
-    <section className="space-y-16 border-t border-[#E9E4E1] bg-transparent px-4 pb-24 pt-10 sm:px-6">
+    <section className="space-y-8 border-t border-[#E9E4E1] bg-transparent px-4 pb-24 pt-10 sm:px-6">
       {sections.map((section) => {
         let sectionTools: PublishedTool[];
 
