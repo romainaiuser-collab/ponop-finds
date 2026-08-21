@@ -235,7 +235,8 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                   className="rail-button rail-button-right"
                   aria-label={`Scroll ${section.label} right`}
                   disabled={
-                    arrowState[section.id]?.right ?? false
+                    arrowState[section.id]?.right ??
+                    false
                   }
                   onClick={() =>
                     scrollRail(section.id, 1)
