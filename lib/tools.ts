@@ -47,6 +47,7 @@ return (data ?? []).map((publication) => ({
   altText: publication.alt_text ?? null,
   publishedAt: publication.published_at ?? null,
   imageUrl: getPublicImageUrl(publication.image_url),
+  createdAt: publication.created_at ?? null,
   updatedAt: publication.updated_at ?? null,
 }));
 }
