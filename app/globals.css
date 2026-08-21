@@ -308,8 +308,8 @@ body {
   flex-direction: column;
   justify-content: flex-start;
 
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
+  /*will-change: transform;
+  transform: translate3d(0, 0, 0);*/
 
   transition:
     transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
