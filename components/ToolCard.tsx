@@ -37,11 +37,8 @@ export default function ToolCard({
   const categories = formatList(tool.categories);
 
   /*
-   * ======================================================
-   * NORMAL CARD
-   * ======================================================
+   * Normal card
    */
-
   const card = (
     <button
       type="button"
@@ -53,7 +50,7 @@ export default function ToolCard({
         {tool.imageUrl ? (
           <img
             src={tool.imageUrl}
-            alt={tool.altText ?? tool.title ?? ""}
+            alt={tool.altText ?? tool.creativePunchline ?? ""}
             className="aspect-[16/9] w-full object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
@@ -86,26 +83,23 @@ export default function ToolCard({
     </button>
   );
 
+  /*
+   * Normal state
+   */
   if (!isExpanded) {
     return card;
   }
 
+  /*
+   * Avoid rendering the portal during SSR
+   */
   if (typeof document === "undefined") {
     return card;
   }
 
   /*
-   * ======================================================
-   * EXPANDED MODAL
-   * ======================================================
-   *
-   * LEFT  = complete Pinterest visual
-   * RIGHT = editorial information
-   *
-   * The right-hand content scrolls independently.
-   * Keywords are deliberately placed at the bottom.
+   * Expanded modal
    */
-
   const expandedCard = (
     <>
       {/* Backdrop */}
@@ -120,60 +114,59 @@ export default function ToolCard({
         className="fixed left-1/2 top-1/2 z-[100] flex h-[min(88vh,760px)] w-[min(1100px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white shadow-[0_40px_120px_-30px_rgba(30,20,20,0.42)]"
         role="dialog"
         aria-modal="true"
-        aria-label={tool.title ?? "Product details"}
-        onClick={(event) => event.stopPropagation()}
+        aria-label={tool.creativePunchline ?? tool.title ?? "Product details"}
       >
-        {/* ==================================================
-            LEFT — FULL PRODUCT IMAGE
-            ================================================== */}
-        <div className="relative hidden min-h-0 w-1/2 bg-[#F7F4F2] md:block">
+        {/* Close button */}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-5 top-5 z-[120] flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-white/90 text-2xl text-[#171717] shadow-lg backdrop-blur transition hover:scale-105 hover:bg-white"
+        >
+          ×
+        </button>
+
+        {/* =========================================================
+            LEFT — FULL PORTRAIT IMAGE
+            The image keeps its natural aspect ratio.
+            No object-cover = no cropping.
+           ========================================================= */}
+        <div className="relative hidden h-full shrink-0 bg-[#F7F4F2] md:flex md:items-center md:justify-start">
           {tool.imageUrl ? (
             <img
               src={tool.imageUrl}
-              alt={tool.altText ?? tool.title ?? ""}
-              className="h-full w-full object-cover object-center"
+              alt={tool.altText ?? tool.creativePunchline ?? ""}
+              className="h-full w-auto max-w-[52vw] object-contain"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]">
-              <span className="text-sm uppercase tracking-[0.2em] text-[#B96F75]">
+            <div className="flex h-full w-[420px] max-w-[52vw] items-center justify-center bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]">
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-[#B96F75]">
                 Ponop Finds
               </span>
             </div>
           )}
-
-          {/* Close button */}
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="absolute right-5 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-white/90 text-2xl text-[#171717] shadow-lg backdrop-blur transition hover:scale-105 hover:bg-white"
-          >
-            ×
-          </button>
         </div>
 
-        {/* ==================================================
+        {/* =========================================================
             RIGHT — EDITORIAL CONTENT
-            ================================================== */}
-        <div className="flex min-h-0 w-full flex-col bg-white md:w-1/2">
+           ========================================================= */}
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col bg-white">
           <div className="min-h-0 flex-1 overflow-y-auto">
-            <div className="space-y-8 px-7 pb-10 pt-10 sm:px-10">
-
-              {/* Close button for mobile */}
-              <div className="flex justify-end md:hidden">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  aria-label="Close"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8E2DF] bg-white text-2xl text-[#171717] shadow-sm transition hover:scale-105"
-                >
-                  ×
-                </button>
+            <div className="space-y-8 px-7 pb-10 pt-10 sm:px-10 sm:pb-12 sm:pt-12">
+              {/* Mobile image */}
+              <div className="relative -mx-7 -mt-10 overflow-hidden bg-[#F7F4F2] sm:-mx-10 sm:-mt-12 md:hidden">
+                {tool.imageUrl ? (
+                  <img
+                    src={tool.imageUrl}
+                    alt={tool.altText ?? tool.creativePunchline ?? ""}
+                    className="h-auto max-h-[70vh] w-full object-contain"
+                  />
+                ) : (
+                  <div className="aspect-[2/3] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
+                )}
               </div>
 
-              {/* ==================================================
-                  PUNCHLINE + HOOK
-                  ================================================== */}
+              {/* Punchline + hook */}
               <div className="space-y-4">
                 {tool.creativePunchline && (
                   <h2 className="text-3xl font-semibold leading-tight tracking-tight text-[#171717] sm:text-4xl">
@@ -188,9 +181,7 @@ export default function ToolCard({
                 )}
               </div>
 
-              {/* ==================================================
-                  CTA
-                  ================================================== */}
+              {/* Primary CTA */}
               {tool.affiliateLink && (
                 <div>
                   <a
@@ -206,9 +197,7 @@ export default function ToolCard({
                 </div>
               )}
 
-              {/* ==================================================
-                  SUMMARY
-                  ================================================== */}
+              {/* Why we like it = Summary */}
               {tool.summary && (
                 <section className="space-y-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
@@ -221,11 +210,9 @@ export default function ToolCard({
                 </section>
               )}
 
-              {/* ==================================================
-                  KEY BENEFITS
-                  ================================================== */}
+              {/* Key benefits */}
               {keyBenefits.length > 0 && (
-                <section className="space-y-3">
+                <section className="space-y-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
                     Why it stands out
                   </p>
@@ -234,28 +221,21 @@ export default function ToolCard({
                     {keyBenefits.map((benefit) => (
                       <li
                         key={benefit}
-                        className="flex gap-3 rounded-xl border border-[#E8E2DF] bg-[#FAF8F7] px-4 py-3 text-sm leading-6 text-[#514B49]"
+                        className="rounded-xl border border-[#E8E2DF] bg-[#FAF8F7] px-4 py-3 text-sm leading-6 text-[#514B49]"
                       >
-                        <span className="font-semibold text-[#D98F94]">
+                        <span className="mr-2 font-semibold text-[#D98F94]">
                           ✓
                         </span>
-
-                        <span>{benefit}</span>
+                        {benefit}
                       </li>
                     ))}
                   </ul>
                 </section>
               )}
 
-              {/* ==================================================
-                  KEYWORDS — ALWAYS AT THE BOTTOM
-                  ================================================== */}
+              {/* Keywords / categories at the bottom */}
               {categories.length > 0 && (
-                <section className="space-y-3 border-t border-[#E8E2DF] pt-6">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
-                    Good to know
-                  </p>
-
+                <section className="border-t border-[#E8E2DF] pt-7">
                   <div className="flex flex-wrap gap-2">
                     {categories.map((category) => (
                       <span
@@ -269,35 +249,18 @@ export default function ToolCard({
                 </section>
               )}
 
-              {/* ==================================================
-                  FOOTER
-                  ================================================== */}
-              <div className="flex flex-col gap-4 border-t border-[#E8E2DF] pt-6 sm:flex-row sm:items-center sm:justify-between">
-                <div>
+              {/* Published date */}
+              {tool.publishedAt && (
+                <div className="border-t border-[#E8E2DF] pt-6">
                   <p className="text-xs uppercase tracking-[0.2em] text-[#A39A97]">
                     Published
                   </p>
 
                   <p className="mt-1 text-sm text-[#68615F]">
-                    {tool.publishedAt
-                      ? new Date(tool.publishedAt).toLocaleDateString("en-GB")
-                      : ""}
+                    {new Date(tool.publishedAt).toLocaleDateString("en-GB")}
                   </p>
                 </div>
-
-                {tool.affiliateLink && (
-                  <a
-                    href={tool.affiliateLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(event) => event.stopPropagation()}
-                    className="inline-flex items-center justify-center rounded-full bg-[#F2B5B8] px-7 py-3 font-semibold text-[#171717] transition hover:scale-[1.02] hover:bg-[#EFA9AD]"
-                  >
-                    Visit website
-                    <span className="ml-2">→</span>
-                  </a>
-                )}
-              </div>
+              )}
             </div>
           </div>
         </div>
