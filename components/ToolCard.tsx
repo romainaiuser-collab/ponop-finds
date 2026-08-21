@@ -73,34 +73,36 @@ export default function ToolCard({
           the content panel overlaps the image,
           becomes translucent and uses backdrop blur.
          ===================================================== */}
-      <div
-        className="
-          relative
-          z-10
-          -mt-28
-          space-y-3
-          rounded-t-[1.75rem]
-          border-t
-          border-white/60
-          bg-white/65
-          px-6
-          pb-5
-          pt-6
-          backdrop-blur-md
+     <div
+  className="
+    relative
+    z-10
+    -mt-32
+    space-y-2
+    rounded-t-[1.75rem]
+    border-t
+    border-white/50
+    bg-white/35
+    px-6
+    pb-3
+    pt-5
+    backdrop-blur-sm
 
-          sm:-mt-24
-          sm:px-6
+    sm:-mt-28
+    sm:px-6
+    sm:pb-3
+    sm:pt-5
 
-          md:mt-0
-          md:rounded-t-none
-          md:border-t-0
-          md:bg-white
-          md:px-6
-          md:pb-6
-          md:pt-7
-          md:backdrop-blur-none
-        "
-      >
+    md:mt-0
+    md:rounded-t-none
+    md:border-t-0
+    md:bg-white
+    md:px-6
+    md:pb-6
+    md:pt-7
+    md:backdrop-blur-none
+  "
+>
         <div className="space-y-2">
           {/* Creative punchline */}
           {tool.creativePunchline && (
