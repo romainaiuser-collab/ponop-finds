@@ -204,15 +204,12 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                 {/* Cards */}
                 <div
                   ref={(node) => {
-                    railRefs.current[section.id] =
-                      node;
+                    railRefs.current[section.id] = node;
                   }}
                   data-rail-id={section.id}
-                  className="rail-track flex gap-6 overflow-x-auto overflow-y-visible pb-6 pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
+                  className="rail-track flex items-start gap-6 overflow-x-auto overflow-y-visible pb-6 pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
                   onScroll={() =>
-                    updateRailArrowState(
-                      section.id
-                    )
+                    updateRailArrowState(section.id)
                   }
                 >
                   {sectionTools.map((tool) => (
@@ -238,8 +235,7 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                   className="rail-button rail-button-right"
                   aria-label={`Scroll ${section.label} right`}
                   disabled={
-                    arrowState[section.id]?.right ??
-                    false
+                    arrowState[section.id]?.right ?? false
                   }
                   onClick={() =>
                     scrollRail(section.id, 1)
