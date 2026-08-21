@@ -59,7 +59,7 @@ export default function ToolCard({
       </div>
 
       {/* Content */}
-      <div className="space-y-4 px-6 pb-6 pt-7">
+      <div className="relative -mt-20 z-10 space-y-4 rounded-t-[1.75rem] border-t border-white/50 bg-white/82 px-6 pb-6 pt-6 backdrop-blur-lg">
         <div className="space-y-3">
           {/* Creative punchline */}
           {tool.creativePunchline && (
