@@ -37,73 +37,30 @@ export default function ToolCard({
   const categories = formatList(tool.categories);
 
   /*
-   * =========================================================
-   * NORMAL CARD
-   * =========================================================
+   * Normal card
    */
-
   const card = (
     <button
       type="button"
       onClick={onOpen}
-      className="tool-card group flex-shrink-0 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)]"
+      className="tool-card group h-fit flex-shrink-0 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)]"
     >
-      {/* =====================================================
-          IMAGE
-         ===================================================== */}
+      {/* Image */}
       <div className="overflow-hidden rounded-t-[2rem] bg-[#F7F4F2]">
         {tool.imageUrl ? (
           <img
             src={tool.imageUrl}
             alt={tool.altText ?? tool.creativePunchline ?? ""}
-            className="aspect-[4/3] w-full object-cover object-top transition duration-500 group-hover:scale-105"
+            className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="aspect-[16/9] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
         )}
       </div>
 
-      {/* =====================================================
-          EDITORIAL CONTENT
-          
-          Desktop:
-          normal card content.
-
-          Mobile:
-          the content panel overlaps the image,
-          becomes translucent and uses backdrop blur.
-         ===================================================== */}
-<div
-  className="
-    relative
-    z-10
-    -mt-32
-    space-y-2
-    rounded-t-[1.75rem]
-    border-t
-    border-white/50
-    bg-white/20
-    px-6
-    pb-3
-    pt-5
-    backdrop-blur-md
-
-    sm:-mt-28
-    sm:px-6
-    sm:pb-3
-    sm:pt-5
-
-    md:mt-0
-    md:rounded-t-none
-    md:border-t-0
-    md:bg-white/25
-    md:px-6
-    md:pb-6
-    md:pt-7
-    md:backdrop-blur-md
-  "
->
-        <div className="space-y-2">
+      {/* Content */}
+      <div className="space-y-4 px-6 pb-6 pt-7">
+        <div className="space-y-3">
           {/* Creative punchline */}
           {tool.creativePunchline && (
             <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#171717]">
@@ -119,7 +76,6 @@ export default function ToolCard({
           )}
         </div>
 
-        {/* CTA */}
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
           Click to explore
         </p>
@@ -128,45 +84,32 @@ export default function ToolCard({
   );
 
   /*
-   * =========================================================
-   * NORMAL STATE
-   * =========================================================
+   * Normal state
    */
-
   if (!isExpanded) {
     return card;
   }
 
   /*
-   * =========================================================
-   * AVOID PORTAL DURING SSR
-   * =========================================================
+   * Avoid rendering the portal during SSR
    */
-
   if (typeof document === "undefined") {
     return card;
   }
 
   /*
-   * =========================================================
-   * EXPANDED MODAL
-   * =========================================================
+   * Expanded modal
    */
-
   const expandedCard = (
     <>
-      {/* =====================================================
-          BACKDROP
-         ===================================================== */}
+      {/* Backdrop */}
       <div
         className="fixed inset-0 z-[90] bg-[#171717]/45 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* =====================================================
-          MODAL
-         ===================================================== */}
+      {/* Modal */}
       <article
         className="fixed left-1/2 top-1/2 z-[100] flex h-[min(88vh,760px)] w-[min(1100px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white shadow-[0_40px_120px_-30px_rgba(30,20,20,0.42)]"
         role="dialog"
@@ -177,9 +120,7 @@ export default function ToolCard({
           "Product details"
         }
       >
-        {/* =====================================================
-            CLOSE BUTTON
-           ===================================================== */}
+        {/* Close button */}
         <button
           type="button"
           onClick={onClose}
@@ -189,11 +130,11 @@ export default function ToolCard({
           ×
         </button>
 
-        {/* =====================================================
+        {/* =========================================================
             LEFT — FULL PORTRAIT IMAGE
-            Desktop / Laptop
-            No cropping.
-           ===================================================== */}
+            The image keeps its natural aspect ratio.
+            No object-cover = no cropping.
+           ========================================================= */}
         <div className="relative hidden h-full shrink-0 bg-[#F7F4F2] md:flex md:items-center md:justify-start">
           {tool.imageUrl ? (
             <img
@@ -214,16 +155,14 @@ export default function ToolCard({
           )}
         </div>
 
-        {/* =====================================================
+        {/* =========================================================
             RIGHT — EDITORIAL CONTENT
-           ===================================================== */}
+           ========================================================= */}
         <div className="flex min-h-0 min-w-0 flex-1 flex-col bg-white">
           <div className="min-h-0 flex-1 overflow-y-auto">
             <div className="space-y-8 px-7 pb-10 pt-10 sm:px-10 sm:pb-12 sm:pt-12">
 
-              {/* =================================================
-                  MOBILE IMAGE
-                 ================================================= */}
+              {/* Mobile image */}
               <div className="relative -mx-7 -mt-10 overflow-hidden bg-[#F7F4F2] sm:-mx-10 sm:-mt-12 md:hidden">
                 {tool.imageUrl ? (
                   <img
@@ -240,9 +179,7 @@ export default function ToolCard({
                 )}
               </div>
 
-              {/* =================================================
-                  PUNCHLINE + HOOK
-                 ================================================= */}
+              {/* Punchline + hook */}
               <div className="space-y-4">
                 {tool.creativePunchline && (
                   <h2 className="text-3xl font-semibold leading-tight tracking-tight text-[#171717] sm:text-4xl">
@@ -257,9 +194,7 @@ export default function ToolCard({
                 )}
               </div>
 
-              {/* =================================================
-                  PRIMARY CTA
-                 ================================================= */}
+              {/* Primary CTA */}
               {tool.affiliateLink && (
                 <div>
                   <a
@@ -277,10 +212,7 @@ export default function ToolCard({
                 </div>
               )}
 
-              {/* =================================================
-                  SUMMARY
-                  "Why we like it"
-                 ================================================= */}
+              {/* Why we like it = Summary */}
               {tool.summary && (
                 <section className="space-y-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
@@ -293,9 +225,7 @@ export default function ToolCard({
                 </section>
               )}
 
-              {/* =================================================
-                  KEY BENEFITS
-                 ================================================= */}
+              {/* Key benefits */}
               {keyBenefits.length > 0 && (
                 <section className="space-y-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
@@ -318,10 +248,7 @@ export default function ToolCard({
                 </section>
               )}
 
-              {/* =================================================
-                  KEYWORDS / CATEGORIES
-                  At the bottom of the scroll.
-                 ================================================= */}
+              {/* Keywords / categories at the bottom */}
               {categories.length > 0 && (
                 <section className="border-t border-[#E8E2DF] pt-7">
                   <div className="flex flex-wrap gap-2">
@@ -337,9 +264,7 @@ export default function ToolCard({
                 </section>
               )}
 
-              {/* =================================================
-                  PUBLISHED DATE
-                 ===================================================== */}
+              {/* Published date */}
               {tool.publishedAt && (
                 <div className="border-t border-[#E8E2DF] pt-6">
                   <p className="text-xs uppercase tracking-[0.2em] text-[#A39A97]">
