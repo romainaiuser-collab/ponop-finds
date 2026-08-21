@@ -61,13 +61,13 @@ export default function ToolCard({
          ===================================================== */}
       <div className="relative w-full overflow-hidden bg-[#F7F4F2]">
         {tool.imageUrl ? (
-          <img
-            src={tool.imageUrl}
-            alt={tool.altText ?? tool.creativePunchline ?? ""}
-            className="block aspect-[4/3] w-full object-cover object-top transition duration-500 group-hover:scale-105"
-          />
+<img
+  src={tool.imageUrl}
+  alt={tool.altText ?? tool.creativePunchline ?? ""}
+  className="block h-auto w-full object-top transition duration-500 group-hover:scale-105"
+/>
         ) : (
-          <div className="aspect-[4/3] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
+          <div className="aspect-[2/3] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
         )}
 
         {/* ===================================================
