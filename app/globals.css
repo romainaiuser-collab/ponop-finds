@@ -349,22 +349,24 @@ body {
   transition: opacity 280ms ease;
 }
 
-.tool-card:hover {
-  transform:
-    translateY(-2px)
-    scale(1.010)
-    translateZ(0);
+@media (hover: hover) and (pointer: fine) {
+  .tool-card:hover {
+    transform:
+      translateY(-2px)
+      scale(1.010)
+      translateZ(0);
 
-  z-index: 4;
+    z-index: 4;
 
-  box-shadow:
-    0 0 0 1px rgba(242, 181, 184, 0.3),
-    0 0 24px rgba(217, 143, 148, 0.16),
-    0 16px 42px -14px rgba(30, 20, 20, 0.20);
-}
+    box-shadow:
+      0 0 0 1px rgba(242, 181, 184, 0.3),
+      0 0 24px rgba(217, 143, 148, 0.16),
+      0 16px 42px -14px rgba(30, 20, 20, 0.20);
+  }
 
-.tool-card:hover::before {
-  opacity: 1;
+  .tool-card:hover::before {
+    opacity: 1;
+  }
 }
 
 .tool-card:not(:hover) {
