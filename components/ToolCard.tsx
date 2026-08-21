@@ -73,7 +73,7 @@ export default function ToolCard({
           the content panel overlaps the image,
           becomes translucent and uses backdrop blur.
          ===================================================== */}
-     <div
+<div
   className="
     relative
     z-10
@@ -82,11 +82,11 @@ export default function ToolCard({
     rounded-t-[1.75rem]
     border-t
     border-white/50
-    bg-white/35
+    bg-white/20
     px-6
     pb-3
     pt-5
-    backdrop-blur-sm
+    backdrop-blur-md
 
     sm:-mt-28
     sm:px-6
@@ -96,11 +96,11 @@ export default function ToolCard({
     md:mt-0
     md:rounded-t-none
     md:border-t-0
-    md:bg-white
+    md:bg-white/25
     md:px-6
     md:pb-6
     md:pt-7
-    md:backdrop-blur-none
+    md:backdrop-blur-md
   "
 >
         <div className="space-y-2">
