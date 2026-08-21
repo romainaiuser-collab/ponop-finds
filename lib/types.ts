@@ -25,5 +25,6 @@ export interface PublishedTool {
   publishedAt: string | null;
   isMostWanted: boolean;
   collections: string[];
+  createdAt: string | null;
   updatedAt: string | null;
 }
