@@ -46,7 +46,7 @@ export default function ToolCard({
 <button
   type="button"
   onClick={onOpen}
-  className="tool-card group h-fit w-[88vw] flex-shrink-0 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)] sm:w-auto"
+  className="tool-card group !h-auto !min-h-0 w-[82vw] flex-shrink-0 self-start overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)] sm:w-auto"
 >
 
       {/* =====================================================
