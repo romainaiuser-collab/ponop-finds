@@ -40,12 +40,17 @@ export default function ToolCard({
    * =========================================================
    * NORMAL CARD
    *
-   * The card now uses the image itself as its height.
+   * The image defines the height of the card.
    * The editorial content is positioned over the bottom
-   * of the image instead of being added underneath it.
+   * of the image.
    *
-   * This prevents the large empty area previously created
-   * by --card-height.
+   * Mobile:
+   *   width = 88vw
+   *
+   * Laptop / desktop:
+   *   width = 400px
+   *
+   * The image keeps its natural aspect ratio.
    * =========================================================
    */
   const card = (
@@ -53,28 +58,27 @@ export default function ToolCard({
       type="button"
       onClick={onOpen}
       style={{ height: "fit-content" }}
-      className="tool-card group relative h-fit w-[88vw] flex-shrink-0 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)] sm:w-auto"
+      className="tool-card group relative h-fit w-[88vw] flex-shrink-0 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)] sm:w-[400px]"
     >
       {/* =====================================================
           IMAGE
-          The image defines the card height.
+          Natural image ratio — no artificial card height.
          ===================================================== */}
       <div className="relative w-full overflow-hidden bg-[#F7F4F2]">
         {tool.imageUrl ? (
-<img
-  src={tool.imageUrl}
-  alt={tool.altText ?? tool.creativePunchline ?? ""}
-  className="block h-auto w-full object-top transition duration-500 group-hover:scale-105"
-/>
+          <img
+            src={tool.imageUrl}
+            alt={tool.altText ?? tool.creativePunchline ?? ""}
+            className="block h-auto w-full object-top transition duration-500 group-hover:scale-105"
+          />
         ) : (
           <div className="aspect-[2/3] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
         )}
 
         {/* ===================================================
             EDITORIAL OVERLAY
-
-            Positioned directly over the bottom of the image.
-            Translucent so the creative remains visible.
+            Translucent editorial layer over the bottom
+            of the creative.
            =================================================== */}
         <div
           className="
@@ -170,6 +174,7 @@ export default function ToolCard({
 
         {/* ===================================================
             LEFT — FULL PORTRAIT IMAGE
+            Image aligned to the top and never cropped.
            =================================================== */}
         <div className="relative hidden h-full shrink-0 bg-[#F7F4F2] md:flex md:items-start md:justify-start">
           {tool.imageUrl ? (
