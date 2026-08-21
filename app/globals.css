@@ -276,11 +276,28 @@ body {
 
 .tool-card {
   position: relative;
+
+  /*
+   * Width is controlled by the component itself
+   * through Tailwind responsive classes.
+   */
   width: var(--card-width);
-  height: var(--card-height);
-  flex: 0 0 var(--card-width);
-  min-width: var(--card-width);
-  max-width: var(--card-width);
+
+  /*
+   * IMPORTANT:
+   * The card height is now determined naturally
+   * by the Pinterest image.
+   */
+  height: auto;
+
+  /*
+   * Do not force a fixed width through flex/min/max.
+   * This allows the responsive width defined in ToolCard.tsx
+   * to control the card correctly.
+   */
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: none;
 
   overflow: visible;
 
