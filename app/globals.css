@@ -351,8 +351,8 @@ body {
 
 .tool-card:hover {
   transform:
-    translateY(-4px)
-    scale(1.015)
+    translateY(-2px)
+    scale(1.010)
     translateZ(0);
 
   z-index: 4;
