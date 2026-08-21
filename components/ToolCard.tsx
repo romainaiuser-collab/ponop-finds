@@ -58,7 +58,7 @@ export default function ToolCard({
       type="button"
       onClick={onOpen}
       style={{ height: "fit-content" }}
-      className="tool-card group relative h-fit !w-[82vw] max-w-[calc(100vw-2rem)] flex-shrink-0 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)] sm:!w-[360px]"
+      className="tool-card group relative h-fit !w-[76vw] max-w-[calc(100vw-2rem)] flex-shrink-0 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)] sm:!w-[360px]"
     >
       {/* =====================================================
           IMAGE
