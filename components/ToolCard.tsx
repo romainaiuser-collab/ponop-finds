@@ -37,9 +37,9 @@ export default function ToolCard({
   const categories = formatList(tool.categories);
 
   /*
-   * -------------------------------------------------------
+   * ======================================================
    * NORMAL CARD
-   * -------------------------------------------------------
+   * ======================================================
    */
 
   const card = (
@@ -95,23 +95,15 @@ export default function ToolCard({
   }
 
   /*
-   * -------------------------------------------------------
+   * ======================================================
    * EXPANDED MODAL
-   * -------------------------------------------------------
+   * ======================================================
    *
-   * Desktop:
-   * ┌──────────────────────┬──────────────────────────┐
-   * │                      │                          │
-   * │      FULL IMAGE      │  Punchline               │
-   * │                      │  Hook                    │
-   * │                      │  Benefits                │
-   * │                      │  Summary                 │
-   * │                      │  Why we like it          │
-   * │                      │  CTA                     │
-   * │                      │                          │
-   * └──────────────────────┴──────────────────────────┘
+   * LEFT  = complete Pinterest visual
+   * RIGHT = editorial information
    *
-   * The RIGHT column scrolls independently.
+   * The right-hand content scrolls independently.
+   * Keywords are deliberately placed at the bottom.
    */
 
   const expandedCard = (
@@ -128,18 +120,18 @@ export default function ToolCard({
         className="fixed left-1/2 top-1/2 z-[100] flex h-[min(88vh,760px)] w-[min(1100px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white shadow-[0_40px_120px_-30px_rgba(30,20,20,0.42)]"
         role="dialog"
         aria-modal="true"
-        aria-label={tool.title ?? "Tool details"}
+        aria-label={tool.title ?? "Product details"}
         onClick={(event) => event.stopPropagation()}
       >
-        {/* -------------------------------------------------
-            LEFT — FULL PINTEREST IMAGE
-            ------------------------------------------------- */}
-        <div className="relative flex min-h-0 w-full items-center justify-center bg-[#F7F4F2] md:w-1/2">
+        {/* ==================================================
+            LEFT — FULL PRODUCT IMAGE
+            ================================================== */}
+        <div className="relative hidden min-h-0 w-1/2 bg-[#F7F4F2] md:block">
           {tool.imageUrl ? (
             <img
               src={tool.imageUrl}
               alt={tool.altText ?? tool.title ?? ""}
-              className="h-full w-full object-contain"
+              className="h-full w-full object-cover object-center"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]">
@@ -160,27 +152,28 @@ export default function ToolCard({
           </button>
         </div>
 
-        {/* -------------------------------------------------
-            RIGHT — SCROLLABLE CONTENT
-            ------------------------------------------------- */}
-        <div className="flex min-h-0 w-full flex-col md:w-1/2">
+        {/* ==================================================
+            RIGHT — EDITORIAL CONTENT
+            ================================================== */}
+        <div className="flex min-h-0 w-full flex-col bg-white md:w-1/2">
           <div className="min-h-0 flex-1 overflow-y-auto">
             <div className="space-y-8 px-7 pb-10 pt-10 sm:px-10">
-              {/* Categories */}
-              {categories.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => (
-                    <span
-                      key={category}
-                      className="rounded-full border border-[#EBC1C3] bg-[#FDF3F3] px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-[#B96F75]"
-                    >
-                      {category}
-                    </span>
-                  ))}
-                </div>
-              )}
 
-              {/* Punchline + Hook */}
+              {/* Close button for mobile */}
+              <div className="flex justify-end md:hidden">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8E2DF] bg-white text-2xl text-[#171717] shadow-sm transition hover:scale-105"
+                >
+                  ×
+                </button>
+              </div>
+
+              {/* ==================================================
+                  PUNCHLINE + HOOK
+                  ================================================== */}
               <div className="space-y-4">
                 {tool.creativePunchline && (
                   <h2 className="text-3xl font-semibold leading-tight tracking-tight text-[#171717] sm:text-4xl">
@@ -195,7 +188,9 @@ export default function ToolCard({
                 )}
               </div>
 
-              {/* CTA */}
+              {/* ==================================================
+                  CTA
+                  ================================================== */}
               {tool.affiliateLink && (
                 <div>
                   <a
@@ -211,7 +206,24 @@ export default function ToolCard({
                 </div>
               )}
 
-              {/* Key benefits */}
+              {/* ==================================================
+                  SUMMARY
+                  ================================================== */}
+              {tool.summary && (
+                <section className="space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
+                    Why we like it
+                  </p>
+
+                  <p className="text-base leading-7 text-[#514B49]">
+                    {tool.summary}
+                  </p>
+                </section>
+              )}
+
+              {/* ==================================================
+                  KEY BENEFITS
+                  ================================================== */}
               {keyBenefits.length > 0 && (
                 <section className="space-y-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
@@ -235,46 +247,31 @@ export default function ToolCard({
                 </section>
               )}
 
-              {/* Summary */}
-              {tool.summary && (
-                <section className="space-y-2">
+              {/* ==================================================
+                  KEYWORDS — ALWAYS AT THE BOTTOM
+                  ================================================== */}
+              {categories.length > 0 && (
+                <section className="space-y-3 border-t border-[#E8E2DF] pt-6">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
-                    The short version
+                    Good to know
                   </p>
 
-                  <p className="text-base leading-7 text-[#514B49]">
-                    {tool.summary}
-                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {categories.map((category) => (
+                      <span
+                        key={category}
+                        className="rounded-full border border-[#EBC1C3] bg-[#FDF3F3] px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-[#B96F75]"
+                      >
+                        {category}
+                      </span>
+                    ))}
+                  </div>
                 </section>
               )}
 
-              {/* Editorial story */}
-              {tool.editorialStory && (
-                <section className="space-y-2">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
-                    Why we like it
-                  </p>
-
-                  <p className="text-base leading-7 text-[#514B49]">
-                    {tool.editorialStory}
-                  </p>
-                </section>
-              )}
-
-              {/* Description — deliberately last */}
-              {tool.description && (
-                <section className="space-y-2">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
-                    More about it
-                  </p>
-
-                  <p className="text-sm leading-6 text-[#68615F]">
-                    {tool.description}
-                  </p>
-                </section>
-              )}
-
-              {/* Footer */}
+              {/* ==================================================
+                  FOOTER
+                  ================================================== */}
               <div className="flex flex-col gap-4 border-t border-[#E8E2DF] pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-[0.2em] text-[#A39A97]">
