@@ -40,6 +40,35 @@ function hasCollection(
   );
 }
 
+/*
+ * Sort tools by creation date:
+ * newest first.
+ *
+ * Tools without a createdAt date are placed at the end.
+ */
+function sortByNewest(
+  tools: PublishedTool[]
+): PublishedTool[] {
+  return [...tools].sort((a, b) => {
+    if (!a.createdAt && !b.createdAt) {
+      return 0;
+    }
+
+    if (!a.createdAt) {
+      return 1;
+    }
+
+    if (!b.createdAt) {
+      return -1;
+    }
+
+    return (
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+    );
+  });
+}
+
 export default function ToolFeed({ tools }: ToolFeedProps) {
   const railRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [arrowState, setArrowState] = useState<
@@ -129,10 +158,15 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
          *
          * Editorial selection controlled directly
          * from the database.
+         *
+         * Then sorted by creation date,
+         * newest first.
          */
         if (section.id === "wanted") {
-          sectionTools = tools.filter(
-            (tool) => tool.isMostWanted
+          sectionTools = sortByNewest(
+            tools.filter(
+              (tool) => tool.isMostWanted
+            )
           );
 
         /*
@@ -140,10 +174,18 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
          *
          * Products whose collections array contains:
          * "back_to_school"
+         *
+         * Then sorted by creation date,
+         * newest first.
          */
         } else if (section.id === "school") {
-          sectionTools = tools.filter((tool) =>
-            hasCollection(tool, "back_to_school")
+          sectionTools = sortByNewest(
+            tools.filter((tool) =>
+              hasCollection(
+                tool,
+                "back_to_school"
+              )
+            )
           );
 
         /*
@@ -151,17 +193,25 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
          *
          * Products whose collections array contains:
          * "smart_home"
+         *
+         * Then sorted by creation date,
+         * newest first.
          */
         } else if (section.id === "home") {
-          sectionTools = tools.filter((tool) =>
-            hasCollection(tool, "smart_home")
+          sectionTools = sortByNewest(
+            tools.filter((tool) =>
+              hasCollection(
+                tool,
+                "smart_home"
+              )
+            )
           );
 
         /*
          * Fallback
          */
         } else {
-          sectionTools = tools;
+          sectionTools = sortByNewest(tools);
         }
 
         return (
@@ -193,7 +243,10 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                     arrowState[section.id]?.left ?? true
                   }
                   onClick={() =>
-                    scrollRail(section.id, -1)
+                    scrollRail(
+                      section.id,
+                      -1
+                    )
                   }
                 >
                   <span aria-hidden="true">
@@ -204,12 +257,15 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                 {/* Cards */}
                 <div
                   ref={(node) => {
-                    railRefs.current[section.id] = node;
+                    railRefs.current[section.id] =
+                      node;
                   }}
                   data-rail-id={section.id}
                   className="rail-track flex gap-6 overflow-x-auto overflow-y-visible pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
                   onScroll={() =>
-                    updateRailArrowState(section.id)
+                    updateRailArrowState(
+                      section.id
+                    )
                   }
                 >
                   {sectionTools.map((tool) => (
@@ -220,7 +276,9 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                         expandedToolId === tool.id
                       }
                       onOpen={() =>
-                        setExpandedToolId(tool.id)
+                        setExpandedToolId(
+                          tool.id
+                        )
                       }
                       onClose={() =>
                         setExpandedToolId(null)
@@ -239,7 +297,10 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                     false
                   }
                   onClick={() =>
-                    scrollRail(section.id, 1)
+                    scrollRail(
+                      section.id,
+                      1
+                    )
                   }
                 >
                   <span aria-hidden="true">
