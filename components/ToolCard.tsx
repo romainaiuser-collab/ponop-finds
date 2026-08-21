@@ -51,7 +51,7 @@ export default function ToolCard({
           <img
             src={tool.imageUrl}
             alt={tool.altText ?? tool.creativePunchline ?? ""}
-            className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105"
+            className="aspect-[4/3] w-full object-cover object-top transition duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="aspect-[16/9] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
