@@ -262,9 +262,6 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                   }}
                   data-rail-id={section.id}
                   className="rail-track flex gap-6 overflow-x-auto overflow-y-visible pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
-                  style={{
-                    touchAction: "auto",
-                  }}
                   onScroll={() =>
                     updateRailArrowState(
                       section.id
