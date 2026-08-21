@@ -207,7 +207,7 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                     railRefs.current[section.id] = node;
                   }}
                   data-rail-id={section.id}
-                  className="rail-track flex items-center gap-6 overflow-x-auto overflow-y-visible py-6 pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
+                  className="rail-track flex gap-6 overflow-x-auto overflow-y-visible pt-3 pb-6 pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
                   onScroll={() =>
                     updateRailArrowState(section.id)
                   }
