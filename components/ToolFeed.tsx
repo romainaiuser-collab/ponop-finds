@@ -71,10 +71,25 @@ function sortByNewest(
 
 export default function ToolFeed({ tools }: ToolFeedProps) {
   const railRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const touchStartRefs = useRef<
+    Record<
+      string,
+      {
+        x: number;
+        y: number;
+        scrollLeft: number;
+        direction: "undecided" | "horizontal" | "vertical";
+      } | null
+    >
+  >({});
+
   const [arrowState, setArrowState] = useState<
     Record<string, { left: boolean; right: boolean }>
   >({});
-  const [expandedToolId, setExpandedToolId] = useState<string | null>(null);
+
+  const [expandedToolId, setExpandedToolId] =
+    useState<string | null>(null);
 
   const updateRailArrowState = (railId: string) => {
     const rail = railRefs.current[railId];
@@ -89,6 +104,7 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
     );
 
     const leftDisabled = rail.scrollLeft <= 4;
+
     const rightDisabled =
       rail.scrollLeft >= maxScrollLeft - 4;
 
@@ -136,6 +152,120 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
       left: direction * (cardWidth + gap),
       behavior: "smooth",
     });
+
+    requestAnimationFrame(() => {
+      updateRailArrowState(railId);
+    });
+  };
+
+  /*
+   * Touch gesture handling
+   *
+   * We deliberately wait until the gesture has a clear direction.
+   *
+   * Vertical gesture:
+   * → do nothing
+   * → browser remains responsible for page scrolling.
+   *
+   * Horizontal gesture:
+   * → prevent the browser from interpreting it as page movement
+   * → manually move the rail.
+   */
+  const handleTouchStart = (
+    railId: string,
+    event: React.TouchEvent<HTMLDivElement>
+  ) => {
+    const touch = event.touches[0];
+
+    if (!touch) {
+      return;
+    }
+
+    const rail = railRefs.current[railId];
+
+    if (!rail) {
+      return;
+    }
+
+    touchStartRefs.current[railId] = {
+      x: touch.clientX,
+      y: touch.clientY,
+      scrollLeft: rail.scrollLeft,
+      direction: "undecided",
+    };
+  };
+
+  const handleTouchMove = (
+    railId: string,
+    event: React.TouchEvent<HTMLDivElement>
+  ) => {
+    const start = touchStartRefs.current[railId];
+
+    if (!start) {
+      return;
+    }
+
+    const touch = event.touches[0];
+
+    if (!touch) {
+      return;
+    }
+
+    const rail = railRefs.current[railId];
+
+    if (!rail) {
+      return;
+    }
+
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+
+    /*
+     * Ignore tiny movements to avoid accidental direction locking.
+     */
+    if (
+      start.direction === "undecided" &&
+      Math.abs(deltaX) < 8 &&
+      Math.abs(deltaY) < 8
+    ) {
+      return;
+    }
+
+    /*
+     * Decide the gesture direction once.
+     */
+    if (start.direction === "undecided") {
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        start.direction = "vertical";
+      } else {
+        start.direction = "horizontal";
+      }
+    }
+
+    /*
+     * Vertical gesture:
+     * leave everything to the browser.
+     */
+    if (start.direction === "vertical") {
+      return;
+    }
+
+    /*
+     * Horizontal gesture:
+     * take control of the rail.
+     */
+    event.preventDefault();
+
+    rail.scrollLeft =
+      start.scrollLeft - deltaX;
+
+    updateRailArrowState(railId);
+  };
+
+  const handleTouchEnd = (
+    railId: string
+  ) => {
+    touchStartRefs.current[railId] = null;
 
     requestAnimationFrame(() => {
       updateRailArrowState(railId);
@@ -262,6 +392,28 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                   }}
                   data-rail-id={section.id}
                   className="rail-track flex gap-6 overflow-x-auto overflow-y-visible pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
+                  onTouchStart={(event) =>
+                    handleTouchStart(
+                      section.id,
+                      event
+                    )
+                  }
+                  onTouchMove={(event) =>
+                    handleTouchMove(
+                      section.id,
+                      event
+                    )
+                  }
+                  onTouchEnd={() =>
+                    handleTouchEnd(
+                      section.id
+                    )
+                  }
+                  onTouchCancel={() =>
+                    handleTouchEnd(
+                      section.id
+                    )
+                  }
                   onScroll={() =>
                     updateRailArrowState(
                       section.id
