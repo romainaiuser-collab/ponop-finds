@@ -162,11 +162,14 @@ body {
 }
 
 .rail-track {
-  min-height: calc(var(--card-height) + 3rem);
+  min-height: calc(var(--card-height) + 4rem);
+
   align-items: center;
+
   padding-inline: var(--page-gutter);
-  padding-top: 0;
-  padding-bottom: 0.5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
   overflow-x: auto;
   overflow-y: visible;
   overscroll-behavior-x: contain;
