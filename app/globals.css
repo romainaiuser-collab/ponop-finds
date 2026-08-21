@@ -13,8 +13,8 @@
   --brand-muted: #68615f;
 
   --page-gutter: clamp(40px, 10vw, 160px);
-  --card-width: 22rem;
-  --card-height: 27rem;
+  --card-width: 26.4rem;
+  --card-height: 32.4rem;
 }
 
 @theme inline {
