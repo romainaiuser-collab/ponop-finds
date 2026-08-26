@@ -9,8 +9,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Ponop",
-  description: "Ponop — Search less. Build more.",
+  title: "Ponop Finds",
+  description:
+    "Smart finds for everyday life. Discover products worth knowing.",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({
