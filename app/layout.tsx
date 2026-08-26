@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "Smart finds for everyday life. Discover products worth knowing.",
   icons: {
-    icon: "/icon.png",
+    icon: "/images/logo-p-rose.png",
   },
 };
 
