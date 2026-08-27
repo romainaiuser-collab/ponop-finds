@@ -121,35 +121,31 @@ export default function ToolCard({
                 </p>
               )}
 
-              {/* CTA */}
-              <p className="pt-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
-                Click to explore
-              </p>
+              {/* CTAs */}
+              <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                {/* Open card */}
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
+                  Click to explore
+                </p>
+
+                {/* Direct product link */}
+                {tool.affiliateLink && (
+                  <a
+                    href={tool.affiliateLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(event) => event.stopPropagation()}
+                    className="inline-flex shrink-0 items-center justify-center self-start rounded-full bg-[#F2B5B8] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#171717] shadow-[0_8px_24px_-8px_rgba(217,143,148,0.45)] transition hover:scale-[1.02] hover:bg-[#EFA9AD] sm:self-auto"
+                  >
+                    View product
+                    <span className="ml-2">→</span>
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </button>
-
-      {/* =====================================================
-          DIRECT PRODUCT LINK
-          
-          This sits above the card button so it remains a
-          separate interactive element. Clicking it opens
-          the affiliate/product URL directly instead of
-          opening the product modal.
-         ===================================================== */}
-      {tool.affiliateLink && (
-        <a
-          href={tool.affiliateLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(event) => event.stopPropagation()}
-          className="absolute bottom-5 right-5 z-20 inline-flex items-center justify-center rounded-full bg-[#F2B5B8] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#171717] shadow-[0_8px_24px_-8px_rgba(217,143,148,0.45)] transition hover:scale-[1.02] hover:bg-[#EFA9AD] sm:bottom-6 sm:right-6"
-        >
-          View product
-          <span className="ml-2">→</span>
-        </a>
-      )}
     </div>
   );
 
