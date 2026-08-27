@@ -59,74 +59,98 @@ export default function ToolCard({
    * page scrolling behavior.
    * =========================================================
    */
+
   const card = (
-    <button
-      type="button"
-      onClick={onOpen}
-      style={{
-        height: "fit-content",
-      }}
-      className="tool-card group/card relative h-fit !w-[76vw] max-w-[calc(100vw-2rem)] flex-shrink-0 overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)] sm:!w-[360px]"
-    >
-      {/* =====================================================
-          IMAGE
-          Natural image ratio — no artificial card height.
-         ===================================================== */}
-      <div className="relative w-full overflow-hidden bg-[#F7F4F2]">
-        {tool.imageUrl ? (
-          <img
-            src={tool.imageUrl}
-            alt={tool.altText ?? tool.creativePunchline ?? ""}
-            className="block h-auto w-full object-top transition duration-500 group-hover/card:scale-105"
-          />
-        ) : (
-          <div className="aspect-[2/3] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
-        )}
+    <div className="relative !w-[76vw] max-w-[calc(100vw-2rem)] flex-shrink-0 sm:!w-[360px]">
+      <button
+        type="button"
+        onClick={onOpen}
+        style={{
+          height: "fit-content",
+        }}
+        className="tool-card group/card relative h-fit !w-full overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)]"
+      >
+        {/* =====================================================
+            IMAGE
+            Natural image ratio — no artificial card height.
+           ===================================================== */}
+        <div className="relative w-full overflow-hidden bg-[#F7F4F2]">
+          {tool.imageUrl ? (
+            <img
+              src={tool.imageUrl}
+              alt={tool.altText ?? tool.creativePunchline ?? ""}
+              className="block h-auto w-full object-top transition duration-500 group-hover/card:scale-105"
+            />
+          ) : (
+            <div className="aspect-[2/3] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
+          )}
 
-        {/* ===================================================
-            EDITORIAL OVERLAY
-            Translucent editorial layer over the bottom
-            of the creative.
-           =================================================== */}
-        <div
-          className="
-            absolute
-            inset-x-0
-            bottom-0
-            z-10
-            bg-white/72
-            px-5
-            pb-5
-            pt-5
-            backdrop-blur-[5px]
-            sm:px-6
-            sm:pb-6
-            sm:pt-5
-          "
-        >
-          <div className="space-y-3">
-            {/* Creative punchline */}
-            {tool.creativePunchline && (
-              <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#171717]">
-                {tool.creativePunchline}
-              </h3>
-            )}
+          {/* ===================================================
+              EDITORIAL OVERLAY
+              Translucent editorial layer over the bottom
+              of the creative.
+             =================================================== */}
+          <div
+            className="
+              absolute
+              inset-x-0
+              bottom-0
+              z-10
+              bg-white/72
+              px-5
+              pb-5
+              pt-5
+              backdrop-blur-[5px]
+              sm:px-6
+              sm:pb-6
+              sm:pt-5
+            "
+          >
+            <div className="space-y-3">
+              {/* Creative punchline */}
+              {tool.creativePunchline && (
+                <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#171717]">
+                  {tool.creativePunchline}
+                </h3>
+              )}
 
-            {/* Hook */}
-            {tool.hook && (
-              <p className="text-sm leading-6 text-[#68615F]">
-                {tool.hook}
+              {/* Hook */}
+              {tool.hook && (
+                <p className="text-sm leading-6 text-[#68615F]">
+                  {tool.hook}
+                </p>
+              )}
+
+              {/* CTA */}
+              <p className="pt-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
+                Click to explore
               </p>
-            )}
-
-            {/* CTA */}
-            <p className="pt-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
-              Click to explore
-            </p>
+            </div>
           </div>
         </div>
-      </div>
-    </button>
+      </button>
+
+      {/* =====================================================
+          DIRECT PRODUCT LINK
+          
+          This sits above the card button so it remains a
+          separate interactive element. Clicking it opens
+          the affiliate/product URL directly instead of
+          opening the product modal.
+         ===================================================== */}
+      {tool.affiliateLink && (
+        <a
+          href={tool.affiliateLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(event) => event.stopPropagation()}
+          className="absolute bottom-5 right-5 z-20 inline-flex items-center justify-center rounded-full bg-[#F2B5B8] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#171717] shadow-[0_8px_24px_-8px_rgba(217,143,148,0.45)] transition hover:scale-[1.02] hover:bg-[#EFA9AD] sm:bottom-6 sm:right-6"
+        >
+          View product
+          <span className="ml-2">→</span>
+        </a>
+      )}
+    </div>
   );
 
   /*
