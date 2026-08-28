@@ -20,6 +20,11 @@ const sections = [
     label: "💡 Smart Home Essentials",
     subtitle: "Clever finds to make home life easier.",
   },
+    {
+    id: "halloween",
+    label: "🎃 Halloween Finds",
+    subtitle: "Spooky finds for a frightfully good season.",
+  },
 ];
 
 interface ToolFeedProps {
@@ -335,6 +340,22 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
                 "smart_home"
               )
             )
+          );
+
+        /*
+         * 🎃 Halloween Finds
+         *
+         * Products whose collections array contains:
+         * "halloween"
+         *
+         * Then sorted by creation date,
+         * newest first.
+         */
+          } else if (section.id === "halloween") {
+            sectionTools = sortByNewest(
+            tools.filter((tool) =>
+            hasCollection(tool, "halloween")
+                        )
           );
 
         /*
