@@ -103,15 +103,8 @@ export default function KitCard({
             <div className="space-y-3">
               {/* Kit title / punchline */}
               <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#171717]">
-                {kit.creativePunchline ?? kit.title ?? kit.name}
+                {kit.title ?? kit.name}
               </h3>
-
-              {/* Hook */}
-              {kit.hook && (
-                <p className="text-sm leading-6 text-[#68615F]">
-                  {kit.hook}
-                </p>
-              )}
 
               {/* CTA */}
               <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
