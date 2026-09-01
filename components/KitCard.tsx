@@ -56,7 +56,7 @@ export default function KitCard({
    */
 
   const card = (
-    <div className="relative !w-[76vw] max-w-[calc(100vw-2rem)] flex-shrink-0 sm:!w-[360px]">
+    <div className="relative w-full min-w-0">
       <button
         type="button"
         onClick={onOpen}
