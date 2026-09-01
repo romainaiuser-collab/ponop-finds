@@ -267,21 +267,6 @@ export default function KitCard({
               )}
 
               {/* =================================================
-                  EDITORIAL STORY
-                 ================================================= */}
-              {kit.editorialStory && (
-                <section className="space-y-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
-                    The idea
-                  </p>
-
-                  <p className="text-base leading-7 text-[#514B49]">
-                    {kit.editorialStory}
-                  </p>
-                </section>
-              )}
-
-              {/* =================================================
                   PRODUCTS
                   One affiliate CTA per product.
                  ================================================= */}
@@ -340,6 +325,21 @@ export default function KitCard({
                     </div>
                   </section>
                 )}
+              
+              {/* =================================================
+                  EDITORIAL STORY
+                 ================================================= */}
+              {kit.editorialStory && (
+                <section className="space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D98F94]">
+                    The idea
+                  </p>
+
+                  <p className="text-base leading-7 text-[#514B49]">
+                    {kit.editorialStory}
+                  </p>
+                </section>
+              )}
 
               {/* =================================================
                   KEY BENEFITS
