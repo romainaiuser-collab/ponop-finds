@@ -1,100 +1,396 @@
+import { supabase } from "./supabase";
 import type { PublishedKit } from "./types";
 
+const CLOUDFRONT_DOMAIN =
+  "https://d4m1kl32en8mq.cloudfront.net";
+
+function getPublicImageUrl(
+  imageUrl: string | null
+): string | null {
+  if (!imageUrl) {
+    return null;
+  }
+
+  if (
+    imageUrl.startsWith(
+      "s3://ponop-ai-assets/"
+    )
+  ) {
+    const path = imageUrl.replace(
+      "s3://ponop-ai-assets/",
+      ""
+    );
+
+    return `${CLOUDFRONT_DOMAIN}/${path}`;
+  }
+
+  return imageUrl;
+}
+
+function toArray(value: unknown): unknown[] {
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  return [];
+}
+
 /*
- * Temporary mock data for Kits.
+ * Load Kits that are ready for publication.
  *
- * This will be replaced by the Supabase query once
- * the Kits data layer is connected.
+ * Only Kits with:
+ *
+ * status = "content and image generated"
+ *
+ * are exposed publicly.
  */
+export async function getPublishedKits(): Promise<
+  PublishedKit[]
+> {
+  /*
+   * --------------------------------------------------
+   * 1. KITS
+   * --------------------------------------------------
+   */
 
-const mockKits: PublishedKit[] = [
-  {
-    id: "demo-halloween-kit",
-    name: "Halloween Night In",
-    slug: "halloween-night-in",
-    description:
-      "A few carefully picked finds to create the perfect Halloween atmosphere at home.",
+  const {
+    data: kits,
+    error: kitsError,
+  } = await supabase
+    .from("kits")
+    .select("*")
+    .eq(
+      "status",
+      "content and image generated"
+    )
+    .order("created_at", {
+      ascending: false,
+    });
 
-    collection: "halloween",
-    theme: "Halloween",
-    audience: "Home lovers",
-    useCase: "Halloween decoration",
-    angle: "CORE_VALUE",
+  if (kitsError) {
+    throw new Error(
+      `Supabase kits error: ${kitsError.message}`
+    );
+  }
 
-    title: "Halloween Night In",
-    hook: "Everything you need for a properly spooky night at home.",
-    summary:
-      "A curated selection of simple Halloween finds that work beautifully together.",
-    editorialStory:
-      "We picked these products because they create a cohesive Halloween atmosphere without requiring a huge decorating effort.",
+  if (!kits || kits.length === 0) {
+    return [];
+  }
 
-    keyBenefits: [],
-    recommendedFor: [],
-    categories: ["Halloween", "Home"],
-    idealFor: "Anyone who wants an easy Halloween setup.",
-    notIdealFor: null,
-    creativePunchline: "A little spooky. A lot more fun.",
+  const kitIds = kits.map(
+    (kit) => kit.id
+  );
+
+  /*
+   * --------------------------------------------------
+   * 2. KIT CONTENTS
+   * --------------------------------------------------
+   *
+   * One generated content record is expected
+   * for each Kit.
+   */
+
+  const {
+    data: contents,
+    error: contentsError,
+  } = await supabase
+    .from("kits_contents")
+    .select("*")
+    .in("kit_id", kitIds)
+    .order("created_at", {
+      ascending: false,
+    });
+
+  if (contentsError) {
+    throw new Error(
+      `Supabase kits_contents error: ${contentsError.message}`
+    );
+  }
+
+  /*
+   * --------------------------------------------------
+   * 3. KIT PUBLICATIONS
+   * --------------------------------------------------
+   *
+   * The generated Kit image is stored in
+   * kits_publications.image_url.
+   */
+
+  const {
+    data: publications,
+    error: publicationsError,
+  } = await supabase
+    .from("kits_publications")
+    .select("*")
+    .in("kit_id", kitIds)
+    .not("image_url", "is", null)
+    .order("created_at", {
+      ascending: false,
+    });
+
+  if (publicationsError) {
+    throw new Error(
+      `Supabase kits_publications error: ${publicationsError.message}`
+    );
+  }
+
+  /*
+   * --------------------------------------------------
+   * 4. KIT ITEMS
+   * --------------------------------------------------
+   *
+   * We retrieve the items first, then retrieve their
+   * associated opportunities separately.
+   */
+
+  const {
+    data: kitItems,
+    error: kitItemsError,
+  } = await supabase
+    .from("kits_items")
+    .select("*")
+    .in("kit_id", kitIds)
+    .order("position", {
+      ascending: true,
+    });
+
+  if (kitItemsError) {
+    throw new Error(
+      `Supabase kits_items error: ${kitItemsError.message}`
+    );
+  }
+
+  /*
+   * --------------------------------------------------
+   * 5. OPPORTUNITIES
+   * --------------------------------------------------
+   */
+
+  const opportunityIds = [
+    ...new Set(
+      (kitItems ?? [])
+        .map(
+          (item) => item.opportunity_id
+        )
+        .filter(Boolean)
+    ),
+  ];
+
+  let opportunities: any[] = [];
+
+  if (opportunityIds.length > 0) {
+    const {
+      data,
+      error,
+    } = await supabase
+      .from("opportunities")
+      .select("*")
+      .in("id", opportunityIds);
+
+    if (error) {
+      throw new Error(
+        `Supabase opportunities error: ${error.message}`
+      );
+    }
+
+    opportunities = data ?? [];
+  }
+
+  /*
+   * --------------------------------------------------
+   * 6. BUILD PUBLIC KIT OBJECTS
+   * --------------------------------------------------
+   */
+
+  return kits.map((kit) => {
+    /*
+     * Latest generated content for this Kit.
+     */
+    const content =
+      (contents ?? []).find(
+        (item) =>
+          item.kit_id === kit.id
+      ) ?? null;
 
     /*
-     * Temporary placeholder image.
-     *
-     * We will replace this with the generated Kit image
-     * coming from kits_publications.image_url.
+     * Latest publication containing an image.
      */
-    imageUrl:
-      "https://images.unsplash.com/photo-1509557965878-b88c97052f0e?auto=format&fit=crop&w=1200&q=85",
+    const publication =
+      (publications ?? []).find(
+        (item) =>
+          item.kit_id === kit.id
+      ) ?? null;
 
-    altText: "Halloween themed home decoration",
+    /*
+     * Items belonging to this Kit.
+     */
+    const items =
+      (kitItems ?? [])
+        .filter(
+          (item) =>
+            item.kit_id === kit.id
+        )
+        .sort(
+          (a, b) =>
+            (a.position ?? 999) -
+            (b.position ?? 999)
+        );
 
-    products: [
-      {
-        id: "demo-product-1",
-        title: "Halloween Product One",
-        affiliateLink: "#",
-        imageUrl: null,
-        price: null,
-        currency: null,
-        position: 1,
-        role: "Atmosphere",
-        reason: "Sets the mood.",
-      },
-      {
-        id: "demo-product-2",
-        title: "Halloween Product Two",
-        affiliateLink: "#",
-        imageUrl: null,
-        price: null,
-        currency: null,
-        position: 2,
-        role: "Decoration",
-        reason: "Adds the finishing touch.",
-      },
-      {
-        id: "demo-product-3",
-        title: "Halloween Product Three",
-        affiliateLink: "#",
-        imageUrl: null,
-        price: null,
-        currency: null,
-        position: 3,
-        role: "Experience",
-        reason: "Makes the evening more memorable.",
-      },
-    ],
+    /*
+     * Convert Kit items into public products.
+     */
+    const products = items.map(
+      (item) => {
+        const opportunity =
+          opportunities.find(
+            (opportunity) =>
+              opportunity.id ===
+              item.opportunity_id
+          );
 
-    publishedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+        return {
+          id:
+            opportunity?.id ??
+            item.id,
 
-/*
- * Temporary public Kits loader.
- *
- * Later this function will query Supabase and return only:
- *
- * kits.status = "content and image generated"
- */
-export async function getPublishedKits(): Promise<PublishedKit[]> {
-  return mockKits;
+          title:
+            opportunity?.title ??
+            null,
+
+          affiliateLink:
+            opportunity?.affiliate_url ??
+            null,
+
+          imageUrl:
+            getPublicImageUrl(
+              opportunity?.image_url ??
+                null
+            ),
+
+          price:
+            opportunity?.price ??
+            null,
+
+          currency:
+            opportunity?.currency ??
+            null,
+
+          position:
+            item.position ??
+            null,
+
+          role:
+            item.role ??
+            null,
+
+          reason:
+            item.reason ??
+            null,
+        };
+      }
+    );
+
+    return {
+      id: kit.id,
+
+      name: kit.name ?? null,
+
+      slug: kit.slug ?? null,
+
+      description:
+        kit.description ?? null,
+
+      collection:
+        kit.collection ?? null,
+
+      theme:
+        kit.theme ?? null,
+
+      audience:
+        kit.audience ?? null,
+
+      useCase:
+        kit.use_case ?? null,
+
+      angle:
+        kit.angle ?? null,
+
+      /*
+       * Editorial content
+       */
+      title:
+        content?.title ??
+        kit.name ??
+        null,
+
+      hook:
+        content?.hook ??
+        null,
+
+      summary:
+        content?.summary ??
+        null,
+
+      editorialStory:
+        content?.editorial_story ??
+        null,
+
+      keyBenefits:
+        toArray(
+          content?.key_benefits
+        ),
+
+      recommendedFor:
+        toArray(
+          content?.recommended_for
+        ),
+
+      categories:
+        toArray(
+          content?.categories
+        ),
+
+      idealFor:
+        content?.ideal_for ??
+        null,
+
+      notIdealFor:
+        content?.not_ideal_for ??
+        null,
+
+      creativePunchline:
+        content?.creative_punchline ??
+        null,
+
+      /*
+       * Generated Kit image
+       */
+      imageUrl:
+        getPublicImageUrl(
+          publication?.image_url ??
+            null
+        ),
+
+      altText:
+        content?.alt_text ??
+        null,
+
+      /*
+       * Products contained in the Kit
+       */
+      products,
+
+      publishedAt:
+        publication?.published_at ??
+        null,
+
+      createdAt:
+        kit.created_at ??
+        null,
+
+      updatedAt:
+        kit.updated_at ??
+        null,
+    };
+  });
 }
