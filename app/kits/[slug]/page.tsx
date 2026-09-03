@@ -16,7 +16,8 @@ export async function generateMetadata({
 }: KitPageProps): Promise<Metadata> {
   const { slug } = await params;
 
-  const kit = await getPublishedKitBySlug(slug);
+  const kit =
+    await getPublishedKitBySlug(slug);
 
   if (!kit) {
     return {
@@ -94,9 +95,7 @@ export default async function KitPage({
 
         {/* Main layout */}
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)] lg:items-start">
-          {/* =====================================================
-              LEFT COLUMN
-              ===================================================== */}
+          {/* LEFT COLUMN */}
           <div className="min-w-0">
             {/* Kit image */}
             <div className="overflow-hidden rounded-[2rem] bg-[#f3efed]">
@@ -134,7 +133,9 @@ export default async function KitPage({
 
                   {kit.editorialStory && (
                     <div className="mt-5 whitespace-pre-line text-base leading-8 text-[#68615f]">
-                      {kit.editorialStory}
+                      {
+                        kit.editorialStory
+                      }
                     </div>
                   )}
 
@@ -156,7 +157,9 @@ export default async function KitPage({
                               index: number
                             ) => (
                               <li
-                                key={index}
+                                key={
+                                  index
+                                }
                                 className="flex gap-3"
                               >
                                 <span className="shrink-0 text-[#d98f94]">
@@ -192,7 +195,9 @@ export default async function KitPage({
                               (
                                 item: unknown
                               ) =>
-                                String(item)
+                                String(
+                                  item
+                                )
                             )
                             .join(" · ")}
                         </p>
@@ -203,9 +208,7 @@ export default async function KitPage({
             )}
           </div>
 
-          {/* =====================================================
-              RIGHT COLUMN
-              ===================================================== */}
+          {/* RIGHT COLUMN */}
           <KitShopColumn kit={kit} />
         </div>
       </div>
