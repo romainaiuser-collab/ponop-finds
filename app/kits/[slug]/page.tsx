@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import KitShopColumn from "../../../components/KitShopColumn";
 import { getPublishedKitBySlug } from "../../../lib/kits";
 
 interface KitPageProps {
@@ -30,7 +31,10 @@ export async function generateMetadata({
       kit.summary ??
       "A curated collection of products from Ponop Finds.",
     openGraph: {
-      title: kit.title ?? kit.name ?? "Ponop Finds",
+      title:
+        kit.title ??
+        kit.name ??
+        "Ponop Finds",
       description:
         kit.description ??
         kit.summary ??
@@ -56,7 +60,8 @@ export default async function KitPage({
 }: KitPageProps) {
   const { slug } = await params;
 
-  const kit = await getPublishedKitBySlug(slug);
+  const kit =
+    await getPublishedKitBySlug(slug);
 
   if (!kit) {
     notFound();
@@ -79,16 +84,19 @@ export default async function KitPage({
             href="/kits"
             className="inline-flex items-center gap-2 text-sm font-medium text-[#68615f] transition-colors hover:text-[#d98f94]"
           >
-            <span aria-hidden="true">←</span>
+            <span aria-hidden="true">
+              ←
+            </span>
+
             <span>All Kits</span>
           </Link>
         </div>
 
         {/* Main layout */}
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)] lg:items-start">
-          {/* =========================================================
+          {/* =====================================================
               LEFT COLUMN
-              ========================================================= */}
+              ===================================================== */}
           <div className="min-w-0">
             {/* Kit image */}
             <div className="overflow-hidden rounded-[2rem] bg-[#f3efed]">
@@ -131,8 +139,11 @@ export default async function KitPage({
                   )}
 
                   {/* Why it works */}
-                  {Array.isArray(kit.keyBenefits) &&
-                    kit.keyBenefits.length > 0 && (
+                  {Array.isArray(
+                    kit.keyBenefits
+                  ) &&
+                    kit.keyBenefits.length >
+                      0 && (
                       <div className="mt-10">
                         <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[#d98f94]">
                           Why it works
@@ -153,7 +164,9 @@ export default async function KitPage({
                                 </span>
 
                                 <span>
-                                  {String(benefit)}
+                                  {String(
+                                    benefit
+                                  )}
                                 </span>
                               </li>
                             )
@@ -163,8 +176,11 @@ export default async function KitPage({
                     )}
 
                   {/* Recommended for */}
-                  {Array.isArray(kit.recommendedFor) &&
-                    kit.recommendedFor.length > 0 && (
+                  {Array.isArray(
+                    kit.recommendedFor
+                  ) &&
+                    kit.recommendedFor.length >
+                      0 && (
                       <div className="mt-10">
                         <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[#d98f94]">
                           Recommended for
@@ -172,8 +188,11 @@ export default async function KitPage({
 
                         <p className="mt-4 text-base leading-7 text-[#68615f]">
                           {kit.recommendedFor
-                            .map((item: unknown) =>
-                              String(item)
+                            .map(
+                              (
+                                item: unknown
+                              ) =>
+                                String(item)
                             )
                             .join(" · ")}
                         </p>
@@ -184,83 +203,10 @@ export default async function KitPage({
             )}
           </div>
 
-          {/* =========================================================
+          {/* =====================================================
               RIGHT COLUMN
-              ========================================================= */}
-          <div className="min-w-0 lg:sticky lg:top-8 lg:self-start">
-            {/* Kit introduction */}
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#d98f94]">
-                ✨ Curated Kit
-              </p>
-
-              <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-                {kit.title ?? kit.name}
-              </h1>
-
-              {kit.description && (
-                <p className="mt-5 text-lg leading-8 text-[#68615f]">
-                  {kit.description}
-                </p>
-              )}
-            </div>
-
-            {/* Shop the Kit */}
-            {kit.products.length > 0 && (
-              <section className="mt-10">
-                <h2 className="text-xl font-semibold">
-                  Shop the Kit
-                </h2>
-
-                <div className="mt-5 space-y-3">
-                  {kit.products.map((product) => (
-                    <div
-                      key={product.id}
-                      className="flex items-center gap-4 rounded-2xl border border-[#e8e2df] bg-white p-4"
-                    >
-                      {/* Product image */}
-                      {product.imageUrl ? (
-                        <img
-                          src={product.imageUrl}
-                          alt={product.title ?? ""}
-                          className="h-16 w-16 shrink-0 rounded-xl object-cover"
-                        />
-                      ) : (
-                        <div className="h-16 w-16 shrink-0 rounded-xl bg-[#f3efed]" />
-                      )}
-
-                      {/* Product content */}
-                      <div className="min-w-0 flex-1">
-                        <p className="font-medium leading-6 text-[#171717]">
-                          {product.title ??
-                            product.reason ??
-                            "Selected product"}
-                        </p>
-
-                        {product.reason && (
-                          <p className="mt-1 text-sm leading-5 text-[#68615f]">
-                            {product.reason}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* CTA */}
-                      {product.affiliateLink && (
-                        <a
-                          href={product.affiliateLink}
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
-                          className="shrink-0 rounded-full bg-[#f2b5b8] px-4 py-2 text-sm font-semibold text-[#171717] transition hover:bg-[#d98f94]"
-                        >
-                          Shop
-                        </a>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-          </div>
+              ===================================================== */}
+          <KitShopColumn kit={kit} />
         </div>
       </div>
     </main>
