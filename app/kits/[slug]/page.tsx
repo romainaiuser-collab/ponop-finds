@@ -79,6 +79,20 @@ export default async function KitPage({
   return (
     <main className="min-h-screen bg-[#faf8f7] text-[#171717]">
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-8 sm:px-10 sm:pt-12">
+
+        {/* Brand */}
+        <div className="mb-6 flex items-center gap-3">
+          <img
+            src="/images/logo-p-rose.png"
+            alt="Ponop Finds"
+            className="h-8 w-8"
+          />
+
+          <span className="text-lg font-semibold tracking-tight text-[#171717]">
+            PONOP FINDS
+          </span>
+        </div>
+
         {/* Back to Kits */}
         <div className="mb-8">
           <Link
@@ -96,13 +110,9 @@ export default async function KitPage({
         {/* Main layout */}
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)] lg:items-start">
 
-          {/* LEFT COLUMN
-              On mobile, contents makes the image and
-              The Idea participate directly in the main grid.
-              On desktop, the original two-column structure
-              is restored. */}
+          {/* LEFT COLUMN */}
           <div className="contents lg:block">
-            
+
             {/* Kit image */}
             <div className="order-1 min-w-0 lg:order-none">
               <div className="overflow-hidden rounded-[2rem] bg-[#f3efed]">
@@ -163,9 +173,7 @@ export default async function KitPage({
                               index: number
                             ) => (
                               <li
-                                key={
-                                  index
-                                }
+                                key={index}
                                 className="flex gap-3"
                               >
                                 <span className="shrink-0 text-[#d98f94]">
