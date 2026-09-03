@@ -36,7 +36,209 @@ function toArray(value: unknown): unknown[] {
 }
 
 /*
- * Load Kits that are ready for publication.
+ * Build a PublishedKit from the raw
+ * Supabase records.
+ */
+function buildPublishedKit(
+  kit: any,
+  contents: any[],
+  publications: any[],
+  kitItems: any[],
+  opportunities: any[]
+): PublishedKit {
+  /*
+   * Latest generated content for this Kit.
+   */
+  const content =
+    contents.find(
+      (item) =>
+        item.kit_id === kit.id
+    ) ?? null;
+
+  /*
+   * Latest publication containing an image.
+   */
+  const publication =
+    publications.find(
+      (item) =>
+        item.kit_id === kit.id
+    ) ?? null;
+
+  /*
+   * Items belonging to this Kit.
+   */
+  const items =
+    kitItems
+      .filter(
+        (item) =>
+          item.kit_id === kit.id
+      )
+      .sort(
+        (a, b) =>
+          (a.position ?? 999) -
+          (b.position ?? 999)
+      );
+
+  /*
+   * Convert Kit items into public products.
+   */
+  const products = items.map(
+    (item) => {
+      const opportunity =
+        opportunities.find(
+          (opportunity) =>
+            opportunity.id ===
+            item.opportunity_id
+        );
+
+      return {
+        id:
+          opportunity?.id ??
+          item.id,
+
+        title:
+          opportunity?.title ??
+          null,
+
+        affiliateLink:
+          opportunity?.affiliate_url ??
+          null,
+
+        imageUrl:
+          getPublicImageUrl(
+            opportunity?.image_url ??
+              null
+          ),
+
+        price:
+          opportunity?.price ??
+          null,
+
+        currency:
+          opportunity?.currency ??
+          null,
+
+        position:
+          item.position ??
+          null,
+
+        role:
+          item.role ??
+          null,
+
+        reason:
+          item.reason ??
+          null,
+      };
+    }
+  );
+
+  return {
+    id: kit.id,
+
+    name: kit.name ?? null,
+
+    slug: kit.slug ?? null,
+
+    description:
+      kit.description ?? null,
+
+    collection:
+      kit.collection ?? null,
+
+    theme:
+      kit.theme ?? null,
+
+    audience:
+      kit.audience ?? null,
+
+    useCase:
+      kit.use_case ?? null,
+
+    angle:
+      kit.angle ?? null,
+
+    /*
+     * Editorial content
+     */
+    title:
+      content?.title ??
+      kit.name ??
+      null,
+
+    hook:
+      content?.hook ??
+      null,
+
+    summary:
+      content?.summary ??
+      null,
+
+    editorialStory:
+      content?.editorial_story ??
+      null,
+
+    keyBenefits:
+      toArray(
+        content?.key_benefits
+      ),
+
+    recommendedFor:
+      toArray(
+        content?.recommended_for
+      ),
+
+    categories:
+      toArray(
+        content?.categories
+      ),
+
+    idealFor:
+      content?.ideal_for ??
+      null,
+
+    notIdealFor:
+      content?.not_ideal_for ??
+      null,
+
+    creativePunchline:
+      content?.creative_punchline ??
+      null,
+
+    /*
+     * Generated Kit image
+     */
+    imageUrl:
+      getPublicImageUrl(
+        publication?.image_url ??
+          null
+      ),
+
+    altText:
+      content?.alt_text ??
+      null,
+
+    /*
+     * Products contained in the Kit
+     */
+    products,
+
+    publishedAt:
+      publication?.published_at ??
+      null,
+
+    createdAt:
+      kit.created_at ??
+      null,
+
+    updatedAt:
+      kit.updated_at ??
+      null,
+  };
+}
+
+/*
+ * Load all Kits that are ready for publication.
  *
  * Only Kits with:
  *
@@ -85,9 +287,6 @@ export async function getPublishedKits(): Promise<
    * --------------------------------------------------
    * 2. KIT CONTENTS
    * --------------------------------------------------
-   *
-   * One generated content record is expected
-   * for each Kit.
    */
 
   const {
@@ -111,9 +310,6 @@ export async function getPublishedKits(): Promise<
    * --------------------------------------------------
    * 3. KIT PUBLICATIONS
    * --------------------------------------------------
-   *
-   * The generated Kit image is stored in
-   * kits_publications.image_url.
    */
 
   const {
@@ -138,9 +334,6 @@ export async function getPublishedKits(): Promise<
    * --------------------------------------------------
    * 4. KIT ITEMS
    * --------------------------------------------------
-   *
-   * We retrieve the items first, then retrieve their
-   * associated opportunities separately.
    */
 
   const {
@@ -170,7 +363,8 @@ export async function getPublishedKits(): Promise<
     ...new Set(
       (kitItems ?? [])
         .map(
-          (item) => item.opportunity_id
+          (item) =>
+            item.opportunity_id
         )
         .filter(Boolean)
     ),
@@ -198,199 +392,180 @@ export async function getPublishedKits(): Promise<
 
   /*
    * --------------------------------------------------
-   * 6. BUILD PUBLIC KIT OBJECTS
+   * 6. BUILD PUBLIC KITS
    * --------------------------------------------------
    */
 
-  return kits.map((kit) => {
-    /*
-     * Latest generated content for this Kit.
-     */
-    const content =
-      (contents ?? []).find(
-        (item) =>
-          item.kit_id === kit.id
-      ) ?? null;
+  return kits.map((kit) =>
+    buildPublishedKit(
+      kit,
+      contents ?? [],
+      publications ?? [],
+      kitItems ?? [],
+      opportunities
+    )
+  );
+}
 
-    /*
-     * Latest publication containing an image.
-     */
-    const publication =
-      (publications ?? []).find(
-        (item) =>
-          item.kit_id === kit.id
-      ) ?? null;
+/*
+ * Load one specific Kit by slug.
+ *
+ * Only Kits with:
+ *
+ * status = "content and image generated"
+ *
+ * are exposed publicly.
+ */
+export async function getPublishedKitBySlug(
+  slug: string
+): Promise<PublishedKit | null> {
+  /*
+   * --------------------------------------------------
+   * 1. KIT
+   * --------------------------------------------------
+   */
 
-    /*
-     * Items belonging to this Kit.
-     */
-    const items =
-      (kitItems ?? [])
-        .filter(
-          (item) =>
-            item.kit_id === kit.id
-        )
-        .sort(
-          (a, b) =>
-            (a.position ?? 999) -
-            (b.position ?? 999)
-        );
+  const {
+    data: kit,
+    error: kitError,
+  } = await supabase
+    .from("kits")
+    .select("*")
+    .eq("slug", slug)
+    .eq(
+      "status",
+      "content and image generated"
+    )
+    .maybeSingle();
 
-    /*
-     * Convert Kit items into public products.
-     */
-    const products = items.map(
-      (item) => {
-        const opportunity =
-          opportunities.find(
-            (opportunity) =>
-              opportunity.id ===
-              item.opportunity_id
-          );
-
-        return {
-          id:
-            opportunity?.id ??
-            item.id,
-
-          title:
-            opportunity?.title ??
-            null,
-
-          affiliateLink:
-            opportunity?.affiliate_url ??
-            null,
-
-          imageUrl:
-            getPublicImageUrl(
-              opportunity?.image_url ??
-                null
-            ),
-
-          price:
-            opportunity?.price ??
-            null,
-
-          currency:
-            opportunity?.currency ??
-            null,
-
-          position:
-            item.position ??
-            null,
-
-          role:
-            item.role ??
-            null,
-
-          reason:
-            item.reason ??
-            null,
-        };
-      }
+  if (kitError) {
+    throw new Error(
+      `Supabase kit error: ${kitError.message}`
     );
+  }
 
-    return {
-      id: kit.id,
+  if (!kit) {
+    return null;
+  }
 
-      name: kit.name ?? null,
+  /*
+   * --------------------------------------------------
+   * 2. KIT CONTENT
+   * --------------------------------------------------
+   */
 
-      slug: kit.slug ?? null,
+  const {
+    data: contents,
+    error: contentsError,
+  } = await supabase
+    .from("kits_contents")
+    .select("*")
+    .eq("kit_id", kit.id)
+    .order("created_at", {
+      ascending: false,
+    });
 
-      description:
-        kit.description ?? null,
+  if (contentsError) {
+    throw new Error(
+      `Supabase kits_contents error: ${contentsError.message}`
+    );
+  }
 
-      collection:
-        kit.collection ?? null,
+  /*
+   * --------------------------------------------------
+   * 3. KIT PUBLICATION / IMAGE
+   * --------------------------------------------------
+   */
 
-      theme:
-        kit.theme ?? null,
+  const {
+    data: publications,
+    error: publicationsError,
+  } = await supabase
+    .from("kits_publications")
+    .select("*")
+    .eq("kit_id", kit.id)
+    .not("image_url", "is", null)
+    .order("created_at", {
+      ascending: false,
+    });
 
-      audience:
-        kit.audience ?? null,
+  if (publicationsError) {
+    throw new Error(
+      `Supabase kits_publications error: ${publicationsError.message}`
+    );
+  }
 
-      useCase:
-        kit.use_case ?? null,
+  /*
+   * --------------------------------------------------
+   * 4. KIT ITEMS
+   * --------------------------------------------------
+   */
 
-      angle:
-        kit.angle ?? null,
+  const {
+    data: kitItems,
+    error: kitItemsError,
+  } = await supabase
+    .from("kits_items")
+    .select("*")
+    .eq("kit_id", kit.id)
+    .order("position", {
+      ascending: true,
+    });
 
-      /*
-       * Editorial content
-       */
-      title:
-        content?.title ??
-        kit.name ??
-        null,
+  if (kitItemsError) {
+    throw new Error(
+      `Supabase kits_items error: ${kitItemsError.message}`
+    );
+  }
 
-      hook:
-        content?.hook ??
-        null,
+  /*
+   * --------------------------------------------------
+   * 5. OPPORTUNITIES
+   * --------------------------------------------------
+   */
 
-      summary:
-        content?.summary ??
-        null,
+  const opportunityIds = [
+    ...new Set(
+      (kitItems ?? [])
+        .map(
+          (item) =>
+            item.opportunity_id
+        )
+        .filter(Boolean)
+    ),
+  ];
 
-      editorialStory:
-        content?.editorial_story ??
-        null,
+  let opportunities: any[] = [];
 
-      keyBenefits:
-        toArray(
-          content?.key_benefits
-        ),
+  if (opportunityIds.length > 0) {
+    const {
+      data,
+      error,
+    } = await supabase
+      .from("opportunities")
+      .select("*")
+      .in("id", opportunityIds);
 
-      recommendedFor:
-        toArray(
-          content?.recommended_for
-        ),
+    if (error) {
+      throw new Error(
+        `Supabase opportunities error: ${error.message}`
+      );
+    }
 
-      categories:
-        toArray(
-          content?.categories
-        ),
+    opportunities = data ?? [];
+  }
 
-      idealFor:
-        content?.ideal_for ??
-        null,
+  /*
+   * --------------------------------------------------
+   * 6. BUILD PUBLIC KIT
+   * --------------------------------------------------
+   */
 
-      notIdealFor:
-        content?.not_ideal_for ??
-        null,
-
-      creativePunchline:
-        content?.creative_punchline ??
-        null,
-
-      /*
-       * Generated Kit image
-       */
-      imageUrl:
-        getPublicImageUrl(
-          publication?.image_url ??
-            null
-        ),
-
-      altText:
-        content?.alt_text ??
-        null,
-
-      /*
-       * Products contained in the Kit
-       */
-      products,
-
-      publishedAt:
-        publication?.published_at ??
-        null,
-
-      createdAt:
-        kit.created_at ??
-        null,
-
-      updatedAt:
-        kit.updated_at ??
-        null,
-    };
-  });
+  return buildPublishedKit(
+    kit,
+    contents ?? [],
+    publications ?? [],
+    kitItems ?? [],
+    opportunities
+  );
 }
