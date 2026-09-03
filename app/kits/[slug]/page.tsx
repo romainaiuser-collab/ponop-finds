@@ -133,9 +133,7 @@ export default async function KitPage({
 
                   {kit.editorialStory && (
                     <div className="mt-5 whitespace-pre-line text-base leading-8 text-[#68615f]">
-                      {
-                        kit.editorialStory
-                      }
+                      {kit.editorialStory}
                     </div>
                   )}
 
