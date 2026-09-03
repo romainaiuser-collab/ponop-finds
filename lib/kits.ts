@@ -36,6 +36,26 @@ function toArray(value: unknown): unknown[] {
 }
 
 /*
+ * Extract the first keyword from opportunities.keywords.
+ *
+ * In the database, keywords is stored as JSONB,
+ * but its actual value is a comma-separated string.
+ */
+function getFirstKeyword(
+  keywords: unknown
+): string | null {
+  if (typeof keywords !== "string") {
+    return null;
+  }
+
+  const firstKeyword = keywords
+    .split(",")[0]
+    ?.trim();
+
+  return firstKeyword || null;
+}
+
+/*
  * Build a PublishedKit from the raw
  * Supabase records.
  */
@@ -46,27 +66,18 @@ function buildPublishedKit(
   kitItems: any[],
   opportunities: any[]
 ): PublishedKit {
-  /*
-   * Latest generated content for this Kit.
-   */
   const content =
     contents.find(
       (item) =>
         item.kit_id === kit.id
     ) ?? null;
 
-  /*
-   * Latest publication containing an image.
-   */
   const publication =
     publications.find(
       (item) =>
         item.kit_id === kit.id
     ) ?? null;
 
-  /*
-   * Items belonging to this Kit.
-   */
   const items =
     kitItems
       .filter(
@@ -79,9 +90,6 @@ function buildPublishedKit(
           (b.position ?? 999)
       );
 
-  /*
-   * Convert Kit items into public products.
-   */
   const products = items.map(
     (item) => {
       const opportunity =
@@ -91,12 +99,18 @@ function buildPublishedKit(
             item.opportunity_id
         );
 
+      const editorialTitle =
+        getFirstKeyword(
+          opportunity?.keywords
+        );
+
       return {
         id:
           opportunity?.id ??
           item.id,
 
         title:
+          editorialTitle ??
           opportunity?.title ??
           null,
 
@@ -135,126 +149,78 @@ function buildPublishedKit(
 
   return {
     id: kit.id,
-
     name: kit.name ?? null,
-
     slug: kit.slug ?? null,
-
     description:
       kit.description ?? null,
-
     collection:
       kit.collection ?? null,
-
     theme:
       kit.theme ?? null,
-
     audience:
       kit.audience ?? null,
-
     useCase:
       kit.use_case ?? null,
-
     angle:
       kit.angle ?? null,
-
-    /*
-     * Editorial content
-     */
     title:
       content?.title ??
       kit.name ??
       null,
-
     hook:
       content?.hook ??
       null,
-
     summary:
       content?.summary ??
       null,
-
     editorialStory:
       content?.editorial_story ??
       null,
-
     keyBenefits:
       toArray(
         content?.key_benefits
       ),
-
     recommendedFor:
       toArray(
         content?.recommended_for
       ),
-
     categories:
       toArray(
         content?.categories
       ),
-
     idealFor:
       content?.ideal_for ??
       null,
-
     notIdealFor:
       content?.not_ideal_for ??
       null,
-
     creativePunchline:
       content?.creative_punchline ??
       null,
-
-    /*
-     * Generated Kit image
-     */
     imageUrl:
       getPublicImageUrl(
         publication?.image_url ??
           null
       ),
-
     altText:
       content?.alt_text ??
       null,
-
-    /*
-     * Products contained in the Kit
-     */
     products,
-
     publishedAt:
       publication?.published_at ??
       null,
-
     createdAt:
       kit.created_at ??
       null,
-
     updatedAt:
       kit.updated_at ??
       null,
   };
 }
 
-/*
- * Load all Kits that are ready for publication.
- *
- * Only Kits with:
- *
- * status = "content and image generated"
- *
- * are exposed publicly.
- */
 export async function getPublishedKits(): Promise<
   PublishedKit[]
 > {
-  /*
-   * --------------------------------------------------
-   * 1. KITS
-   * --------------------------------------------------
-   */
-
   const {
     data: kits,
     error: kitsError,
@@ -283,12 +249,6 @@ export async function getPublishedKits(): Promise<
     (kit) => kit.id
   );
 
-  /*
-   * --------------------------------------------------
-   * 2. KIT CONTENTS
-   * --------------------------------------------------
-   */
-
   const {
     data: contents,
     error: contentsError,
@@ -305,12 +265,6 @@ export async function getPublishedKits(): Promise<
       `Supabase kits_contents error: ${contentsError.message}`
     );
   }
-
-  /*
-   * --------------------------------------------------
-   * 3. KIT PUBLICATIONS
-   * --------------------------------------------------
-   */
 
   const {
     data: publications,
@@ -330,12 +284,6 @@ export async function getPublishedKits(): Promise<
     );
   }
 
-  /*
-   * --------------------------------------------------
-   * 4. KIT ITEMS
-   * --------------------------------------------------
-   */
-
   const {
     data: kitItems,
     error: kitItemsError,
@@ -352,12 +300,6 @@ export async function getPublishedKits(): Promise<
       `Supabase kits_items error: ${kitItemsError.message}`
     );
   }
-
-  /*
-   * --------------------------------------------------
-   * 5. OPPORTUNITIES
-   * --------------------------------------------------
-   */
 
   const opportunityIds = [
     ...new Set(
@@ -390,12 +332,6 @@ export async function getPublishedKits(): Promise<
     opportunities = data ?? [];
   }
 
-  /*
-   * --------------------------------------------------
-   * 6. BUILD PUBLIC KITS
-   * --------------------------------------------------
-   */
-
   return kits.map((kit) =>
     buildPublishedKit(
       kit,
@@ -407,24 +343,9 @@ export async function getPublishedKits(): Promise<
   );
 }
 
-/*
- * Load one specific Kit by slug.
- *
- * Only Kits with:
- *
- * status = "content and image generated"
- *
- * are exposed publicly.
- */
 export async function getPublishedKitBySlug(
   slug: string
 ): Promise<PublishedKit | null> {
-  /*
-   * --------------------------------------------------
-   * 1. KIT
-   * --------------------------------------------------
-   */
-
   const {
     data: kit,
     error: kitError,
@@ -448,12 +369,6 @@ export async function getPublishedKitBySlug(
     return null;
   }
 
-  /*
-   * --------------------------------------------------
-   * 2. KIT CONTENT
-   * --------------------------------------------------
-   */
-
   const {
     data: contents,
     error: contentsError,
@@ -470,12 +385,6 @@ export async function getPublishedKitBySlug(
       `Supabase kits_contents error: ${contentsError.message}`
     );
   }
-
-  /*
-   * --------------------------------------------------
-   * 3. KIT PUBLICATION / IMAGE
-   * --------------------------------------------------
-   */
 
   const {
     data: publications,
@@ -495,12 +404,6 @@ export async function getPublishedKitBySlug(
     );
   }
 
-  /*
-   * --------------------------------------------------
-   * 4. KIT ITEMS
-   * --------------------------------------------------
-   */
-
   const {
     data: kitItems,
     error: kitItemsError,
@@ -517,12 +420,6 @@ export async function getPublishedKitBySlug(
       `Supabase kits_items error: ${kitItemsError.message}`
     );
   }
-
-  /*
-   * --------------------------------------------------
-   * 5. OPPORTUNITIES
-   * --------------------------------------------------
-   */
 
   const opportunityIds = [
     ...new Set(
@@ -554,12 +451,6 @@ export async function getPublishedKitBySlug(
 
     opportunities = data ?? [];
   }
-
-  /*
-   * --------------------------------------------------
-   * 6. BUILD PUBLIC KIT
-   * --------------------------------------------------
-   */
 
   return buildPublishedKit(
     kit,
