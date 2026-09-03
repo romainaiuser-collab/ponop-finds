@@ -155,8 +155,10 @@ export default async function KitPage({
             {/* The idea */}
             {(kit.summary ||
               kit.editorialStory ||
-              kit.keyBenefits.length > 0 ||
-              kit.recommendedFor.length > 0) && (
+              (Array.isArray(kit.keyBenefits) &&
+                kit.keyBenefits.length > 0) ||
+              (Array.isArray(kit.recommendedFor) &&
+                kit.recommendedFor.length > 0)) && (
               <section className="mt-10 border-t border-[#e8e2df] pt-8">
                 <h2 className="text-xl font-semibold">
                   The idea
@@ -174,45 +176,53 @@ export default async function KitPage({
                   </p>
                 )}
 
-                {kit.keyBenefits.length > 0 && (
-                  <div className="mt-6">
-                    <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[#d98f94]">
-                      Why it works
-                    </h3>
+                {Array.isArray(kit.keyBenefits) &&
+                  kit.keyBenefits.length > 0 && (
+                    <div className="mt-6">
+                      <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[#d98f94]">
+                        Why it works
+                      </h3>
 
-                    <ul className="mt-3 space-y-2 text-[#68615f]">
-                      {kit.keyBenefits.map(
-                        (benefit, index) => (
-                          <li
-                            key={index}
-                            className="flex gap-3"
-                          >
-                            <span className="text-[#d98f94]">
-                              ✦
-                            </span>
-                            <span>
-                              {String(benefit)}
-                            </span>
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </div>
-                )}
+                      <ul className="mt-3 space-y-2 text-[#68615f]">
+                        {kit.keyBenefits.map(
+                          (
+                            benefit: unknown,
+                            index: number
+                          ) => (
+                            <li
+                              key={index}
+                              className="flex gap-3"
+                            >
+                              <span className="text-[#d98f94]">
+                                ✦
+                              </span>
 
-                {kit.recommendedFor.length > 0 && (
-                  <div className="mt-6">
-                    <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[#d98f94]">
-                      Recommended for
-                    </h3>
+                              <span>
+                                {String(benefit)}
+                              </span>
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
 
-                    <p className="mt-3 leading-7 text-[#68615f]">
-                      {kit.recommendedFor
-                        .map((item) => String(item))
-                        .join(" · ")}
-                    </p>
-                  </div>
-                )}
+                {Array.isArray(kit.recommendedFor) &&
+                  kit.recommendedFor.length > 0 && (
+                    <div className="mt-6">
+                      <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[#d98f94]">
+                        Recommended for
+                      </h3>
+
+                      <p className="mt-3 leading-7 text-[#68615f]">
+                        {kit.recommendedFor
+                          .map((item: unknown) =>
+                            String(item)
+                          )
+                          .join(" · ")}
+                      </p>
+                    </div>
+                  )}
               </section>
             )}
           </div>
