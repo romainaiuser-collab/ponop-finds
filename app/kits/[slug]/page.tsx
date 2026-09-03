@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import KitShopColumn from "../../../components/KitShopColumn";
+import SiteHeader from "../../../components/SiteHeader";
 import { getPublishedKitBySlug } from "../../../lib/kits";
 
 interface KitPageProps {
@@ -78,20 +79,10 @@ export default async function KitPage({
 
   return (
     <main className="min-h-screen bg-[#faf8f7] text-[#171717]">
-      <div className="mx-auto max-w-7xl px-6 pb-24 pt-8 sm:px-10 sm:pt-12">
+      {/* Global brand header */}
+      <SiteHeader />
 
-        {/* Brand */}
-        <div className="mb-6 flex items-center gap-3">
-          <img
-            src="/images/logo-p-rose.png"
-            alt="Ponop Finds"
-            className="h-8 w-8"
-          />
-
-          <span className="text-lg font-semibold tracking-tight text-[#171717]">
-            PONOP FINDS
-          </span>
-        </div>
+      <div className="mx-auto max-w-7xl px-6 pb-24 pt-2 sm:px-10 sm:pt-4">
 
         {/* Back to Kits */}
         <div className="mb-8">
