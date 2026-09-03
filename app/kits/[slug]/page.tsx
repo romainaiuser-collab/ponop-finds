@@ -95,31 +95,39 @@ export default async function KitPage({
 
         {/* Main layout */}
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)] lg:items-start">
-          {/* LEFT COLUMN */}
-          <div className="min-w-0">
+
+          {/* LEFT COLUMN
+              On mobile, contents makes the image and
+              The Idea participate directly in the main grid.
+              On desktop, the original two-column structure
+              is restored. */}
+          <div className="contents lg:block">
+            
             {/* Kit image */}
-            <div className="overflow-hidden rounded-[2rem] bg-[#f3efed]">
-              {kit.imageUrl ? (
-                <img
-                  src={kit.imageUrl}
-                  alt={
-                    kit.altText ??
-                    kit.title ??
-                    kit.name ??
-                    "Ponop Kit"
-                  }
-                  className="block h-auto w-full"
-                />
-              ) : (
-                <div className="flex aspect-[2/3] items-center justify-center text-sm text-[#68615f]">
-                  No image available
-                </div>
-              )}
+            <div className="order-1 min-w-0 lg:order-none">
+              <div className="overflow-hidden rounded-[2rem] bg-[#f3efed]">
+                {kit.imageUrl ? (
+                  <img
+                    src={kit.imageUrl}
+                    alt={
+                      kit.altText ??
+                      kit.title ??
+                      kit.name ??
+                      "Ponop Kit"
+                    }
+                    className="block h-auto w-full"
+                  />
+                ) : (
+                  <div className="flex aspect-[2/3] items-center justify-center text-sm text-[#68615f]">
+                    No image available
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* The idea */}
             {hasIdeaContent && (
-              <section className="mt-12 border-t border-[#e8e2df] pt-10">
+              <section className="order-3 mt-12 min-w-0 border-t border-[#e8e2df] pt-10 lg:order-none">
                 <div className="max-w-3xl">
                   <h2 className="text-2xl font-semibold tracking-tight">
                     The idea
@@ -207,7 +215,9 @@ export default async function KitPage({
           </div>
 
           {/* RIGHT COLUMN */}
-          <KitShopColumn kit={kit} />
+          <div className="order-2 min-w-0 lg:order-none">
+            <KitShopColumn kit={kit} />
+          </div>
         </div>
       </div>
     </main>
