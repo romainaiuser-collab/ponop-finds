@@ -2,7 +2,6 @@
 
 import {
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -18,190 +17,178 @@ const BOTTOM_OFFSET = 32;
 export default function KitShopColumn({
   kit,
 }: KitShopColumnProps) {
-  const columnRef =
+  const placeholderRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const contentRef =
     useRef<HTMLDivElement | null>(null);
 
   const [isFixed, setIsFixed] =
     useState(false);
 
-  const [fixedStyle, setFixedStyle] =
+  const [fixedPosition, setFixedPosition] =
     useState<{
       left: number;
       width: number;
     } | null>(null);
 
+  const lastScrollY =
+    useRef(0);
+
+  const contentHeight =
+    useRef(0);
+
   /*
-   * Keep the column's original document position.
-   * This allows us to know when it should return
-   * to the normal document flow while scrolling up.
+   * Measure the column.
    */
-  const originalTopRef = useRef<number | null>(
-    null
-  );
+  const measure = () => {
+    const placeholder =
+      placeholderRef.current;
 
-  const heightRef = useRef(0);
+    const content =
+      contentRef.current;
 
-  const updateMeasurements = () => {
-    const element = columnRef.current;
-
-    if (!element) {
+    if (!placeholder || !content) {
       return;
     }
 
-    const isDesktop =
-      window.innerWidth >=
-      DESKTOP_BREAKPOINT;
-
-    if (!isDesktop) {
-      setIsFixed(false);
-      setFixedStyle(null);
-      originalTopRef.current = null;
+    if (
+      window.innerWidth <
+      DESKTOP_BREAKPOINT
+    ) {
       return;
     }
 
     const rect =
-      element.getBoundingClientRect();
+      placeholder.getBoundingClientRect();
 
-    /*
-     * When the element is in the normal flow,
-     * record its absolute document position.
-     */
-    if (!isFixed) {
-      originalTopRef.current =
-        rect.top + window.scrollY;
-    }
+    const contentRect =
+      content.getBoundingClientRect();
 
-    heightRef.current = rect.height;
+    contentHeight.current =
+      contentRect.height;
 
-    setFixedStyle({
+    setFixedPosition({
       left: rect.left,
       width: rect.width,
     });
   };
 
-  const checkPosition = () => {
-    const element = columnRef.current;
-
-    if (!element) {
-      return;
-    }
-
-    const isDesktop =
-      window.innerWidth >=
-      DESKTOP_BREAKPOINT;
-
-    if (!isDesktop) {
-      if (isFixed) {
-        setIsFixed(false);
-      }
-
-      return;
-    }
-
-    /*
-     * If the column is currently fixed, determine
-     * whether scrolling back up should release it.
-     */
-    if (isFixed) {
-      const originalTop =
-        originalTopRef.current;
-
-      if (originalTop === null) {
-        return;
-      }
-
-      const naturalBottom =
-        originalTop +
-        heightRef.current -
-        window.scrollY;
-
-      /*
-       * Once the natural position of the column
-       * would put its bottom below the desired
-       * viewport position, release the fixed state.
-       */
-      if (
-        naturalBottom >
-        window.innerHeight -
-          BOTTOM_OFFSET
-      ) {
-        setIsFixed(false);
-      }
-
-      return;
-    }
-
-    /*
-     * Normal scrolling:
-     * detect when the bottom of the right column
-     * reaches the bottom of the viewport.
-     */
-    const rect =
-      element.getBoundingClientRect();
-
-    if (
-      rect.bottom <=
-      window.innerHeight -
-        BOTTOM_OFFSET
-    ) {
-      return;
-    }
-
-    /*
-     * Only fix the column when its bottom has
-     * reached/passed the viewport bottom.
-     */
-    if (
-      rect.bottom >=
-      window.innerHeight -
-        BOTTOM_OFFSET
-    ) {
-      originalTopRef.current =
-        rect.top + window.scrollY;
-
-      heightRef.current =
-        rect.height;
-
-      setFixedStyle({
-        left: rect.left,
-        width: rect.width,
-      });
-
-      setIsFixed(true);
-    }
-  };
-
-  useLayoutEffect(() => {
-    updateMeasurements();
-  });
-
   useEffect(() => {
-    let frameId: number | null = null;
+    lastScrollY.current =
+      window.scrollY;
+
+    measure();
 
     const handleScroll = () => {
-      if (frameId !== null) {
+      if (
+        window.innerWidth <
+        DESKTOP_BREAKPOINT
+      ) {
         return;
       }
 
-      frameId =
-        window.requestAnimationFrame(() => {
-          frameId = null;
-          checkPosition();
-        });
+      const placeholder =
+        placeholderRef.current;
+
+      if (!placeholder) {
+        return;
+      }
+
+      const currentScrollY =
+        window.scrollY;
+
+      const scrollingDown =
+        currentScrollY >
+        lastScrollY.current;
+
+      const scrollingUp =
+        currentScrollY <
+        lastScrollY.current;
+
+      lastScrollY.current =
+        currentScrollY;
+
+      const rect =
+        placeholder.getBoundingClientRect();
+
+      const bottomLimit =
+        window.innerHeight -
+        BOTTOM_OFFSET;
+
+      /*
+       * NORMAL MODE
+       *
+       * The two columns scroll together.
+       *
+       * We only freeze the right column when
+       * its bottom reaches the bottom of the viewport.
+       */
+      if (!isFixed && scrollingDown) {
+        if (
+          rect.bottom <=
+          bottomLimit
+        ) {
+          const content =
+            contentRef.current;
+
+          if (!content) {
+            return;
+          }
+
+          const contentRect =
+            content.getBoundingClientRect();
+
+          setFixedPosition({
+            left: rect.left,
+            width: rect.width,
+          });
+
+          contentHeight.current =
+            contentRect.height;
+
+          setIsFixed(true);
+        }
+      }
+
+      /*
+       * FIXED MODE
+       *
+       * When scrolling back up, release the
+       * right column as soon as its natural
+       * position would put it back above the
+       * bottom limit.
+       */
+      if (isFixed && scrollingUp) {
+        if (
+          rect.bottom >
+          bottomLimit
+        ) {
+          setIsFixed(false);
+          setFixedPosition(null);
+        }
+      }
     };
 
     const handleResize = () => {
       /*
-       * Resize can change both the column width
-       * and its height, so release fixed mode and
-       * recalculate everything.
+       * On resize, always return to normal flow
+       * and recalculate dimensions.
        */
-      setIsFixed(false);
-      originalTopRef.current = null;
+      if (
+        window.innerWidth <
+        DESKTOP_BREAKPOINT
+      ) {
+        setIsFixed(false);
+        setFixedPosition(null);
+      } else {
+        setIsFixed(false);
+        setFixedPosition(null);
 
-      window.requestAnimationFrame(
-        updateMeasurements
-      );
+        window.requestAnimationFrame(
+          measure
+        );
+      }
     };
 
     window.addEventListener(
@@ -216,18 +203,15 @@ export default function KitShopColumn({
     );
 
     const resizeObserver =
-      columnRef.current
-        ? new ResizeObserver(() => {
-            updateMeasurements();
-          })
-        : null;
+      new ResizeObserver(() => {
+        if (!isFixed) {
+          measure();
+        }
+      });
 
-    if (
-      resizeObserver &&
-      columnRef.current
-    ) {
+    if (contentRef.current) {
       resizeObserver.observe(
-        columnRef.current
+        contentRef.current
       );
     }
 
@@ -242,45 +226,42 @@ export default function KitShopColumn({
         handleResize
       );
 
-      resizeObserver?.disconnect();
-
-      if (frameId !== null) {
-        window.cancelAnimationFrame(
-          frameId
-        );
-      }
+      resizeObserver.disconnect();
     };
-  }, [isFixed, kit.products.length]);
+  }, [isFixed]);
 
   /*
-   * When fixed, keep a placeholder in the grid
-   * so the left column does not move horizontally
-   * or change the page layout.
+   * When fixed, keep the original space
+   * occupied in the grid.
    */
-  const columnStyle = isFixed &&
-    fixedStyle
-    ? {
-        position: "fixed" as const,
-        left: `${fixedStyle.left}px`,
-        width: `${fixedStyle.width}px`,
-        bottom: `${BOTTOM_OFFSET}px`,
-        zIndex: 20,
-      }
-    : undefined;
+  const placeholderStyle =
+    isFixed
+      ? {
+          minHeight: `${contentHeight.current}px`,
+        }
+      : undefined;
+
+  const contentStyle =
+    isFixed && fixedPosition
+      ? {
+          position: "fixed" as const,
+          left: `${fixedPosition.left}px`,
+          width: `${fixedPosition.width}px`,
+          bottom: `${BOTTOM_OFFSET}px`,
+          zIndex: 20,
+        }
+      : undefined;
 
   return (
     <div
+      ref={placeholderRef}
       className="min-w-0"
-      style={{
-        minHeight: isFixed
-          ? `${heightRef.current}px`
-          : undefined,
-      }}
+      style={placeholderStyle}
     >
       <div
-        ref={columnRef}
+        ref={contentRef}
         className="min-w-0"
-        style={columnStyle}
+        style={contentStyle}
       >
         {/* Kit introduction */}
         <div>
