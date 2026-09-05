@@ -1,103 +1,37 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import ToolCard from "./ToolCard";
-import type { PublishedTool } from "../lib/types";
+import type { PublishedKit } from "../lib/types";
 
-const sections = [
-  {
-    id: "wanted",
-    label: "⭐ Most Wanted",
-    subtitle: "The things we’d buy ourselves.",
-  },
-  {
-    id: "school",
-    label: "🎒 Back To School",
-    subtitle: "Smart finds for a fresh start.",
-  },
-  {
-    id: "home",
-    label: "💡 Smart Home Essentials",
-    subtitle: "Clever finds to make home life easier.",
-  },
-    {
-    id: "halloween",
-    label: "🎃 Halloween Finds",
-    subtitle: "Spooky finds for a frightfully good season.",
-  },
-];
-
-interface ToolFeedProps {
-  tools: PublishedTool[];
+interface KitRailProps {
+  kits: PublishedKit[];
 }
 
-function hasCollection(
-  tool: PublishedTool,
-  collection: string
-): boolean {
-  if (!Array.isArray(tool.collections)) {
-    return false;
-  }
+export default function KitRail({
+  kits,
+}: KitRailProps) {
+  const railRef =
+    useRef<HTMLDivElement | null>(null);
 
-  return tool.collections.some(
-    (item) =>
-      String(item).trim().toLowerCase() === collection.toLowerCase()
-  );
-}
+  const touchStartRef =
+    useRef<{
+      x: number;
+      y: number;
+      scrollLeft: number;
+      direction:
+        | "undecided"
+        | "horizontal"
+        | "vertical";
+    } | null>(null);
 
-/*
- * Sort tools by creation date:
- * newest first.
- *
- * Tools without a createdAt date are placed at the end.
- */
-function sortByNewest(
-  tools: PublishedTool[]
-): PublishedTool[] {
-  return [...tools].sort((a, b) => {
-    if (!a.createdAt && !b.createdAt) {
-      return 0;
-    }
+  const [arrowState, setArrowState] =
+    useState({
+      left: true,
+      right: false,
+    });
 
-    if (!a.createdAt) {
-      return 1;
-    }
-
-    if (!b.createdAt) {
-      return -1;
-    }
-
-    return (
-      new Date(b.createdAt).getTime() -
-      new Date(a.createdAt).getTime()
-    );
-  });
-}
-
-export default function ToolFeed({ tools }: ToolFeedProps) {
-  const railRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
-  const touchStartRefs = useRef<
-    Record<
-      string,
-      {
-        x: number;
-        y: number;
-        scrollLeft: number;
-        direction: "undecided" | "horizontal" | "vertical";
-      } | null
-    >
-  >({});
-
-  const [arrowState, setArrowState] = useState<
-    Record<string, { left: boolean; right: boolean }>
-  >({});
-
-  const [expandedToolId, setExpandedToolId] =
-    useState<string | null>(null);
-
-  const updateRailArrowState = (railId: string) => {
-    const rail = railRefs.current[railId];
+  const updateArrowState = () => {
+    const rail = railRef.current;
 
     if (!rail) {
       return;
@@ -108,33 +42,27 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
       0
     );
 
-    const leftDisabled = rail.scrollLeft <= 4;
-
-    const rightDisabled =
-      rail.scrollLeft >= maxScrollLeft - 4;
-
-    setArrowState((current) => ({
-      ...current,
-      [railId]: {
-        left: leftDisabled,
-        right: rightDisabled,
-      },
-    }));
+    setArrowState({
+      left: rail.scrollLeft <= 4,
+      right:
+        rail.scrollLeft >=
+        maxScrollLeft - 4,
+    });
   };
 
   const scrollRail = (
-    railId: string,
     direction: -1 | 1
   ) => {
-    const rail = railRefs.current[railId];
+    const rail = railRef.current;
 
     if (!rail) {
       return;
     }
 
-    const firstCard = rail.querySelector(
-      ".tool-card"
-    ) as HTMLElement | null;
+    const firstCard =
+      rail.querySelector(
+        ".kit-rail-card"
+      ) as HTMLElement | null;
 
     if (!firstCard) {
       return;
@@ -154,45 +82,43 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
       ) || 0;
 
     rail.scrollBy({
-      left: direction * (cardWidth + gap),
+      left:
+        direction *
+        (cardWidth + gap),
       behavior: "smooth",
     });
 
     requestAnimationFrame(() => {
-      updateRailArrowState(railId);
+      updateArrowState();
     });
   };
 
   /*
-   * Touch gesture handling
-   *
-   * We deliberately wait until the gesture has a clear direction.
+   * Touch handling:
    *
    * Vertical gesture:
-   * → do nothing
-   * → browser remains responsible for page scrolling.
+   * → browser handles normal page scrolling.
    *
    * Horizontal gesture:
-   * → prevent the browser from interpreting it as page movement
-   * → manually move the rail.
+   * → this rail handles horizontal scrolling.
    */
   const handleTouchStart = (
-    railId: string,
     event: React.TouchEvent<HTMLDivElement>
   ) => {
-    const touch = event.touches[0];
+    const touch =
+      event.touches[0];
 
     if (!touch) {
       return;
     }
 
-    const rail = railRefs.current[railId];
+    const rail = railRef.current;
 
     if (!rail) {
       return;
     }
 
-    touchStartRefs.current[railId] = {
+    touchStartRef.current = {
       x: touch.clientX,
       y: touch.clientY,
       scrollLeft: rail.scrollLeft,
@@ -201,35 +127,40 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
   };
 
   const handleTouchMove = (
-    railId: string,
     event: React.TouchEvent<HTMLDivElement>
   ) => {
-    const start = touchStartRefs.current[railId];
+    const start =
+      touchStartRef.current;
 
     if (!start) {
       return;
     }
 
-    const touch = event.touches[0];
+    const touch =
+      event.touches[0];
 
     if (!touch) {
       return;
     }
 
-    const rail = railRefs.current[railId];
+    const rail = railRef.current;
 
     if (!rail) {
       return;
     }
 
-    const deltaX = touch.clientX - start.x;
-    const deltaY = touch.clientY - start.y;
+    const deltaX =
+      touch.clientX - start.x;
+
+    const deltaY =
+      touch.clientY - start.y;
 
     /*
-     * Ignore tiny movements to avoid accidental direction locking.
+     * Ignore tiny movements.
      */
     if (
-      start.direction === "undecided" &&
+      start.direction ===
+        "undecided" &&
       Math.abs(deltaX) < 8 &&
       Math.abs(deltaY) < 8
     ) {
@@ -237,254 +168,195 @@ export default function ToolFeed({ tools }: ToolFeedProps) {
     }
 
     /*
-     * Decide the gesture direction once.
+     * Decide direction once.
      */
-    if (start.direction === "undecided") {
-      if (Math.abs(deltaY) > Math.abs(deltaX)) {
-        start.direction = "vertical";
-      } else {
-        start.direction = "horizontal";
-      }
+    if (
+      start.direction ===
+      "undecided"
+    ) {
+      start.direction =
+        Math.abs(deltaY) >
+        Math.abs(deltaX)
+          ? "vertical"
+          : "horizontal";
     }
 
     /*
-     * Vertical gesture:
-     * leave everything to the browser.
+     * Vertical:
+     * let the browser scroll the page.
      */
-    if (start.direction === "vertical") {
+    if (
+      start.direction ===
+      "vertical"
+    ) {
       return;
     }
 
     /*
-     * Horizontal gesture:
-     * take control of the rail.
+     * Horizontal:
+     * control the rail.
      */
     event.preventDefault();
 
     rail.scrollLeft =
-      start.scrollLeft - deltaX;
+      start.scrollLeft -
+      deltaX;
 
-    updateRailArrowState(railId);
+    updateArrowState();
   };
 
-  const handleTouchEnd = (
-    railId: string
-  ) => {
-    touchStartRefs.current[railId] = null;
+  const handleTouchEnd = () => {
+    touchStartRef.current =
+      null;
 
     requestAnimationFrame(() => {
-      updateRailArrowState(railId);
+      updateArrowState();
     });
   };
 
   useEffect(() => {
-    sections.forEach((section) => {
-      updateRailArrowState(section.id);
-    });
-  }, [tools]);
+    updateArrowState();
+  }, [kits]);
+
+  if (kits.length === 0) {
+    return null;
+  }
 
   return (
-    <section className="space-y-8 border-t border-[#E9E4E1] bg-transparent px-4 pb-24 pt-10 sm:px-6">
-      {sections.map((section) => {
-        let sectionTools: PublishedTool[];
+    <div className="tool-section w-full">
+      {/* Section heading */}
+      <div className="tool-section-heading mb-3">
+        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
+          ✨ Curated Kits
+        </p>
 
-        /*
-         * ⭐ MOST WANTED
-         *
-         * Editorial selection controlled directly
-         * from the database.
-         *
-         * Then sorted by creation date,
-         * newest first.
-         */
-        if (section.id === "wanted") {
-          sectionTools = sortByNewest(
-            tools.filter(
-              (tool) => tool.isMostWanted
-            )
-          );
+        <p className="mt-2 max-w-2xl text-2xl font-semibold tracking-tight text-[#171717] sm:text-3xl">
+          Thoughtfully put together.
+        </p>
+      </div>
 
-        /*
-         * 🎒 BACK TO SCHOOL
-         *
-         * Products whose collections array contains:
-         * "back_to_school"
-         *
-         * Then sorted by creation date,
-         * newest first.
-         */
-        } else if (section.id === "school") {
-          sectionTools = sortByNewest(
-            tools.filter((tool) =>
-              hasCollection(
-                tool,
-                "back_to_school"
-              )
-            )
-          );
+      {/* Rail */}
+      <div className="relative w-full rail-viewport">
+        <div className="rail-carousel group relative w-full">
 
-        /*
-         * 💡 SMART HOME ESSENTIALS
-         *
-         * Products whose collections array contains:
-         * "smart_home"
-         *
-         * Then sorted by creation date,
-         * newest first.
-         */
-        } else if (section.id === "home") {
-          sectionTools = sortByNewest(
-            tools.filter((tool) =>
-              hasCollection(
-                tool,
-                "smart_home"
-              )
-            )
-          );
-
-        /*
-         * 🎃 Halloween Finds
-         *
-         * Products whose collections array contains:
-         * "halloween"
-         *
-         * Then sorted by creation date,
-         * newest first.
-         */
-          } else if (section.id === "halloween") {
-            sectionTools = sortByNewest(
-            tools.filter((tool) =>
-            hasCollection(tool, "halloween")
-                        )
-          );
-
-        /*
-         * Fallback
-         */
-        } else {
-          sectionTools = sortByNewest(tools);
-        }
-
-        return (
-          <div
-            key={section.id}
-            className="tool-section w-full"
+          {/* Left arrow */}
+          <button
+            type="button"
+            className="rail-button rail-button-left"
+            aria-label="Scroll Curated Kits left"
+            disabled={arrowState.left}
+            onClick={() =>
+              scrollRail(-1)
+            }
           >
-            {/* Section heading */}
-            <div className="tool-section-heading mb-3">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
-                {section.label}
-              </p>
+            <span aria-hidden="true">
+              ‹
+            </span>
+          </button>
 
-              <p className="mt-2 max-w-2xl text-2xl font-semibold tracking-tight text-[#171717] sm:text-3xl">
-                {section.subtitle}
-              </p>
-            </div>
-
-            {/* Tool rail */}
-            <div className="relative w-full rail-viewport">
-              <div className="rail-carousel group relative w-full">
-
-                {/* Left arrow */}
-                <button
-                  type="button"
-                  className="rail-button rail-button-left"
-                  aria-label={`Scroll ${section.label} left`}
-                  disabled={
-                    arrowState[section.id]?.left ?? true
-                  }
-                  onClick={() =>
-                    scrollRail(
-                      section.id,
-                      -1
-                    )
-                  }
+          {/* Cards */}
+          <div
+            ref={railRef}
+            className="rail-track flex gap-6 overflow-x-auto overflow-y-visible pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
+            onTouchStart={
+              handleTouchStart
+            }
+            onTouchMove={
+              handleTouchMove
+            }
+            onTouchEnd={
+              handleTouchEnd
+            }
+            onTouchCancel={
+              handleTouchEnd
+            }
+            onScroll={
+              updateArrowState
+            }
+          >
+            {kits.map((kit) => (
+              <article
+                key={kit.id}
+                className="kit-rail-card relative w-[76vw] max-w-[calc(100vw-2rem)] flex-shrink-0 sm:w-[360px]"
+              >
+                <a
+                  href={`/kits/${kit.slug}`}
+                  className="group relative block w-full overflow-hidden rounded-[2rem] border border-[#E8E2DF] bg-white text-left shadow-[0_18px_45px_-28px_rgba(30,20,20,0.28)] transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:border-[#F3B1B4] hover:shadow-[0_30px_80px_-30px_rgba(217,143,148,0.38)]"
                 >
-                  <span aria-hidden="true">
-                    ‹
-                  </span>
-                </button>
+                  {/* Image */}
+                  <div className="relative w-full overflow-hidden bg-[#F7F4F2]">
+                    {kit.imageUrl ? (
+                      <img
+                        src={kit.imageUrl}
+                        alt={
+                          kit.altText ??
+                          kit.title ??
+                          kit.name ??
+                          "Ponop Kit"
+                        }
+                        className="block h-auto w-full object-top transition duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="aspect-[2/3] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
+                    )}
 
-                {/* Cards */}
-                <div
-                  ref={(node) => {
-                    railRefs.current[section.id] =
-                      node;
-                  }}
-                  data-rail-id={section.id}
-                  className="rail-track flex gap-6 overflow-x-auto overflow-y-visible pl-0 pr-0 scrollbar-none sm:pl-2 sm:pr-2"
-                  onTouchStart={(event) =>
-                    handleTouchStart(
-                      section.id,
-                      event
-                    )
-                  }
-                  onTouchMove={(event) =>
-                    handleTouchMove(
-                      section.id,
-                      event
-                    )
-                  }
-                  onTouchEnd={() =>
-                    handleTouchEnd(
-                      section.id
-                    )
-                  }
-                  onTouchCancel={() =>
-                    handleTouchEnd(
-                      section.id
-                    )
-                  }
-                  onScroll={() =>
-                    updateRailArrowState(
-                      section.id
-                    )
-                  }
-                >
-                  {sectionTools.map((tool) => (
-                    <ToolCard
-                      key={tool.id}
-                      tool={tool}
-                      isExpanded={
-                        expandedToolId === tool.id
-                      }
-                      onOpen={() =>
-                        setExpandedToolId(
-                          tool.id
-                        )
-                      }
-                      onClose={() =>
-                        setExpandedToolId(null)
-                      }
-                    />
-                  ))}
-                </div>
+                    {/* Editorial overlay */}
+                    <div className="absolute inset-x-0 bottom-0 z-10 bg-white/78 px-5 pb-5 pt-5 backdrop-blur-[5px] sm:px-6 sm:pb-6 sm:pt-5">
+                      <div className="space-y-4">
 
-                {/* Right arrow */}
-                <button
-                  type="button"
-                  className="rail-button rail-button-right"
-                  aria-label={`Scroll ${section.label} right`}
-                  disabled={
-                    arrowState[section.id]?.right ??
-                    false
-                  }
-                  onClick={() =>
-                    scrollRail(
-                      section.id,
-                      1
-                    )
-                  }
-                >
-                  <span aria-hidden="true">
-                    ›
-                  </span>
-                </button>
-              </div>
-            </div>
+                        {/* Title */}
+                        <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#171717]">
+                          {kit.title ??
+                            kit.name ??
+                            "Curated Kit"}
+                        </h3>
+
+                        {/* Description */}
+                        {(kit.description ??
+                          kit.summary) && (
+                          <p className="line-clamp-3 text-sm leading-6 text-[#68615F]">
+                            {kit.description ??
+                              kit.summary}
+                          </p>
+                        )}
+
+                        {/* CTA */}
+                        <div className="flex items-center justify-between gap-4 pt-1">
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
+                            Explore the idea
+                          </p>
+
+                          <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#F2B5B8] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#171717] shadow-[0_8px_24px_-8px_rgba(217,143,148,0.45)] transition group-hover:scale-[1.02] group-hover:bg-[#EFA9AD]">
+                            Explore
+                            <span className="ml-2">
+                              →
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            ))}
           </div>
-        );
-      })}
-    </section>
+
+          {/* Right arrow */}
+          <button
+            type="button"
+            className="rail-button rail-button-right"
+            aria-label="Scroll Curated Kits right"
+            disabled={arrowState.right}
+            onClick={() =>
+              scrollRail(1)
+            }
+          >
+            <span aria-hidden="true">
+              ›
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
