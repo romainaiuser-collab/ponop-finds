@@ -237,7 +237,7 @@ export default function KitRail({
 
       {/* Rail */}
       <div className="relative w-full rail-viewport">
-        <div className="rail-carousel group relative w-full">
+        <div className="rail-carousel relative w-full">
 
           {/* Left arrow */}
           <button
