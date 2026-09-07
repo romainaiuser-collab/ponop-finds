@@ -40,8 +40,6 @@ export default function KitCard({
    * =========================================================
    * NORMAL CARD
    *
-   * Same visual logic as ToolCard:
-   *
    * Mobile:
    *   width = 76vw
    *
@@ -49,7 +47,7 @@ export default function KitCard({
    *   width = 360px
    *
    * The image keeps its natural aspect ratio.
-   * The editorial content sits over the bottom of the image.
+   * The editorial overlay only contains the CTA.
    *
    * The card itself does not define touchAction.
    * =========================================================
@@ -73,7 +71,11 @@ export default function KitCard({
           {kit.imageUrl ? (
             <img
               src={kit.imageUrl}
-              alt={kit.altText ?? kit.creativePunchline ?? kit.name}
+              alt={
+                kit.altText ??
+                kit.creativePunchline ??
+                kit.name
+              }
               className="block h-auto w-full object-top transition duration-500 group-hover/card:scale-105"
             />
           ) : (
@@ -82,7 +84,8 @@ export default function KitCard({
 
           {/* ===================================================
               EDITORIAL OVERLAY
-              Same treatment as ToolCard.
+              Minimal version:
+              only CTA / exploration prompt.
              =================================================== */}
           <div
             className="
@@ -100,23 +103,19 @@ export default function KitCard({
               sm:pt-5
             "
           >
-            <div className="space-y-3">
-              {/* Kit title / punchline */}
-              <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#171717]">
-                {kit.title ?? kit.name}
-              </h3>
+            <div className="flex items-center justify-between gap-4">
+              {/* Explore label */}
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
+                Click to explore
+              </p>
 
               {/* CTA */}
-              <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
-                  Click to explore
-                </p>
-
-                <span className="inline-flex shrink-0 items-center justify-center self-start rounded-full bg-[#F2B5B8] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#171717] shadow-[0_8px_24px_-8px_rgba(217,143,148,0.45)] transition group-hover/card:scale-[1.02] group-hover/card:bg-[#EFA9AD] sm:self-auto">
-                  Explore kit
-                  <span className="ml-2">→</span>
+              <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#F2B5B8] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#171717] shadow-[0_8px_24px_-8px_rgba(217,143,148,0.45)] transition group-hover/card:scale-[1.02] group-hover/card:bg-[#EFA9AD]">
+                Explore kit
+                <span className="ml-2">
+                  →
                 </span>
-              </div>
+              </span>
             </div>
           </div>
         </div>
@@ -145,8 +144,6 @@ export default function KitCard({
   /*
    * =========================================================
    * EXPANDED MODAL
-   *
-   * Same architecture as ToolCard:
    *
    * LEFT  = full portrait Kit image
    * RIGHT = editorial content
@@ -187,8 +184,6 @@ export default function KitCard({
 
         {/* ===================================================
             LEFT — FULL PORTRAIT IMAGE
-            Same logic as ToolCard.
-            Image is never artificially cropped.
            =================================================== */}
         <div className="relative hidden h-full shrink-0 bg-[#F7F4F2] md:flex md:items-start md:justify-start">
           {kit.imageUrl ? (
@@ -268,7 +263,6 @@ export default function KitCard({
 
               {/* =================================================
                   PRODUCTS
-                  One affiliate CTA per product.
                  ================================================= */}
               {kit.products &&
                 kit.products.length > 0 && (
@@ -325,7 +319,7 @@ export default function KitCard({
                     </div>
                   </section>
                 )}
-              
+
               {/* =================================================
                   EDITORIAL STORY
                  ================================================= */}
