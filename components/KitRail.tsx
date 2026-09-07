@@ -302,37 +302,21 @@ export default function KitRail({
 
                     {/* Editorial overlay */}
                     <div className="absolute inset-x-0 bottom-0 z-10 bg-white/78 px-5 pb-5 pt-5 backdrop-blur-[5px] sm:px-6 sm:pb-6 sm:pt-5">
-                      <div className="space-y-3">
+                      <div className="flex items-center justify-between gap-4">
 
-                        {/* Title */}
-                        <h3 className="text-xl font-semibold leading-tight tracking-tight text-[#171717]">
-                          {kit.title ??
-                            kit.name ??
-                            "Curated Kit"}
-                        </h3>
-
-                        {/* Description */}
-                        {(kit.description ??
-                          kit.summary) && (
-                          <p className="line-clamp-3 text-sm leading-6 text-[#68615F]">
-                            {kit.description ??
-                              kit.summary}
-                          </p>
-                        )}
+                        {/* Explore label */}
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
+                          Explore the idea
+                        </p>
 
                         {/* CTA */}
-                        <div className="flex items-center justify-between gap-4 pt-1">
-                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D98F94]">
-                            Explore the idea
-                          </p>
-
-                          <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#F2B5B8] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#171717] shadow-[0_8px_24px_-8px_rgba(217,143,148,0.45)] transition group-hover:scale-[1.02] group-hover:bg-[#EFA9AD]">
-                            Explore
-                            <span className="ml-2">
-                              →
-                            </span>
+                        <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#F2B5B8] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#171717] shadow-[0_8px_24px_-8px_rgba(217,143,148,0.45)] transition group-hover:scale-[1.02] group-hover:bg-[#EFA9AD]">
+                          Explore Kit
+                          <span className="ml-2">
+                            →
                           </span>
-                        </div>
+                        </span>
+
                       </div>
                     </div>
                   </div>
@@ -355,6 +339,7 @@ export default function KitRail({
               ›
             </span>
           </button>
+
         </div>
       </div>
     </div>
