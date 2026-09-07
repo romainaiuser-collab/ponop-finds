@@ -107,16 +107,10 @@ export default function ToolCard({
             "
           >
             <div className="space-y-3">
-              {/* Creative punchline */}
-              {tool.creativePunchline && (
-                <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#171717]">
-                  {tool.creativePunchline}
-                </h3>
-              )}
-
+              
               {/* Hook */}
               {tool.hook && (
-                <p className="text-sm leading-6 text-[#68615F]">
+                <p className="text-[-15px] leading-6 text-[#68615F]">
                   {tool.hook}
                 </p>
               )}
