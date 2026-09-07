@@ -302,10 +302,10 @@ export default function KitRail({
 
                     {/* Editorial overlay */}
                     <div className="absolute inset-x-0 bottom-0 z-10 bg-white/78 px-5 pb-5 pt-5 backdrop-blur-[5px] sm:px-6 sm:pb-6 sm:pt-5">
-                      <div className="space-y-4">
+                      <div className="space-y-3">
 
                         {/* Title */}
-                        <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#171717]">
+                        <h3 className="text-xl font-semibold leading-tight tracking-tight text-[#171717]">
                           {kit.title ??
                             kit.name ??
                             "Curated Kit"}
