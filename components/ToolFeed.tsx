@@ -350,7 +350,10 @@ export default function ToolFeed({
   }, [tools]);
 
   return (
-    <section className="w-full space-y-16 pb-24">
+    <section
+      id="all-finds"
+      className="w-full space-y-16 pb-24"
+    >
       {sections.map((section) => {
         let sectionTools: PublishedTool[];
 
@@ -439,6 +442,17 @@ export default function ToolFeed({
 
         return (
           <div
+            id={
+              section.id === "wanted"
+                ? "most-wanted"
+                : section.id === "school"
+                  ? "back-to-school"
+                  : section.id === "home"
+                    ? "smart-home"
+                    : section.id === "halloween"
+                      ? "halloween"
+                      : undefined
+            }
             key={section.id}
             className="tool-section w-full"
           >
@@ -572,7 +586,10 @@ export default function ToolFeed({
 
             {/* Curated Kits directly after Most Wanted */}
             {section.id === "wanted" && (
-              <div className="mt-8">
+              <div
+                id="curated-kits"
+                className="mt-8"
+              >
                 <KitRail kits={kits} />
               </div>
             )}
