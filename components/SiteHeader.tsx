@@ -12,8 +12,8 @@ export default function SiteHeader() {
     pathname.startsWith("/kits/");
 
   return (
-    <header className="w-full">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 sm:px-10 sm:py-8">
+    <header className="site-header-editorial w-full">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-10 sm:py-6">
         {/* Brand */}
         <Link
           href="/"
@@ -21,12 +21,12 @@ export default function SiteHeader() {
           className="shrink-0 transition-opacity hover:opacity-80"
         >
           <Image
-            src="/images/logo-p-rose.png"
+            src="/images/Ponop-finds-logo-black-transparent.png"
             alt="Ponop Finds"
-            width={150}
-            height={50}
-            className="h-10 w-auto object-contain"
+            width={320}
+            height={164}
             priority
+            className="block h-14 w-auto sm:h-16"
           />
         </Link>
 
