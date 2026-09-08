@@ -352,7 +352,7 @@ export default function ToolFeed({
   return (
     <section
       id="all-finds"
-      className="w-full space-y-16 pb-24"
+  className="w-full space-y-16 pb-24 pt-8"
     >
       {sections.map((section) => {
         let sectionTools: PublishedTool[];
