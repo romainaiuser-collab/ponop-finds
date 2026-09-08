@@ -401,3 +401,149 @@ body {
     margin-bottom: 0.5rem;
   }
 }
+
+/* ---------- Editorial Hero ---------- */
+
+.ponop-hero-editorial {
+  position: relative;
+  overflow: hidden;
+
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.04) 55%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    url("/images/hero-editorial-bg.png");
+
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.ponop-hero-editorial::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.30) 0%,
+      rgba(255, 255, 255, 0.08) 55%,
+      rgba(255, 255, 255, 0) 100%
+    );
+
+  pointer-events: none;
+}
+
+.ponop-hero-editorial > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ---------- Hero Collection Navigation ---------- */
+
+.hero-collections {
+  margin-top: 2.5rem;
+}
+
+.hero-collections-label {
+  margin-bottom: 0.9rem;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+
+  color: #d98f94;
+}
+
+.hero-collections-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.hero-collection-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+
+  min-height: 2.8rem;
+  padding: 0.65rem 1rem;
+
+  border: 1px solid rgba(232, 226, 223, 0.9);
+  border-radius: 9999px;
+
+  background: rgba(255, 255, 255, 0.76);
+
+  color: #171717;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 8px 30px -18px rgba(30, 20, 20, 0.25);
+
+  transition:
+    transform 220ms ease,
+    background-color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.hero-collection-link:hover {
+  transform: translateY(-2px);
+
+  background: rgba(253, 243, 243, 0.92);
+  border-color: #ebc1c3;
+
+  box-shadow:
+    0 12px 30px -16px rgba(217, 143, 148, 0.35);
+}
+
+.hero-collection-arrow {
+  color: #d98f94;
+  font-size: 0.9rem;
+}
+
+
+/* ---------- Mobile Hero ---------- */
+
+@media (max-width: 639px) {
+  .ponop-hero-editorial {
+    background-position: 68% center;
+  }
+
+  .ponop-hero-editorial::before {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.68) 0%,
+        rgba(255, 255, 255, 0.40) 55%,
+        rgba(255, 255, 255, 0.60) 100%
+      );
+  }
+
+  .hero-collections {
+    margin-top: 2rem;
+  }
+
+  .hero-collections-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-collection-link {
+    justify-content: space-between;
+    min-width: 0;
+  }
+}
