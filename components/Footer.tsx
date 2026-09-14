@@ -15,7 +15,7 @@ export default function Footer() {
             rel="noreferrer"
             aria-label="Ponop on Pinterest"
             title="Pinterest"
-            className="text-[#68615F] transition-colors hover:text-[#D98F94]"
+            className="text-[#8B8380] transition-colors hover:text-[#D98F94]"
           >
             <svg
               viewBox="0 0 24 24"
@@ -32,7 +32,7 @@ export default function Footer() {
             rel="noreferrer"
             aria-label="Ponop on Instagram"
             title="Instagram"
-            className="text-[#68615F] transition-colors hover:text-[#D98F94]"
+            className="text-[#8B8380] transition-colors hover:text-[#D98F94]"
           >
             <svg
               viewBox="0 0 24 24"
@@ -50,7 +50,7 @@ export default function Footer() {
 
           <Link
             href="/privacy"
-            className="font-medium text-[#68615F] transition-colors hover:text-[#D98F94]"
+            className="font-medium text-[#8B8380] transition-colors hover:text-[#D98F94]"
           >
             Privacy Policy
           </Link>
