@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SiteHeader from "../../components/SiteHeader";
 import KitFeed from "../../components/KitFeed";
 import { getPublishedKits } from "../../lib/kits";
@@ -13,9 +14,16 @@ export default async function KitsPage() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="px-6 pb-10 pt-10 sm:px-10 sm:pb-12 sm:pt-12">
+      <section className="px-6 pb-10 pt-6 sm:px-10 sm:pb-12 sm:pt-8">
         <div className="mx-auto max-w-7xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm font-semibold text-[#68615F] transition-colors hover:text-[#D98F94]"
+          >
+            ← All Finds
+          </Link>
+
+          <p className="mt-8 text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
             ✨ Curated Kits
           </p>
 
