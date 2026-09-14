@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SiteHeader from "../../../components/SiteHeader";
+import SiteHeader from "../../components/SiteHeader";
 
 export const metadata = {
   title: "Privacy Policy | Ponop Finds",
@@ -24,111 +24,22 @@ export default function PrivacyPage() {
           </div>
 
           <div className="mt-12 space-y-10 text-base leading-7 text-[#514B49]">
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">1. About this policy</h2>
-              <p>This Privacy Policy explains how Ponop Finds handles information when you visit and use finds.ponop.io (the “Site”). Ponop Finds is a product discovery website operated as part of the Ponop project.</p>
-              <p>We aim to collect only information reasonably necessary to operate, secure, measure and improve the Site.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">2. Information we collect</h2>
-              <p>Ponop Finds does not currently provide user accounts, checkout, or forms that require you to submit personal information directly through the Site.</p>
-              <p>When you visit the Site, technical information may be processed by hosting, delivery, security, analytics or other services. This may include IP address, browser and device information, requested pages, timestamps, approximate location derived from IP, referral information, diagnostic information and information about interactions with the Site.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">3. How we use information</h2>
-              <p>Information may be used to:</p>
-              <ul className="list-disc space-y-2 pl-6">
-                <li>operate and deliver the Site;</li>
-                <li>maintain security and prevent abuse;</li>
-                <li>diagnose technical problems and improve reliability;</li>
-                <li>measure traffic, content performance and user interactions where analytics are enabled;</li>
-                <li>understand which products, Kits and collections are most useful to visitors;</li>
-                <li>measure the effectiveness of links and marketing campaigns where appropriate; and</li>
-                <li>comply with applicable legal obligations.</li>
-              </ul>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">4. Cookies and similar technologies</h2>
-              <p>The Site may use cookies, pixels, local storage, tags or similar technologies for essential functionality, security, analytics, attribution or marketing purposes.</p>
-              <p>Potential non-essential technologies may include Google Analytics or similar audience-measurement tools, Meta Pixel or similar advertising technologies, and Pinterest Tag or similar measurement and attribution technologies. The use of a specific technology depends on the Site’s actual configuration at the relevant time.</p>
-              <p>Where a tracker requires consent under applicable law, it will only be activated after the required consent has been obtained. Consent-based trackers will not be treated as authorised merely because a visitor continues browsing.</p>
-              <p>Some strictly necessary technologies may be used without consent where permitted by applicable law. Where an analytics solution is configured to qualify for a consent exemption under applicable French rules, it will be limited to the conditions required for that exemption, including the applicable restrictions on purposes, data reuse and cross-site tracking.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">5. Analytics and audience measurement</h2>
-              <p>Ponop Finds may use analytics tools to understand traffic sources, page views, navigation, interactions with products and Kits, and overall Site performance.</p>
-              <p>Possible providers include Google Analytics and other analytics services selected by Ponop. These tools may process identifiers, device information, browsing events and technical information according to their respective privacy policies.</p>
-              <p>Analytics configurations will be implemented according to the legal requirements applicable to the Site. In particular, analytics that do not meet the conditions for an applicable consent exemption will require prior consent before the relevant trackers are activated.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">6. Marketing, social media and advertising technologies</h2>
-              <p>Ponop Finds may use technologies provided by platforms such as Meta and Pinterest to measure campaigns, understand referrals and interactions, build aggregate audiences, or support advertising and attribution.</p>
-              <p>Where such technologies involve non-essential cookies or similar trackers, they require prior consent where applicable. They may allow the relevant platform to receive information about interactions with the Site and may involve processing outside the European Economic Area.</p>
-              <p>Ponop Finds does not currently use these technologies to sell personal information to third parties.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">7. Affiliate links and third-party websites</h2>
-              <p>Ponop Finds contains links to third-party websites and services, including merchants, software providers and affiliate partners. Some links are affiliate links, meaning Ponop may receive a commission if you make a qualifying purchase or take another qualifying action after following a link.</p>
-              <p>Affiliate networks and merchants may use cookies, tracking parameters or other attribution technologies after you follow a link. Those technologies are controlled by the relevant third party and are subject to its privacy and cookie policies.</p>
-              <p>Once you leave Ponop Finds, the privacy practices of the destination website apply. We do not control how third parties collect or use information.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">8. Newsletter and communications</h2>
-              <p>If Ponop Finds offers a newsletter, email subscription or other direct communications in the future, personal information such as an email address may be collected for that purpose.</p>
-              <p>Such communications will be based on an appropriate legal basis and, where consent is required, on a clear affirmative subscription. Unsubscribe instructions will be provided in marketing emails.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">9. Service providers and infrastructure</h2>
-              <p>Ponop Finds relies on third-party infrastructure and service providers to host, store, deliver, secure and operate the Site. These may include Cloudflare for hosting, edge delivery and security, Supabase for database services, Amazon Web Services or related storage and content-delivery infrastructure, and analytics or marketing providers where enabled.</p>
-              <p>Providers may process technical information on our behalf or as independent controllers, depending on the service and its role.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">10. Legal bases</h2>
-              <p>Depending on the processing activity, the legal basis may include legitimate interests, consent, compliance with a legal obligation, or another lawful basis permitted by applicable data protection law.</p>
-              <p>For non-essential cookies and trackers requiring consent, consent will be requested before activation and may be withdrawn at any time.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">11. Data retention</h2>
-              <p>We retain information only for as long as reasonably necessary for the purposes described in this policy, including security, operational, analytics and legal requirements. Retention periods may vary depending on the type of information and the service processing it.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">12. International transfers</h2>
-              <p>Some infrastructure and service providers used to operate the Site may process information outside the European Economic Area. Where required, appropriate safeguards for international transfers will be used in accordance with applicable data protection law.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">13. Your rights in the European Economic Area</h2>
-              <p>If European data protection law applies to you, you may have rights including access to your personal data, rectification, erasure, restriction of processing, objection to certain processing, and data portability, subject to applicable legal conditions.</p>
-              <p>You may also have the right to lodge a complaint with the data protection authority in your country of residence or where you believe a violation has occurred.</p>
-              <p>Where processing is based on consent, you may withdraw that consent at any time. Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">14. Children</h2>
-              <p>Ponop Finds is not directed at children and does not knowingly collect personal information from children through the Site.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">15. Changes to this policy</h2>
-              <p>We may update this Privacy Policy when the Site, its technology, its partners, its analytics or marketing configuration, or applicable legal requirements change. The date shown at the top of this page indicates when the policy was last updated.</p>
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-[#171717]">16. Contact</h2>
-              <p>For privacy-related questions or requests, contact us at <a href="mailto:hello@ponop.io" className="font-semibold text-[#B96F75] underline decoration-[#EBC1C3] underline-offset-4 transition-colors hover:text-[#D98F94]">hello@ponop.io</a>.</p>
-            </section>
-
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">1. About this policy</h2><p>This Privacy Policy explains how Ponop Finds handles information when you visit and use finds.ponop.io (the “Site”). Ponop Finds is a product discovery website operated as part of the Ponop project.</p><p>We aim to collect only information reasonably necessary to operate, secure, measure and improve the Site.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">2. Information we collect</h2><p>Ponop Finds does not currently provide user accounts, checkout, or forms that require you to submit personal information directly through the Site.</p><p>When you visit the Site, technical information may be processed by hosting, delivery, security, analytics or other services. This may include IP address, browser and device information, requested pages, timestamps, approximate location derived from IP, referral information, diagnostic information and information about interactions with the Site.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">3. How we use information</h2><p>Information may be used to:</p><ul className="list-disc space-y-2 pl-6"><li>operate and deliver the Site;</li><li>maintain security and prevent abuse;</li><li>diagnose technical problems and improve reliability;</li><li>measure traffic, content performance and user interactions where analytics are enabled;</li><li>understand which products, Kits and collections are most useful to visitors;</li><li>measure the effectiveness of links and marketing campaigns where appropriate; and</li><li>comply with applicable legal obligations.</li></ul></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">4. Cookies and similar technologies</h2><p>The Site may use cookies, pixels, local storage, tags or similar technologies for essential functionality, security, analytics, attribution or marketing purposes.</p><p>Potential non-essential technologies may include Google Analytics or similar audience-measurement tools, Meta Pixel or similar advertising technologies, and Pinterest Tag or similar measurement and attribution technologies. The use of a specific technology depends on the Site’s actual configuration at the relevant time.</p><p>Where a tracker requires consent under applicable law, it will only be activated after the required consent has been obtained. Consent-based trackers will not be treated as authorised merely because a visitor continues browsing.</p><p>Some strictly necessary technologies may be used without consent where permitted by applicable law. Where an analytics solution is configured to qualify for a consent exemption under applicable French rules, it will be limited to the conditions required for that exemption, including the applicable restrictions on purposes, data reuse and cross-site tracking.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">5. Analytics and audience measurement</h2><p>Ponop Finds may use analytics tools to understand traffic sources, page views, navigation, interactions with products and Kits, and overall Site performance.</p><p>Possible providers include Google Analytics and other analytics services selected by Ponop. These tools may process identifiers, device information, browsing events and technical information according to their respective privacy policies.</p><p>Analytics configurations will be implemented according to the legal requirements applicable to the Site. In particular, analytics that do not meet the conditions for an applicable consent exemption will require prior consent before the relevant trackers are activated.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">6. Marketing, social media and advertising technologies</h2><p>Ponop Finds may use technologies provided by platforms such as Meta and Pinterest to measure campaigns, understand referrals and interactions, build aggregate audiences, or support advertising and attribution.</p><p>Where such technologies involve non-essential cookies or similar trackers, they require prior consent where applicable. They may allow the relevant platform to receive information about interactions with the Site and may involve processing outside the European Economic Area.</p><p>Ponop Finds does not currently use these technologies to sell personal information to third parties.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">7. Affiliate links and third-party websites</h2><p>Ponop Finds contains links to third-party websites and services, including merchants, software providers and affiliate partners. Some links are affiliate links, meaning Ponop may receive a commission if you make a qualifying purchase or take another qualifying action after following a link.</p><p>Affiliate networks and merchants may use cookies, tracking parameters or other attribution technologies after you follow a link. Those technologies are controlled by the relevant third party and are subject to its privacy and cookie policies.</p><p>Once you leave Ponop Finds, the privacy practices of the destination website apply. We do not control how third parties collect or use information.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">8. Newsletter and communications</h2><p>If Ponop Finds offers a newsletter, email subscription or other direct communications in the future, personal information such as an email address may be collected for that purpose.</p><p>Such communications will be based on an appropriate legal basis and, where consent is required, on a clear affirmative subscription. Unsubscribe instructions will be provided in marketing emails.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">9. Service providers and infrastructure</h2><p>Ponop Finds relies on third-party infrastructure and service providers to host, store, deliver, secure and operate the Site. These may include Cloudflare for hosting, edge delivery and security, Supabase for database services, Amazon Web Services or related storage and content-delivery infrastructure, and analytics or marketing providers where enabled.</p><p>Providers may process technical information on our behalf or as independent controllers, depending on the service and its role.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">10. Legal bases</h2><p>Depending on the processing activity, the legal basis may include legitimate interests, consent, compliance with a legal obligation, or another lawful basis permitted by applicable data protection law.</p><p>For non-essential cookies and trackers requiring consent, consent will be requested before activation and may be withdrawn at any time.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">11. Data retention</h2><p>We retain information only for as long as reasonably necessary for the purposes described in this policy, including security, operational, analytics and legal requirements. Retention periods may vary depending on the type of information and the service processing it.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">12. International transfers</h2><p>Some infrastructure and service providers used to operate the Site may process information outside the European Economic Area. Where required, appropriate safeguards for international transfers will be used in accordance with applicable data protection law.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">13. Your rights in the European Economic Area</h2><p>If European data protection law applies to you, you may have rights including access to your personal data, rectification, erasure, restriction of processing, objection to certain processing, and data portability, subject to applicable legal conditions.</p><p>You may also have the right to lodge a complaint with the data protection authority in your country of residence or where you believe a violation has occurred.</p><p>Where processing is based on consent, you may withdraw that consent at any time. Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">14. Children</h2><p>Ponop Finds is not directed at children and does not knowingly collect personal information from children through the Site.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">15. Changes to this policy</h2><p>We may update this Privacy Policy when the Site, its technology, its partners, its analytics or marketing configuration, or applicable legal requirements change. The date shown at the top of this page indicates when the policy was last updated.</p></section>
+            <section className="space-y-4"><h2 className="text-2xl font-semibold tracking-tight text-[#171717]">16. Contact</h2><p>For privacy-related questions or requests, contact us at <a href="mailto:hello@ponop.io" className="font-semibold text-[#B96F75] underline decoration-[#EBC1C3] underline-offset-4 transition-colors hover:text-[#D98F94]">hello@ponop.io</a>.</p></section>
             <p className="border-t border-[#E8E2DF] pt-8 text-sm leading-6 text-[#8B8380]">This page is provided as general information about the privacy practices of Ponop Finds. It is not legal advice and should be reviewed against the actual technical configuration and legal structure of the service. The Site should be updated whenever a new analytics, advertising, social-media, newsletter or other tracking technology is actually activated.</p>
           </div>
         </div>
