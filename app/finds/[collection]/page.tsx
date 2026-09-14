@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SiteHeader from "../../../components/SiteHeader";
 import CollectionFeed from "../../../components/CollectionFeed";
 import {
   getProductCollection,
@@ -47,21 +48,24 @@ export default async function CollectionPage({
 
   if (!collection) {
     return (
-      <main className="min-h-screen bg-[#faf8f7] px-6 py-16 text-[#171717] sm:px-10">
-        <div className="mx-auto max-w-7xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
-            Ponop Finds
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Collection not found.
-          </h1>
-          <Link
-            href="/"
-            className="mt-8 inline-flex items-center text-sm font-semibold text-[#68615F] transition-colors hover:text-[#D98F94]"
-          >
-            ← Back to Finds
-          </Link>
-        </div>
+      <main className="min-h-screen bg-[#faf8f7] text-[#171717]">
+        <SiteHeader />
+        <section className="px-6 pb-24 pt-10 sm:px-10 sm:pt-12">
+          <div className="mx-auto max-w-7xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
+              Ponop Finds
+            </p>
+            <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
+              Collection not found.
+            </h1>
+            <Link
+              href="/"
+              className="mt-8 inline-flex items-center text-sm font-semibold text-[#68615F] transition-colors hover:text-[#D98F94]"
+            >
+              ← Back to Finds
+            </Link>
+          </div>
+        </section>
       </main>
     );
   }
@@ -73,6 +77,8 @@ export default async function CollectionPage({
 
   return (
     <main className="min-h-screen bg-[#faf8f7] text-[#171717]">
+      <SiteHeader />
+
       <section className="px-6 pb-10 pt-10 sm:px-10 sm:pb-12 sm:pt-12">
         <div className="mx-auto max-w-7xl">
           <Link
