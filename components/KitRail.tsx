@@ -17,6 +17,8 @@ export default function KitRail({ kits }: KitRailProps) {
   } | null>(null);
   const [arrowState, setArrowState] = useState({ left: true, right: false });
 
+  const visibleKits = kits.slice(0, 10);
+
   const updateArrowState = () => {
     const rail = railRef.current;
     if (!rail) return;
@@ -82,9 +84,9 @@ export default function KitRail({ kits }: KitRailProps) {
 
   useEffect(() => {
     updateArrowState();
-  }, [kits]);
+  }, [visibleKits.length]);
 
-  if (kits.length === 0) return null;
+  if (visibleKits.length === 0) return null;
 
   return (
     <div className="tool-section w-full">
@@ -130,7 +132,7 @@ export default function KitRail({ kits }: KitRailProps) {
             onTouchCancel={handleTouchEnd}
             onScroll={updateArrowState}
           >
-            {kits.map((kit) => (
+            {visibleKits.map((kit) => (
               <article
                 key={kit.id}
                 className="kit-rail-card relative w-[76vw] max-w-[calc(100vw-2rem)] flex-shrink-0 sm:w-[360px]"
