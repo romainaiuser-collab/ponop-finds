@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "../../../components/SiteHeader";
+import Footer from "../../../components/Footer";
 import CollectionFeed from "../../../components/CollectionFeed";
 import {
   getProductCollection,
@@ -63,6 +64,7 @@ export default async function CollectionPage({
             ← Back to Finds
           </Link>
         </div>
+        <Footer />
       </main>
     );
   }
@@ -102,6 +104,8 @@ export default async function CollectionPage({
       <section className="px-6 pb-24 sm:px-10">
         <CollectionFeed tools={tools} />
       </section>
+
+      <Footer />
     </main>
   );
 }
