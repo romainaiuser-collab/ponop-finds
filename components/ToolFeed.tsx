@@ -13,21 +13,25 @@ const sections = [
     id: "wanted",
     label: "⭐ Most Wanted",
     subtitle: "The things we’d buy ourselves.",
+    href: "/finds/most-wanted",
   },
   {
     id: "school",
     label: "🎒 Back To School",
     subtitle: "Smart finds for a fresh start.",
+    href: "/finds/back-to-school",
   },
   {
     id: "home",
     label: "💡 Smart Home Essentials",
     subtitle: "Clever finds to make home life easier.",
+    href: "/finds/smart-home",
   },
   {
     id: "halloween",
     label: "🎃 Halloween Finds",
     subtitle: "Spooky finds for a frightfully good season.",
+    href: "/finds/halloween",
   },
 ];
 
@@ -352,7 +356,7 @@ export default function ToolFeed({
   return (
     <section
       id="all-finds"
-  className="w-full space-y-16 pb-24 pt-8"
+      className="w-full space-y-16 pb-24 pt-8"
     >
       {sections.map((section) => {
         let sectionTools: PublishedTool[];
@@ -458,13 +462,25 @@ export default function ToolFeed({
           >
             {/* Section heading */}
             <div className="tool-section-heading mb-3">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
-                {section.label}
-              </p>
+              <div className="flex items-end justify-between gap-6">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
+                    {section.label}
+                  </p>
 
-              <p className="mt-2 max-w-2xl text-2xl font-semibold tracking-tight text-[#171717] sm:text-3xl">
-                {section.subtitle}
-              </p>
+                  <p className="mt-2 max-w-2xl text-2xl font-semibold tracking-tight text-[#171717] sm:text-3xl">
+                    {section.subtitle}
+                  </p>
+                </div>
+
+                <a
+                  href={section.href}
+                  className="mb-1 shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-[#68615F] transition-colors hover:text-[#D98F94]"
+                >
+                  Explore all
+                  <span className="ml-2">→</span>
+                </a>
+              </div>
             </div>
 
             {/* Tool rail */}
