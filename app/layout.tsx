@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased overflow-x-clip`}
     >
-      <body className="min-h-full bg-[#101820] text-white font-[family:var(--font-inter)]">
+      <body className="min-h-full overflow-x-clip bg-[#101820] text-white font-[family:var(--font-inter)]">
         {children}
       </body>
     </html>
