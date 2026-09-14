@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SiteHeader from "../../components/SiteHeader";
+import Footer from "../../components/Footer";
 import KitFeed from "../../components/KitFeed";
 import { getPublishedKits } from "../../lib/kits";
 
@@ -10,10 +11,8 @@ export default async function KitsPage() {
 
   return (
     <main className="min-h-screen bg-[#faf8f7] text-[#171717]">
-      {/* Header */}
       <SiteHeader />
 
-      {/* Hero */}
       <section className="px-6 pb-10 pt-6 sm:px-10 sm:pb-12 sm:pt-8">
         <div className="mx-auto max-w-7xl">
           <Link
@@ -37,10 +36,11 @@ export default async function KitsPage() {
         </div>
       </section>
 
-      {/* Kit wall */}
       <section className="px-6 pb-24 sm:px-10">
         <KitFeed kits={kits} />
       </section>
+
+      <Footer />
     </main>
   );
 }
