@@ -4,7 +4,9 @@ export default function Hero() {
   return (
     <section className="ponop-hero ponop-hero-editorial relative overflow-hidden px-4 py-8 sm:px-6">
       <div className="relative ml-[var(--page-gutter)] mr-[var(--page-gutter)] flex w-auto flex-col items-start text-left max-[639px]:ml-2 max-[639px]:mr-2">
-        <div className="mb-4">
+        <div
+          className="mb-4 [margin-left:calc(max(40px,((100vw-80rem)/2)+40px)-var(--page-gutter))] max-[639px]:[margin-left:16px]"
+        >
           <a href="https://finds.ponop.io" aria-label="Ponop home">
             <Image
               src="/images/Ponop-finds-logo-black-transparent.png"
