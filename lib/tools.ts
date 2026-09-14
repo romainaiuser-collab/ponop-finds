@@ -12,42 +12,69 @@ export async function getPublishedTools(): Promise<PublishedTool[]> {
   }
 
   console.log(
-  "PONOP - publications returned from Supabase:",
-  data?.length ?? 0
-);
+    "PONOP - publications returned from Supabase:",
+    data?.length ?? 0
+  );
 
-function getPublicImageUrl(imageUrl: string | null): string | null {
-  if (!imageUrl) return null;
+  function getPublicImageUrl(imageUrl: string | null): string | null {
+    if (!imageUrl) return null;
 
-  if (imageUrl.startsWith("s3://ponop-ai-assets/")) {
-    const path = imageUrl.replace("s3://ponop-ai-assets/", "");
-    return `${CLOUDFRONT_DOMAIN}/${path}`;
+    if (imageUrl.startsWith("s3://ponop-ai-assets/")) {
+      const path = imageUrl.replace("s3://ponop-ai-assets/", "");
+      return `${CLOUDFRONT_DOMAIN}/${path}`;
+    }
+
+    return imageUrl;
   }
 
-  return imageUrl;
+  return (data ?? []).map((publication) => ({
+    id: publication.id,
+    contentId: publication.content_id,
+    title: publication.title ?? null,
+    creativePunchline: publication.creative_punchline ?? null,
+    hook: publication.hook ?? null,
+    description: publication.description ?? null,
+    summary: publication.summary ?? null,
+    editorialStory: publication.editorial_story ?? null,
+    keyBenefits: publication.key_benefits ?? null,
+    recommendedFor: publication.recommended_for ?? null,
+    categories: publication.categories ?? null,
+    idealFor: publication.ideal_for ?? null,
+    notIdealFor: publication.not_ideal_for ?? null,
+    isMostWanted: publication.is_most_wanted ?? false,
+    collections: publication.collections ?? [],
+    affiliateLink: publication.affiliate_link ?? null,
+    altText: publication.alt_text ?? null,
+    publishedAt: publication.published_at ?? null,
+    imageUrl: getPublicImageUrl(publication.image_url),
+    createdAt: publication.created_at ?? null,
+    updatedAt: publication.updated_at ?? null,
+  }));
 }
 
-return (data ?? []).map((publication) => ({
-  id: publication.id,
-  contentId: publication.content_id,
-  title: publication.title ?? null,
-  creativePunchline: publication.creative_punchline ?? null,
-  hook: publication.hook ?? null,
-  description: publication.description ?? null,
-  summary: publication.summary ?? null,
-  editorialStory: publication.editorial_story ?? null,
-  keyBenefits: publication.key_benefits ?? null,
-  recommendedFor: publication.recommended_for ?? null,
-  categories: publication.categories ?? null,
-  idealFor: publication.ideal_for ?? null,
-  notIdealFor: publication.not_ideal_for ?? null,
-  isMostWanted: publication.is_most_wanted ?? false,
-  collections: publication.collections ?? [],
-  affiliateLink: publication.affiliate_link ?? null,
-  altText: publication.alt_text ?? null,
-  publishedAt: publication.published_at ?? null,
-  imageUrl: getPublicImageUrl(publication.image_url),
-  createdAt: publication.created_at ?? null,
-  updatedAt: publication.updated_at ?? null,
-}));
+function hasCollection(
+  tool: PublishedTool,
+  collection: string
+): boolean {
+  if (!Array.isArray(tool.collections)) {
+    return false;
+  }
+
+  return tool.collections.some(
+    (item) =>
+      String(item).trim().toLowerCase() === collection.toLowerCase()
+  );
+}
+
+export async function getPublishedToolsByCollection(
+  collection: string,
+  isMostWanted = false
+): Promise<PublishedTool[]> {
+  const tools = await getPublishedTools();
+
+  if (isMostWanted) {
+    return tools.filter((tool) => tool.isMostWanted);
+  }
+
+  return tools.filter((tool) => hasCollection(tool, collection));
 }
