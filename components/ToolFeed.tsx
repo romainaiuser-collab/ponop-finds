@@ -16,6 +16,12 @@ const sections = [
     href: "/finds/most-wanted",
   },
   {
+    id: "halloween",
+    label: "🎃 Halloween Finds",
+    subtitle: "Spooky finds for a frightfully good season.",
+    href: "/finds/halloween",
+  },
+  {
     id: "school",
     label: "🎒 Back To School",
     subtitle: "Smart finds for a fresh start.",
@@ -26,12 +32,6 @@ const sections = [
     label: "💡 Smart Home Essentials",
     subtitle: "Clever finds to make home life easier.",
     href: "/finds/smart-home",
-  },
-  {
-    id: "halloween",
-    label: "🎃 Halloween Finds",
-    subtitle: "Spooky finds for a frightfully good season.",
-    href: "/finds/halloween",
   },
 ];
 
@@ -55,12 +55,6 @@ function hasCollection(
   );
 }
 
-/*
- * Sort tools by creation date:
- * newest first.
- *
- * Tools without a createdAt date are placed at the end.
- */
 function sortByNewest(
   tools: PublishedTool[]
 ): PublishedTool[] {
@@ -201,22 +195,6 @@ export default function ToolFeed({
     });
   };
 
-  /*
-   * Touch gesture handling
-   *
-   * We deliberately wait until the gesture
-   * has a clear direction.
-   *
-   * Vertical gesture:
-   * → do nothing
-   * → browser remains responsible for
-   *   page scrolling.
-   *
-   * Horizontal gesture:
-   * → prevent the browser from interpreting
-   *   it as page movement
-   * → manually move the rail.
-   */
   const handleTouchStart = (
     railId: string,
     event: React.TouchEvent<HTMLDivElement>
@@ -279,9 +257,6 @@ export default function ToolFeed({
     const deltaY =
       touch.clientY - start.y;
 
-    /*
-     * Ignore tiny movements.
-     */
     if (
       start.direction ===
         "undecided" &&
@@ -291,9 +266,6 @@ export default function ToolFeed({
       return;
     }
 
-    /*
-     * Decide direction once.
-     */
     if (
       start.direction ===
       "undecided"
@@ -305,10 +277,6 @@ export default function ToolFeed({
           : "horizontal";
     }
 
-    /*
-     * Vertical:
-     * let the browser scroll the page.
-     */
     if (
       start.direction ===
       "vertical"
@@ -316,10 +284,6 @@ export default function ToolFeed({
       return;
     }
 
-    /*
-     * Horizontal:
-     * control the rail.
-     */
     event.preventDefault();
 
     rail.scrollLeft =
@@ -358,91 +322,53 @@ export default function ToolFeed({
       id="all-finds"
       className="w-full space-y-16 pb-24 pt-8"
     >
+      {/* Curated Kits first */}
+      <div id="curated-kits">
+        <KitRail kits={kits} />
+      </div>
+
       {sections.map((section) => {
         let sectionTools: PublishedTool[];
 
-        /*
-         * ⭐ MOST WANTED
-         *
-         * Products explicitly marked as
-         * most wanted.
-         */
         if (section.id === "wanted") {
-          sectionTools =
-            sortByNewest(
-              tools.filter(
-                (tool) =>
-                  tool.isMostWanted
+          sectionTools = sortByNewest(
+            tools.filter(
+              (tool) => tool.isMostWanted
+            )
+          );
+        } else if (section.id === "school") {
+          sectionTools = sortByNewest(
+            tools.filter((tool) =>
+              hasCollection(
+                tool,
+                "back_to_school"
               )
-            );
-
-        /*
-         * 🎒 BACK TO SCHOOL
-         *
-         * Products whose collections array
-         * contains:
-         * "back_to_school"
-         */
-        } else if (
-          section.id === "school"
-        ) {
-          sectionTools =
-            sortByNewest(
-              tools.filter((tool) =>
-                hasCollection(
-                  tool,
-                  "back_to_school"
-                )
+            )
+          );
+        } else if (section.id === "home") {
+          sectionTools = sortByNewest(
+            tools.filter((tool) =>
+              hasCollection(
+                tool,
+                "smart_home"
               )
-            );
-
-        /*
-         * 💡 SMART HOME ESSENTIALS
-         *
-         * Products whose collections array
-         * contains:
-         * "smart_home"
-         */
-        } else if (
-          section.id === "home"
-        ) {
-          sectionTools =
-            sortByNewest(
-              tools.filter((tool) =>
-                hasCollection(
-                  tool,
-                  "smart_home"
-                )
+            )
+          );
+        } else if (section.id === "halloween") {
+          sectionTools = sortByNewest(
+            tools.filter((tool) =>
+              hasCollection(
+                tool,
+                "halloween"
               )
-            );
-
-        /*
-         * 🎃 HALLOWEEN FINDS
-         *
-         * Products whose collections array
-         * contains:
-         * "halloween"
-         */
-        } else if (
-          section.id === "halloween"
-        ) {
-          sectionTools =
-            sortByNewest(
-              tools.filter((tool) =>
-                hasCollection(
-                  tool,
-                  "halloween"
-                )
-              )
-            );
-
-        /*
-         * Fallback
-         */
+            )
+          );
         } else {
-          sectionTools =
-            sortByNewest(tools);
+          sectionTools = sortByNewest(tools);
         }
+
+        // Keep every homepage rail limited to 10 items.
+        sectionTools = sectionTools.slice(0, 10);
 
         return (
           <div
@@ -460,7 +386,6 @@ export default function ToolFeed({
             key={section.id}
             className="tool-section w-full"
           >
-            {/* Section heading */}
             <div className="tool-section-heading mb-3">
               <div className="flex items-end justify-between gap-6">
                 <div>
@@ -483,11 +408,8 @@ export default function ToolFeed({
               </div>
             </div>
 
-            {/* Tool rail */}
             <div className="relative w-full rail-viewport">
               <div className="rail-carousel group relative w-full">
-
-                {/* Left arrow */}
                 <button
                   type="button"
                   className="rail-button rail-button-left"
@@ -509,7 +431,6 @@ export default function ToolFeed({
                   </span>
                 </button>
 
-                {/* Cards */}
                 <div
                   ref={(node) => {
                     railRefs.current[
@@ -576,7 +497,6 @@ export default function ToolFeed({
                   )}
                 </div>
 
-                {/* Right arrow */}
                 <button
                   type="button"
                   className="rail-button rail-button-right"
@@ -599,16 +519,6 @@ export default function ToolFeed({
                 </button>
               </div>
             </div>
-
-            {/* Curated Kits directly after Most Wanted */}
-            {section.id === "wanted" && (
-              <div
-                id="curated-kits"
-                className="mt-8"
-              >
-                <KitRail kits={kits} />
-              </div>
-            )}
           </div>
         );
       })}
