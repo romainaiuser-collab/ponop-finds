@@ -226,13 +226,25 @@ export default function KitRail({
     <div className="tool-section w-full">
       {/* Section heading */}
       <div className="tool-section-heading mb-3">
-        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
-          ✨ Curated Kits
-        </p>
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#D98F94]">
+              ✨ Curated Kits
+            </p>
 
-        <p className="mt-2 max-w-2xl text-2xl font-semibold tracking-tight text-[#171717] sm:text-3xl">
-          Thoughtfully put together.
-        </p>
+            <p className="mt-2 max-w-2xl text-2xl font-semibold tracking-tight text-[#171717] sm:text-3xl">
+              Thoughtfully put together.
+            </p>
+          </div>
+
+          <a
+            href="/kits"
+            className="mb-1 shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-[#68615F] transition-colors hover:text-[#D98F94]"
+          >
+            Explore all
+            <span className="ml-2">→</span>
+          </a>
+        </div>
       </div>
 
       {/* Rail */}
@@ -297,7 +309,7 @@ export default function KitRail({
                         className="block h-auto w-full object-top transition duration-500 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="aspect-[2/3] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5]" />
+                      <div className="aspect-[2/3] w-full bg-gradient-to-br from-[#F8D9DA] via-[#F4BFC2] to-[#EED9D5] />
                     )}
 
                     {/* Editorial overlay */}
