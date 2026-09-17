@@ -46,6 +46,23 @@ export default function Footer() {
             </svg>
           </a>
 
+          <a
+            href="https://www.facebook.com/HeyPonop/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Ponop on Facebook"
+            title="Facebook"
+            className="text-[#8B8380] transition-colors hover:text-[#D98F94]"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="h-5 w-5 fill-current"
+            >
+              <path d="M13.5 21v-8h2.75l.4-3h-3.15V8.08c0-.87.24-1.46 1.49-1.46h1.59V3.94c-.28-.04-1.25-.12-2.38-.12-2.36 0-3.98 1.44-3.98 4.08V10H7.5v3h2.72v8h3.28Z" />
+            </svg>
+          </a>
+
           <span className="h-5 w-px bg-[#E8E2DF]" aria-hidden="true" />
 
           <Link
