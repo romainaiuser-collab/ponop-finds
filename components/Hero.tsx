@@ -17,7 +17,10 @@ export default function Hero() {
           </a>
         </div>
 
-        <h1 className="hero-headline">
+        <h1
+          className="hero-headline"
+          style={{ fontSize: "clamp(2.2rem, 5vw, 3.5rem)" }}
+        >
           Search less. Live more.
         </h1>
 
