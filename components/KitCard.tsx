@@ -285,16 +285,28 @@ export default function KitCard({
                             className="rounded-xl border border-[#E8E2DF] bg-[#FAF8F7] px-4 py-4"
                           >
                             <div className="flex items-center justify-between gap-4">
-                              <div className="min-w-0">
-                                <p className="text-sm font-semibold leading-5 text-[#171717]">
-                                  {product.title}
-                                </p>
-
-                                {product.reason && (
-                                  <p className="mt-1 text-xs leading-5 text-[#68615F]">
-                                    {product.reason}
-                                  </p>
+                              <div className="flex min-w-0 items-center gap-3">
+                                {product.imageUrl ? (
+                                  <img
+                                    src={product.imageUrl}
+                                    alt={product.title ?? ""}
+                                    className="h-14 w-14 shrink-0 rounded-lg object-contain bg-white"
+                                  />
+                                ) : (
+                                  <div className="h-14 w-14 shrink-0 rounded-lg bg-[#F1ECE9]" />
                                 )}
+
+                                <div className="min-w-0">
+                                  <p className="text-sm font-semibold leading-5 text-[#171717]">
+                                    {product.title}
+                                  </p>
+
+                                  {product.reason && (
+                                    <p className="mt-1 text-xs leading-5 text-[#68615F]">
+                                      {product.reason}
+                                    </p>
+                                  )}
+                                </div>
                               </div>
 
                               {product.affiliateLink &&
