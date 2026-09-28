@@ -30,6 +30,7 @@ export async function getPublishedTools(): Promise<PublishedTool[]> {
   return (data ?? []).map((publication) => ({
     id: publication.id,
     contentId: publication.content_id,
+    opportunityId: publication.opportunity_id ?? null,
     title: publication.title ?? null,
     creativePunchline: publication.creative_punchline ?? null,
     hook: publication.hook ?? null,
