@@ -17,7 +17,41 @@ export default function KitRail({ kits }: KitRailProps) {
   } | null>(null);
   const [arrowState, setArrowState] = useState({ left: true, right: false });
 
-  const visibleKits = kits.slice(0, 10);
+  function getKitGroup(kit: PublishedKit): string {
+    return (
+      kit.collection?.trim().toLowerCase() ||
+      kit.theme?.trim().toLowerCase() ||
+      "other"
+    );
+  }
+
+  function diversifyKits(source: PublishedKit[]): PublishedKit[] {
+    const remaining = [...source];
+    const result: PublishedKit[] = [];
+    let previousGroup: string | null = null;
+
+    while (remaining.length > 0 && result.length < 10) {
+      const nextIndex = remaining.findIndex(
+        (kit) => getKitGroup(kit) !== previousGroup
+      );
+
+      const index = nextIndex >= 0 ? nextIndex : 0;
+      const [nextKit] = remaining.splice(index, 1);
+
+      if (!nextKit) {
+        break;
+      }
+
+      result.push(nextKit);
+      previousGroup = getKitGroup(nextKit);
+    }
+
+    return result;
+  }
+
+  // Kits arrive newest-first from the data layer.
+  // We keep that recency while avoiding a rail dominated by one collection.
+  const visibleKits = diversifyKits(kits);
 
   const updateArrowState = () => {
     const rail = railRef.current;
