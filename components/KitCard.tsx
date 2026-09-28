@@ -405,22 +405,6 @@ export default function KitCard({
                 </section>
               )}
 
-              {/* =================================================
-                  PUBLISHED DATE
-                 ================================================= */}
-              {kit.publishedAt && (
-                <div className="border-t border-[#E8E2DF] pt-6">
-                  <p className="text-xs uppercase tracking-[0.2em] text-[#A39A97]">
-                    Published
-                  </p>
-
-                  <p className="mt-1 text-sm text-[#68615F]">
-                    {new Date(
-                      kit.publishedAt
-                    ).toLocaleDateString("en-GB")}
-                  </p>
-                </div>
-              )}
             </div>
           </div>
         </div>
