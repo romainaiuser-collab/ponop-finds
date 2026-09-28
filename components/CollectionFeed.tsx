@@ -17,9 +17,31 @@ function sortByNewest(tools: PublishedTool[]): PublishedTool[] {
   });
 }
 
+function deduplicateByOpportunity(
+  tools: PublishedTool[]
+): PublishedTool[] {
+  const seen = new Set<string>();
+
+  return tools.filter((tool) => {
+    const key =
+      tool.opportunityId ??
+      tool.contentId ??
+      tool.id;
+
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
 export default function CollectionFeed({ tools }: CollectionFeedProps) {
   const [expandedToolId, setExpandedToolId] = useState<string | null>(null);
-  const sortedTools = sortByNewest(tools);
+  const sortedTools = deduplicateByOpportunity(
+    sortByNewest(tools)
+  );
 
   return (
     <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
