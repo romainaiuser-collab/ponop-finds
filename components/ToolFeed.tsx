@@ -78,6 +78,26 @@ function sortByNewest(
   });
 }
 
+function deduplicateByOpportunity(
+  tools: PublishedTool[]
+): PublishedTool[] {
+  const seen = new Set<string>();
+
+  return tools.filter((tool) => {
+    const key =
+      tool.opportunityId ??
+      tool.contentId ??
+      tool.id;
+
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
 export default function ToolFeed({
   tools,
   kits,
@@ -366,6 +386,10 @@ export default function ToolFeed({
         } else {
           sectionTools = sortByNewest(tools);
         }
+
+        // Keep only the most recent version of each product in each rail.
+        // Variants can still exist and be published independently.
+        sectionTools = deduplicateByOpportunity(sectionTools);
 
         // Keep every homepage rail limited to 10 items.
         sectionTools = sectionTools.slice(0, 10);
