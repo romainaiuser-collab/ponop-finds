@@ -8,6 +8,7 @@ export interface Tool {
 export interface PublishedTool {
   id: string;
   contentId: string | null;
+  opportunityId: string | null;
   title: string | null;
   creativePunchline: string | null;
   hook: string | null;
