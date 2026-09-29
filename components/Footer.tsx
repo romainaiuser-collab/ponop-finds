@@ -47,7 +47,7 @@ export default function Footer() {
           </a>
 
           <a
-            href="https://www.facebook.com/HeyPonop/"
+            href="https://www.facebook.com/profile.php?id=61595033545545"
             target="_blank"
             rel="noreferrer"
             aria-label="Ponop on Facebook"
