@@ -103,10 +103,10 @@ export default function Hero() {
             </a>
 
             <a
-              href="#all-finds"
+              href="#kids"
               className="hero-collection-link"
             >
-              <span>All Finds</span>
+              <span>Kids</span>
               <span
                 className="hero-collection-arrow"
                 aria-hidden="true"
