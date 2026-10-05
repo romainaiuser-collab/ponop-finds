@@ -4,6 +4,7 @@ const collectionUrls = [
   "https://finds.ponop.io/finds/most-wanted",
   "https://finds.ponop.io/finds/back-to-school",
   "https://finds.ponop.io/finds/smart-home",
+  "https://finds.ponop.io/finds/kids",
   "https://finds.ponop.io/finds/halloween",
 ];
 

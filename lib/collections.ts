@@ -34,6 +34,14 @@ export const productCollections: ProductCollection[] = [
     collection: "smart_home",
   },
   {
+    slug: "kids",
+    label: "Kids Finds",
+    emoji: "🧸",
+    title: "Clever finds made for little ones.",
+    subtitle: "Fun, useful and thoughtful picks for kids and everyday family life.",
+    collection: "kids",
+  },
+  {
     slug: "halloween",
     label: "Halloween Finds",
     emoji: "🎃",

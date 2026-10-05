@@ -33,6 +33,12 @@ const sections = [
     subtitle: "Clever finds to make home life easier.",
     href: "/finds/smart-home",
   },
+  {
+    id: "kids",
+    label: "🧸 Kids Finds",
+    subtitle: "Clever finds made for little ones.",
+    href: "/finds/kids",
+  },
 ];
 
 interface ToolFeedProps {
@@ -383,6 +389,15 @@ export default function ToolFeed({
               )
             )
           );
+        } else if (section.id === "kids") {
+          sectionTools = sortByNewest(
+            tools.filter((tool) =>
+              hasCollection(
+                tool,
+                "kids"
+              )
+            )
+          );
         } else {
           sectionTools = sortByNewest(tools);
         }
@@ -405,7 +420,9 @@ export default function ToolFeed({
                     ? "smart-home"
                     : section.id === "halloween"
                       ? "halloween"
-                      : undefined
+                      : section.id === "kids"
+                        ? "kids"
+                        : undefined
             }
             key={section.id}
             className="tool-section w-full"
