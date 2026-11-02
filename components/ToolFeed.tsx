@@ -10,6 +10,12 @@ import type {
 
 const sections = [
   {
+    id: "christmas",
+    label: "🎄 Christmas Finds",
+    subtitle: "Make the season a little more magical.",
+    href: "/finds/christmas",
+  },
+  {
     id: "wanted",
     label: "⭐ Most Wanted",
     subtitle: "The things we’d buy ourselves.",
@@ -398,6 +404,15 @@ export default function ToolFeed({
               )
             )
           );
+        } else if (section.id === "christmas") {
+          sectionTools = sortByNewest(
+            tools.filter((tool) =>
+              hasCollection(
+                tool,
+                "christmas"
+              )
+            )
+          );
         } else {
           sectionTools = sortByNewest(tools);
         }
@@ -422,7 +437,9 @@ export default function ToolFeed({
                       ? "halloween"
                       : section.id === "kids"
                         ? "kids"
-                        : undefined
+                        : section.id === "christmas"
+                          ? "christmas"
+                          : undefined
             }
             key={section.id}
             className="tool-section w-full"

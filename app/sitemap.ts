@@ -6,6 +6,7 @@ const collectionUrls = [
   "https://finds.ponop.io/finds/smart-home",
   "https://finds.ponop.io/finds/kids",
   "https://finds.ponop.io/finds/halloween",
+  "https://finds.ponop.io/finds/christmas",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

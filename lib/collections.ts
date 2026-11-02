@@ -49,6 +49,14 @@ export const productCollections: ProductCollection[] = [
     subtitle: "Fun, atmospheric and useful picks for Halloween.",
     collection: "halloween",
   },
+  {
+    slug: "christmas",
+    label: "Christmas Finds",
+    emoji: "🎄",
+    title: "Make the season a little more magical.",
+    subtitle: "Thoughtful gifts, festive details and clever finds for Christmas.",
+    collection: "christmas",
+  },
 ];
 
 export function getProductCollection(
